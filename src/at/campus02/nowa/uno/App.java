@@ -35,6 +35,9 @@ public class App {
     }
 
     private void initializeGame() {
+        //Spieler Erstellen
+        //Stack erstellen
+        //St
 
     }
 
@@ -43,6 +46,8 @@ public class App {
     }
 
     private void readUserInput() {
+        //prüfen wieviel Karten hat user
+        //prüfen ob Ablage korrekt
 
     }
 
