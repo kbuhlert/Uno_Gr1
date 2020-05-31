@@ -35,13 +35,16 @@ public class App {
     }
 
     private void initializeGame() {
-        //Spieler Erstellen
+        //Spieler Erstellen (Namen eingeben)
+        //erstelleBots();
+        //get Alle Spieler () = Ausgabe: "Es spielen mit:" getBotName() + getSpielerName();
         //Stack erstellen
-        //St
+        //Stack mischen
 
     }
 
     private void initializeRound() {
+        //Karten austeilen
 
     }
 

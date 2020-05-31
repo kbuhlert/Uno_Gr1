@@ -1,6 +1,6 @@
 package at.campus02.nowa.uno;
 
-public class Stack {
+public class Kartenstapel {
 
     //Methode Stack erstellen: neuer Stack und dann Stack mit allen verfügbaren Karten befüllen (108Karten)
     // (neue Karten: Zahelenwerte und Farben über Schleife, +2 über Schleife, restliche Aktionskarten manuell)
