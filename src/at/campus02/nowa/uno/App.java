@@ -24,7 +24,7 @@ public class App {
                     updateState();
                     printState();
 
-                    Thread.sleep(100);
+                    Thread.sleep(100);  //todo: wofür wird hier die Verzögerung eingebaut, was ist ein "Thread"
                 }
             } while (!gameEnded());
 
@@ -35,15 +35,18 @@ public class App {
     }
 
     private void initializeGame() {
-        //Spieler Erstellen (Namen eingeben)
+        //Spieler Erstellen
+        // Namen eingeben
         //erstelleBots();
         //get Alle Spieler () = Ausgabe: "Es spielen mit:" getBotName() + getSpielerName();
-        //Stack erstellen
-        //Stack mischen
+        //Verteilstack erstellen
+
 
     }
 
     private void initializeRound() {
+        //Verteilstack mischen
+        //1. Karte von Verteilstack auf Ablagestapel
         //Karten austeilen
 
     }
@@ -51,14 +54,24 @@ public class App {
     private void readUserInput() {
         //prüfen wieviel Karten hat user
         //prüfen ob Ablage korrekt
+        //speichern welche Karte gelegt -->oberste Karte auf Ablagestack ändern ablagestack.push()
+        //wenn falsche Karte gelegt: Methode falscheKartegelegt(); aufrufen
 
     }
 
     private void updateState() {
+        //todo: welche Informationen gehören zu "State"
+        //Punktestand neu berechnen
+        //Spielerhand ArrayList aktualisieren (nach Spielzug, nach Strafkarten)
+        //welcher Spieler ist aktuell dran
+        //welche Aktion muss als nächstes durchgeführt werden
+        //prüfen ob Spielzug fertig ist
+
 
     }
 
     private void printState() {
+        //todo: Ausgabe Punktestand? --> Was ist mit "State" gemeint, was gehört dazu
 
     }
 
@@ -68,6 +81,7 @@ public class App {
 
     private boolean gameEnded(){
         return false;
+        //Überprüft ob Endspielstand (500 Punkte) von einem Spieler erreicht wurde nach Rundenende, wenn ja, dann return true
     }
 
     private void printFinalScore(){
