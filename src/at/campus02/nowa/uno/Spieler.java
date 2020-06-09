@@ -1,6 +1,10 @@
 package at.campus02.nowa.uno;
 
+import java.util.ArrayList;
+
 public abstract class Spieler {
+
+    private ArrayList<Karte> spielerHand;
 
 
 

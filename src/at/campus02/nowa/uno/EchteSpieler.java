@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class EchteSpieler extends Spieler{
     private static int anzahlEchteSpieler = 0;
     private String name;
-    private ArrayList<Karte> spielerHand;
+
 
 
     //Konstruktor zählt static int mit anzahlSpieler hoch, hiermit wird festgelegt wieviele bots mitspielen
