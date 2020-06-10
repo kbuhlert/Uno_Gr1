@@ -5,7 +5,7 @@ public class Kartenstapel {
     //Methode Stack erstellen: neuer Stack und dann Stack mit allen verfügbaren Karten befüllen (108Karten)
     // (neue Karten: Zahelenwerte und Farben über Schleife, +2 über Schleife, restliche Aktionskarten manuell)
 
-    //Methode mischen : Collections shuffle
+    //Methode mischen : Collections shuffle -->mit Klasse Random geht das
 
     //Methode oberste Karte abheben (pull)
 
