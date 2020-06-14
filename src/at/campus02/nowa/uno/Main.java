@@ -7,8 +7,17 @@ public class Main {
 
         //Test des Kartenstapels/Verteilstapel
         Kartenstapel teststapel = new Kartenstapel();       //Neuer Teststapel erstellt
-        teststapel.verteilstapelErstellen();                //Test ob Verteilstapel erstellt werden kann
+        teststapel.neuerVerteilstapel();                //Test ob Verteilstapel erstellt werden kann
         teststapel.getKartenImStapel();                     //Anzeigen wieviele Karten im Verteilstabel liegen
+        teststapel.mischen();
+        teststapel.obersteKarte();
+        Karte testkarte1 = new Zahlenkarte(Farbe.BLAU, Wert.ACHT);
+        Karte testkarte2 = new Zahlenkarte(Farbe.GELB, Wert.ACHT);
+        Karte testkarte3 = new Zahlenkarte(Farbe.ROT, Wert.NEUN);
+        System.out.println(teststapel.karteAblegen(testkarte1));
+        System.out.println(teststapel.karteAblegen(testkarte2));
+        System.out.println(teststapel.karteAblegen(testkarte3));
+        System.out.println(teststapel.abheben());
 
         Scanner input = new Scanner(System.in);
 
