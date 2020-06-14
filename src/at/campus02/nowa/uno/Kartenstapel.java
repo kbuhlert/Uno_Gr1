@@ -61,14 +61,9 @@ public class Kartenstapel {
             if (f.equals(SCHWARZ)) {  //jetzt werden die schwarzen Aktionskarten zugefügt
                 for (Wert w : Wert.values()) {
                     if (w.equals(Wert.PLUSVIER) || w.equals(Wert.FARBWAHL)) {  //Es werden wieder alle Enumwerte durchlaufen und dann die Plusvier und Farbwahl zugefügt
+                        for(int i=1; i<=4; i++){
                         kartenstapel.add(new Zahlenkarte(f, w));     //da es jede Aktionskarte 4x gibt, wird das 4x wiederholt
-                        kartenImStapel++;
-                        kartenstapel.add(new Zahlenkarte(f, w));
-                        kartenImStapel++;
-                        kartenstapel.add(new Zahlenkarte(f, w));
-                        kartenImStapel++;
-                        kartenstapel.add(new Zahlenkarte(f, w));
-                        kartenImStapel++;
+                        kartenImStapel++;}
                     }
 
                 }
