@@ -1,0 +1,7 @@
+package at.campus02.nowa.uno;
+
+public enum Wert {
+
+   NULL, EINS, ZWEI, DREI, VIER, FUENF, SECHS, SIEBEN, ACHT, NEUN, PLUSZWEI, RICHTUNGSWECHSEL, FARBWAHL, PLUSVIER, AUSSETZEN;
+
+}

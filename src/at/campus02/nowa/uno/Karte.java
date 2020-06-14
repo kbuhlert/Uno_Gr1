@@ -2,9 +2,9 @@ package at.campus02.nowa.uno;
 
 public abstract class Karte {
     private Farbe farbe;
-    private Kartenwert wert;
+    private Wert wert;
 
-    public Karte(Farbe farbe, Kartenwert wert) {
+    public Karte(Farbe farbe, Wert wert) {
         this.farbe = farbe;
         this.wert = wert;
     }
@@ -17,11 +17,11 @@ public abstract class Karte {
         this.farbe = farbe;
     }
 
-    public Kartenwert getWert() {
+    public Wert getWert() {
         return wert;
     }
 
-    public void setWert(Kartenwert wert) {
+    public void setWert(Wert wert) {
         this.wert = wert;
     }
 
