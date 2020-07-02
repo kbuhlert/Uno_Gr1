@@ -13,3 +13,15 @@ public class Aktionskarte {
     //farbeWaehlen();
 
 }
+
+/*
+git config user.email „emailadresseMitDerManAufGithubRegistriertIst“
+
+Git branch branchName
+
+Git add .
+
+Git commit -m „commitMessage“
+
+Git push -u origin branchNameG
+ */

@@ -37,6 +37,7 @@ public class Kartenstapel {
     }
 
     public int getKartenImStapel() {
+        kartenImStapel = kartenstapel.size();
         System.out.println("Anzahl der Karten im Stapel: " + kartenImStapel);
         return kartenImStapel;
     }
@@ -82,6 +83,7 @@ public class Kartenstapel {
         //    System.out.println(k);}
         return kartenstapel;
     }
+
 
     //Methode oberste Karte abheben (pull)
     public Karte abheben (){
