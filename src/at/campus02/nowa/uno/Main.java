@@ -15,10 +15,25 @@ public class Main {
         teststapel.abheben();
         teststapel.obersteKarte();
 
+
+
         teststapel.getKartenImStapel();
         teststapel.abheben();
         teststapel.obersteKarte();
         teststapel.getKartenImStapel();
+
+        EchteSpieler spieler1 = new EchteSpieler();
+        while (spieler1.spielerHand.size()<7) {
+            spieler1.spielerHand.add(teststapel.abheben());
+        }
+        System.out.println("Handkarten: ");
+        for (Karte k :spieler1.spielerHand) {
+            System.out.println(k);
+        }
+
+        System.out.println(spieler1.spielerHand.size());
+        teststapel.getKartenImStapel();
+
 
         /*
         teststapel.obersteKarte();

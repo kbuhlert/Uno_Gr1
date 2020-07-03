@@ -3,10 +3,14 @@ package at.campus02.nowa.uno;
 import java.util.ArrayList;
 
 public class EchteSpieler extends Spieler{
-    private static int anzahlEchteSpieler = 0;
-    private String name;    //todo: müsste das ein Final sein?
+    //private static int anzahlEchteSpieler = 0;
+   private String name;    //todo: müsste das ein Final sein?
 
+    protected ArrayList<Karte> spielerHand;
 
+    public EchteSpieler() {
+        this.spielerHand = new ArrayList<Karte>();
+    }
 
     //Konstruktor zählt static int mit anzahlSpieler hoch, hiermit wird festgelegt wieviele bots mitspielen
 

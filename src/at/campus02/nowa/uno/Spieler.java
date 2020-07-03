@@ -4,7 +4,9 @@ import java.util.ArrayList;
 
 public abstract class Spieler {
 
-    private ArrayList<Karte> spielerHand;
+  //  private String name;
+
+
 
 
 

@@ -35,12 +35,19 @@ public class App {
     }
 
     private void initializeGame() {
-        //Spieler Erstellen
+        EchteSpieler spieler1 = new EchteSpieler();
+        Scanner scanner = new Scanner(System.in);
+     //   spieler1.name
+
+        EchteSpieler spieler2 = new EchteSpieler();
+        EchteSpieler spieler3 = new EchteSpieler();
+        EchteSpieler spieler4 = new EchteSpieler();
         // Namen eingeben
         //erstelleBots();
         //get Alle Spieler () = Ausgabe: "Es spielen mit:" getBotName() + getSpielerName();
         //Reihenfolge der Spieler zufällig festlegen und Startspieler festlegen
         //todo: Arraylist, mit Shuffle
+
         //Verteilstack erstellen
 
 
@@ -48,6 +55,7 @@ public class App {
 
     private void initializeRound() {
         //Verteilstack mischen
+
         //Karten austeilen -->7 Karten pro Spieler
         //1. Karte von Verteilstack auf Ablagestapel = erstellt den Ablagestapel
         //Rest vom Verteilstack ist Abhebestapel
