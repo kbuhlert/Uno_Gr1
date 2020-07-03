@@ -1,6 +1,7 @@
 package at.campus02.nowa.uno;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class EchteSpieler extends Spieler{
     //private static int anzahlEchteSpieler = 0;
@@ -10,6 +11,21 @@ public class EchteSpieler extends Spieler{
 
     public EchteSpieler() {
         this.spielerHand = new ArrayList<Karte>();
+    }
+
+    public void setName () {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Bitte geben Sie Ihren Namen ein: ");
+        name = scanner.nextLine();
+        System.out.println("Ihr Name ist: " + name);
+    }
+
+    @Override
+    public String toString() {
+        return "EchteSpieler{" +
+                "name='" + name + '\'' +
+                ", spielerHand=" + spielerHand +
+                '}';
     }
 
     //Konstruktor zählt static int mit anzahlSpieler hoch, hiermit wird festgelegt wieviele bots mitspielen

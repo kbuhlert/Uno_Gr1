@@ -1,5 +1,6 @@
 package at.campus02.nowa.uno;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -23,15 +24,35 @@ public class Main {
         teststapel.getKartenImStapel();
 
         EchteSpieler spieler1 = new EchteSpieler();
-        while (spieler1.spielerHand.size()<7) {
-            spieler1.spielerHand.add(teststapel.abheben());
-        }
-        System.out.println("Handkarten: ");
-        for (Karte k :spieler1.spielerHand) {
-            System.out.println(k);
+        spieler1.setName();
+        EchteSpieler spieler2 = new EchteSpieler();
+        spieler2.setName();
+        EchteSpieler spieler3 = new EchteSpieler();
+        spieler3.setName();
+        EchteSpieler spieler4 = new EchteSpieler();
+        spieler4.setName();
+        System.out.println("Spielernamen");
+        EchteSpieler[] alleSpieler = {spieler1,spieler2,spieler3, spieler4};
+        for (EchteSpieler spieler : alleSpieler) {
+
+            System.out.println(spieler);
         }
 
-        System.out.println(spieler1.spielerHand.size());
+        System.out.println("Karten werden ausgeteilt");
+        for (EchteSpieler spieler: alleSpieler) {
+            while (spieler.spielerHand.size() < 7) {
+                spieler.spielerHand.add(teststapel.abheben());
+            }
+            System.out.println(spieler.spielerHand.size());
+        }
+        System.out.println("Handkarten: ");
+
+        for (EchteSpieler spieler : alleSpieler) {
+            System.out.println(spieler);
+
+        }
+
+
         teststapel.getKartenImStapel();
 
 
