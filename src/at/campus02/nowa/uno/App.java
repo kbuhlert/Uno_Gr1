@@ -1,6 +1,7 @@
 package at.campus02.nowa.uno;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class App {
@@ -35,6 +36,7 @@ public class App {
     }
 
     private void initializeGame() {
+        // 4 echte Spieler können Namen eingeben
         EchteSpieler spieler1 = new EchteSpieler();
         spieler1.setName();
         EchteSpieler spieler2 = new EchteSpieler();
@@ -43,7 +45,29 @@ public class App {
         spieler3.setName();
         EchteSpieler spieler4 = new EchteSpieler();
         spieler4.setName();
-        // Namen eingeben
+/*
+        ArrayList<EchteSpieler> alleSpieler = new ArrayList<EchteSpieler>();
+        alleSpieler.add(spieler1);
+        alleSpieler.add(spieler2);
+        alleSpieler.add(spieler3);
+        alleSpieler.add(spieler4);
+
+        //es spielen mit:
+        for (EchteSpieler spieler : alleSpieler) {
+            String name = spieler.getName();
+            System.out.println(name);
+        }
+ */
+
+        SpielerManager spielerManager = new SpielerManager();
+        spielerManager.addEchteSpieler(spieler1);
+        spielerManager.addEchteSpieler(spieler2);
+        spielerManager.addEchteSpieler(spieler3);
+        spielerManager.addEchteSpieler(spieler4);
+
+        spielerManager.printAlleSpielerNamen();
+
+
         //erstelleBots();
         //get Alle Spieler () = Ausgabe: "Es spielen mit:" getBotName() + getSpielerName();
         //Reihenfolge der Spieler zufällig festlegen und Startspieler festlegen

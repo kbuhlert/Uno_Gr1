@@ -22,7 +22,9 @@ public class EchteSpieler extends Spieler{
         Scanner scanner = new Scanner(System.in);
         System.out.println("Bitte geben Sie Ihren Namen ein: ");
         name = scanner.nextLine();
-        System.out.println("Ihr Name ist: " + name);
+        System.out.println("Ihr Name ist: " + name +".");
+        System.out.println("Willkommen und viel Spaß!");
+        System.out.println();
     }
 
     @Override
