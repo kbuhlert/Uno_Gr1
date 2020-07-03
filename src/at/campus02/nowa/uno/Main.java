@@ -7,11 +7,14 @@ public class Main {
     public static void main(String[] args) {
 
         //Test des Kartenstapels/Verteilstapel
-        Kartenstapel teststapel = new Kartenstapel();       //Neuer Teststapel erstellt
+      /*  Kartenstapel teststapel = new Kartenstapel();       //Neuer Teststapel erstellt
         teststapel.neuerVerteilstapel();                //Test ob Verteilstapel erstellt werden kann
         teststapel.getKartenImStapel();                     //Anzeigen wieviele Karten im Verteilstabel liegen
 
         teststapel.mischen();
+
+       */
+      /*
         teststapel.obersteKarte();
         teststapel.abheben();
         teststapel.obersteKarte();
@@ -21,30 +24,32 @@ public class Main {
         teststapel.getKartenImStapel();
         teststapel.abheben();
         teststapel.obersteKarte();
+
+
         teststapel.getKartenImStapel();
 
-        EchteSpieler spieler1 = new EchteSpieler();
-        spieler1.setName();
-        EchteSpieler spieler2 = new EchteSpieler();
-        spieler2.setName();
-        EchteSpieler spieler3 = new EchteSpieler();
-        spieler3.setName();
-        EchteSpieler spieler4 = new EchteSpieler();
-        spieler4.setName();
+
         System.out.println("Spielernamen");
-        EchteSpieler[] alleSpieler = {spieler1,spieler2,spieler3, spieler4};
-        for (EchteSpieler spieler : alleSpieler) {
 
+
+        EchteSpieler[] alleSpieler = {spieler1,spieler2,spieler3, spieler4};
+       /*
+        // Test, ob Namen gespeichert sind:
+        for (EchteSpieler spieler : alleSpieler) {
             System.out.println(spieler);
         }
-
+        */
+/*
         System.out.println("Karten werden ausgeteilt");
         for (EchteSpieler spieler: alleSpieler) {
             while (spieler.spielerHand.size() < 7) {
                 spieler.spielerHand.add(teststapel.abheben());
             }
-            System.out.println(spieler.spielerHand.size());
+          //  System.out.println(spieler.spielerHand.size());
         }
+
+ */
+        /*
         System.out.println("Handkarten: ");
 
         for (EchteSpieler spieler : alleSpieler) {
@@ -52,8 +57,24 @@ public class Main {
 
         }
 
-
+         */
+/*
         teststapel.getKartenImStapel();
+
+        // lerer Ablegestapel wird erstellt:
+        Kartenstapel ablageStapel = new Kartenstapel();
+
+        //oberste Karte des testStapels ist jetzt auf Ablagestapel und bildet
+        // die Startkarte
+        ablageStapel.add(teststapel.abheben());
+
+        System.out.println("Die Anfangskarte ist: " + ablageStapel.obersteKarte());
+        teststapel.getKartenImStapel();
+        ablageStapel.getKartenImStapel();
+
+
+
+ */
 
 
         /*
@@ -67,6 +88,7 @@ public class Main {
         System.out.println(teststapel.karteAblegen(testkarte3));
         System.out.println(teststapel.abheben());
 
+        */
 
 
         Scanner input = new Scanner(System.in);
@@ -78,7 +100,8 @@ public class Main {
 
         input.close();
         System.out.println("UNO wird beendet ...");
-*/
+
+
 
     }
 }

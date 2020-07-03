@@ -9,8 +9,13 @@ public class EchteSpieler extends Spieler{
 
     protected ArrayList<Karte> spielerHand;
 
+    public String getName() {
+        return name;
+    }
+
     public EchteSpieler() {
-        this.spielerHand = new ArrayList<Karte>();
+
+        spielerHand = new ArrayList<Karte>();
     }
 
     public void setName () {
@@ -27,6 +32,8 @@ public class EchteSpieler extends Spieler{
                 ", spielerHand=" + spielerHand +
                 '}';
     }
+
+
 
     //Konstruktor zählt static int mit anzahlSpieler hoch, hiermit wird festgelegt wieviele bots mitspielen
 

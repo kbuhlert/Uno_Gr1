@@ -94,7 +94,7 @@ public class Kartenstapel {
     //Methode oberste Karte auf Stapel ausgeben
     public Karte obersteKarte(){
         Karte obersteKarte = kartenstapel.get(kartenstapel.size()-1);
-        System.out.println(obersteKarte);
+     //   System.out.println(obersteKarte);
         return kartenstapel.get(kartenstapel.size()-1);
     }
 

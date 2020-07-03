@@ -36,12 +36,13 @@ public class App {
 
     private void initializeGame() {
         EchteSpieler spieler1 = new EchteSpieler();
-        Scanner scanner = new Scanner(System.in);
-     //   spieler1.name
-
+        spieler1.setName();
         EchteSpieler spieler2 = new EchteSpieler();
+        spieler2.setName();
         EchteSpieler spieler3 = new EchteSpieler();
+        spieler3.setName();
         EchteSpieler spieler4 = new EchteSpieler();
+        spieler4.setName();
         // Namen eingeben
         //erstelleBots();
         //get Alle Spieler () = Ausgabe: "Es spielen mit:" getBotName() + getSpielerName();
