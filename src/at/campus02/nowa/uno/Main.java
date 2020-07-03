@@ -29,16 +29,7 @@ public class Main {
         teststapel.getKartenImStapel();
 
 
-        System.out.println("Spielernamen");
 
-
-        EchteSpieler[] alleSpieler = {spieler1,spieler2,spieler3, spieler4};
-       /*
-        // Test, ob Namen gespeichert sind:
-        for (EchteSpieler spieler : alleSpieler) {
-            System.out.println(spieler);
-        }
-        */
 /*
         System.out.println("Karten werden ausgeteilt");
         for (EchteSpieler spieler: alleSpieler) {

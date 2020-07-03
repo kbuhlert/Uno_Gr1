@@ -58,7 +58,8 @@ public class App {
             System.out.println(name);
         }
  */
-
+        //erstelleBots(); -> bis jetzt ohne Bots
+        //get Alle Spieler () = Ausgabe: "Es spielen mit:" getBotName() + getSpielerName();
         SpielerManager spielerManager = new SpielerManager();
         spielerManager.addEchteSpieler(spieler1);
         spielerManager.addEchteSpieler(spieler2);
@@ -68,11 +69,11 @@ public class App {
         spielerManager.printAlleSpielerNamen();
 
 
-        //erstelleBots();
-        //get Alle Spieler () = Ausgabe: "Es spielen mit:" getBotName() + getSpielerName();
+
+
         //Reihenfolge der Spieler zufällig festlegen und Startspieler festlegen
         //todo: Arraylist, mit Shuffle
-
+        spielerManager.startSpieler();
         //Verteilstack erstellen
 
 
