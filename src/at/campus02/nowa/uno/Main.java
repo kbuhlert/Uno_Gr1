@@ -10,49 +10,34 @@ public class Main {
       /*  Kartenstapel teststapel = new Kartenstapel();       //Neuer Teststapel erstellt
         teststapel.neuerVerteilstapel();                //Test ob Verteilstapel erstellt werden kann
         teststapel.getKartenImStapel();                     //Anzeigen wieviele Karten im Verteilstabel liegen
-
         teststapel.mischen();
-
        */
       /*
         teststapel.obersteKarte();
         teststapel.abheben();
         teststapel.obersteKarte();
-
-
-
         teststapel.getKartenImStapel();
         teststapel.abheben();
         teststapel.obersteKarte();
-
-
         teststapel.getKartenImStapel();
-
-
-
 /*
         System.out.println("Karten werden ausgeteilt");
         for (EchteSpieler spieler: alleSpieler) {
             while (spieler.spielerHand.size() < 7) {
                 spieler.spielerHand.add(teststapel.abheben());
             }
-          //  System.out.println(spieler.spielerHand.size());
+          System.out.println("hat "+ spieler.spielerHand.size());
         }
-
  */
         /*
         System.out.println("Handkarten: ");
-
         for (EchteSpieler spieler : alleSpieler) {
             System.out.println(spieler);
-
         }
-
          */
 /*
         teststapel.getKartenImStapel();
-
-        // lerer Ablegestapel wird erstellt:
+        // leerer Ablegestapel wird erstellt:
         Kartenstapel ablageStapel = new Kartenstapel();
 
         //oberste Karte des testStapels ist jetzt auf Ablagestapel und bildet
@@ -62,15 +47,9 @@ public class Main {
         System.out.println("Die Anfangskarte ist: " + ablageStapel.obersteKarte());
         teststapel.getKartenImStapel();
         ablageStapel.getKartenImStapel();
-
-
-
  */
-
-
         /*
         teststapel.obersteKarte();
-
         Karte testkarte1 = new Zahlenkarte(Farbe.BLAU, Wert.ACHT);
         Karte testkarte2 = new Zahlenkarte(Farbe.GELB, Wert.ACHT);
         Karte testkarte3 = new Zahlenkarte(Farbe.ROT, Wert.NEUN);
@@ -80,8 +59,6 @@ public class Main {
         System.out.println(teststapel.abheben());
 
         */
-
-
         Scanner input = new Scanner(System.in);
 
         App app = new App(input, System.out);

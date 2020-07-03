@@ -68,25 +68,30 @@ public class App {
 
         spielerManager.printAlleSpielerNamen();
 
-
-
-
         //Reihenfolge der Spieler zufällig festlegen und Startspieler festlegen
         //todo: Arraylist, mit Shuffle
         spielerManager.startSpieler();
-        //Verteilstack erstellen
-
-
     }
 
     private void initializeRound() {
-        //Verteilstack mischen
 
+
+        /* //Verteilstack erstellen
+        Kartenstapel verteilstapel = new Kartenstapel();
+        verteilstapel.neuerVerteilstapel();
+
+        //Verteilstack mischen
+        verteilstapel.mischen();
         //Karten austeilen -->7 Karten pro Spieler
+
+
+
         //1. Karte von Verteilstack auf Ablagestapel = erstellt den Ablagestapel
         //Rest vom Verteilstack ist Abhebestapel
         //Prüfen ob Startkarte Aktionskarte ist (Karte Aufnehmen oder Aussetzen/Richtungswechsel oder Farbe festlegen)
 
+
+        */
     }
 
     private void readUserInput() {

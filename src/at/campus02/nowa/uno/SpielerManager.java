@@ -4,10 +4,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class SpielerManager {
+
+    //  Spieler in  Liste
     protected ArrayList<EchteSpieler> alleSpieler;
+    Kartenstapel verteilstapel;
+
 
     public SpielerManager() {
         alleSpieler = new ArrayList<EchteSpieler>();
+        verteilstapel = new Kartenstapel();
     }
 
     public void addEchteSpieler (EchteSpieler e) {
@@ -31,7 +36,6 @@ public class SpielerManager {
         System.out.println(alleSpieler.get(0).getName());
         printAlleSpielerNamen();
     }
-
         /*
         int random = 0;
         do {
@@ -40,9 +44,24 @@ public class SpielerManager {
         System.out.println(random);
         System.out.println(alleSpieler.get(random).getName());
         }
-
-
          */
+
+    //Verteilstack erstellen
+   public void beginneRunde() {
+       verteilstapel.neuerVerteilstapel();
+       verteilstapel.mischen();
+       //Karten austeilen -->7 Karten pro Spieler
+       System.out.println("Karten werden ausgeteilt");
+       for (EchteSpieler spieler: alleSpieler) {
+           while (spieler.spielerHand.size() < 7) {
+               spieler.spielerHand.add(verteilstapel.abheben());
+           }
+           System.out.println(spieler.getName()+ "hat " + spieler.spielerHand.size() + " Handkarten.");
+       }
+   }
+
+
+
 
     @Override
     public String toString() {
