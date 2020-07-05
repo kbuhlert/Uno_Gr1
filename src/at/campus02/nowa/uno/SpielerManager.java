@@ -48,7 +48,7 @@ public class SpielerManager {
         }
          */
 
-    //Verteilstack erstellen
+    //Verteilstack erstellen/Karten austeile
    public void beginneRunde() {
        verteilstapel.neuerVerteilstapel();
 
