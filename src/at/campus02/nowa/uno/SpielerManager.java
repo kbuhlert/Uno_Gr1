@@ -10,6 +10,7 @@ public class SpielerManager {
     Kartenstapel verteilstapel;
     //TeststapelWunschkarte verteilstapel;  --> zum Testen mit speziellen Karten
     Kartenstapel ablagestapel;
+    EchteSpieler[] spielerReihenfolge = new EchteSpieler[4];
 
 
     public SpielerManager() {
@@ -23,9 +24,12 @@ public class SpielerManager {
     }
 
     public void printAlleSpielerNamen() {
+        System.out.print("Im Spiel sind: ");
         for (EchteSpieler spieler : alleSpieler) {
             System.out.print(spieler.getName() + ", ");
         }
+        System.out.println();
+        System.out.println("May the odds be ever in your favour");
     }
 
     // zufälligen Startspieler festlegen:
@@ -48,7 +52,7 @@ public class SpielerManager {
         }
          */
 
-    //Verteilstack erstellen/Karten austeile
+    //Verteilstack erstellen
    public void beginneRunde() {
        verteilstapel.neuerVerteilstapel();
 
@@ -66,6 +70,25 @@ public class SpielerManager {
        }
    }
 
+   public void spielerZuweisen(){
+       // 4 echte Spieler können Namen eingeben
+       EchteSpieler spieler1 = new EchteSpieler();
+       spieler1.setName();
+       EchteSpieler spieler2 = new EchteSpieler();
+       spieler2.setName();
+       EchteSpieler spieler3 = new EchteSpieler();
+       spieler3.setName();
+       EchteSpieler spieler4 = new EchteSpieler();
+       spieler4.setName();
+
+       alleSpieler.add(spieler1);
+       alleSpieler.add(spieler2);
+       alleSpieler.add(spieler3);
+       alleSpieler.add(spieler4);
+
+       printAlleSpielerNamen();
+   }
+
    public void neuerAblagestapelUndErsteKarteAufgedeckt () {
        ablagestapel.add(verteilstapel.abheben());
        System.out.println("Die erste Karte ist: ");
@@ -76,6 +99,10 @@ public class SpielerManager {
            verteilstapel.mischen();
          neuerAblagestapelUndErsteKarteAufgedeckt();
        }
+   }
+
+   public void kartenHandzeigen(EchteSpieler e){
+       System.out.println(e.toString());
    }
 
 
