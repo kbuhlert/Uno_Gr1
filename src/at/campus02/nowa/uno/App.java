@@ -38,7 +38,7 @@ public class App {
 
     private void initializeGame() {
         spielerManager.spielerZuweisen();
-        
+
         //Reihenfolge der Spieler zufällig festlegen und Startspieler festlegen
         //todo: Arraylist, mit Shuffle
         spielerManager.startSpieler();
