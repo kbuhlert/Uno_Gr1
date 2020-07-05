@@ -27,6 +27,8 @@ public class EchteSpieler extends Spieler{
         System.out.println();
     }
 
+
+
     @Override
     public String toString() {
         return "EchteSpieler{" +
