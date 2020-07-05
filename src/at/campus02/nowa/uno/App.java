@@ -37,36 +37,8 @@ public class App {
     }
 
     private void initializeGame() {
-        // 4 echte Spieler können Namen eingeben
-        EchteSpieler spieler1 = new EchteSpieler();
-        spieler1.setName();
-        EchteSpieler spieler2 = new EchteSpieler();
-        spieler2.setName();
-        EchteSpieler spieler3 = new EchteSpieler();
-        spieler3.setName();
-        EchteSpieler spieler4 = new EchteSpieler();
-        spieler4.setName();
-/*
-        ArrayList<EchteSpieler> alleSpieler = new ArrayList<EchteSpieler>();
-        alleSpieler.add(spieler1);
-        alleSpieler.add(spieler2);
-        alleSpieler.add(spieler3);
-        alleSpieler.add(spieler4);
-
-        //es spielen mit:
-        for (EchteSpieler spieler : alleSpieler) {
-            String name = spieler.getName();
-            System.out.println(name);
-        }
- */
-        //erstelleBots(); -> bis jetzt ohne Bots
-        //get Alle Spieler () = Ausgabe: "Es spielen mit:" getBotName() + getSpielerName();
-
-        spielerManager.addEchteSpieler(spieler1);
-        spielerManager.addEchteSpieler(spieler2);
-        spielerManager.addEchteSpieler(spieler3);
-        spielerManager.addEchteSpieler(spieler4);
-
+        spielerManager.spielerZuweisen();
+        
         //Reihenfolge der Spieler zufällig festlegen und Startspieler festlegen
         //todo: Arraylist, mit Shuffle
         spielerManager.startSpieler();
@@ -94,7 +66,7 @@ public class App {
 
          */
         spielerManager.neuerAblagestapelUndErsteKarteAufgedeckt();
-
+        //spielerManager.kartenHandzeigen();
     }
 
     private void readUserInput() {
