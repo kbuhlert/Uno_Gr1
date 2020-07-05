@@ -9,6 +9,7 @@ public class SpielerManager {
     protected ArrayList<EchteSpieler> alleSpieler;
     Kartenstapel verteilstapel;
     Kartenstapel ablagestapel;
+    EchteSpieler[] spielerReihenfolge = new EchteSpieler[4];
 
 
     public SpielerManager() {
@@ -35,8 +36,16 @@ public class SpielerManager {
         System.out.print("Es beginnt: ");
         Collections.shuffle(alleSpieler);
 
-        System.out.println(alleSpieler.get(0).getName());
-        printAlleSpielerNamen();
+        //System.out.println(alleSpieler.get(0).getName());
+        EchteSpieler ersterSpieler = alleSpieler.get(0);
+        System.out.println(ersterSpieler.getName());
+
+//        spielerReihenfolge[0]=ersterSpieler;
+//        spielerReihenfolge[1]=alleSpieler.get(1);
+//        spielerReihenfolge[2]=alleSpieler.get(2);
+//        spielerReihenfolge[3]=alleSpieler.get(3);
+
+        //printAlleSpielerNamen();
     }
         /*
         int random = 0;
@@ -62,11 +71,34 @@ public class SpielerManager {
        }
    }
 
+   public void spielerZuweisen(){
+       // 4 echte Spieler können Namen eingeben
+       EchteSpieler spieler1 = new EchteSpieler();
+       spieler1.setName();
+       EchteSpieler spieler2 = new EchteSpieler();
+       spieler2.setName();
+       EchteSpieler spieler3 = new EchteSpieler();
+       spieler3.setName();
+       EchteSpieler spieler4 = new EchteSpieler();
+       spieler4.setName();
+
+       alleSpieler.add(spieler1);
+       alleSpieler.add(spieler2);
+       alleSpieler.add(spieler3);
+       alleSpieler.add(spieler4);
+
+       printAlleSpielerNamen();
+   }
+
    public void neuerAblagestapelUndErsteKarteAufgedeckt () {
 
        ablagestapel.add(verteilstapel.abheben());
        System.out.println("Die erste Karte ist: ");
        System.out.println(ablagestapel.obersteKarte());
+   }
+
+   public void kartenHandzeigen(EchteSpieler e){
+       System.out.println(e.toString());
    }
 
 
