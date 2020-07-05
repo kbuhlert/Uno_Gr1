@@ -67,8 +67,6 @@ public class App {
         spielerManager.addEchteSpieler(spieler3);
         spielerManager.addEchteSpieler(spieler4);
 
-        spielerManager.printAlleSpielerNamen();
-
         //Reihenfolge der Spieler zufällig festlegen und Startspieler festlegen
         //todo: Arraylist, mit Shuffle
         spielerManager.startSpieler();

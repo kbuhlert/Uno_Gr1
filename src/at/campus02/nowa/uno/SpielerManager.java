@@ -23,21 +23,20 @@ public class SpielerManager {
     }
 
     public void printAlleSpielerNamen() {
-        System.out.print("Im Spiel sind: ");
         for (EchteSpieler spieler : alleSpieler) {
             System.out.print(spieler.getName() + ", ");
         }
-        System.out.println();
-        System.out.println("May the odds be ever in your favour");
     }
 
     // zufälligen Startspieler festlegen:
     public void startSpieler () {
-        System.out.print("Es beginnt: ");
         Collections.shuffle(alleSpieler);
-
-        System.out.println(alleSpieler.get(0).getName());
+        System.out.println("Im Spiel sind in dieser Reihenfolge:  ");
         printAlleSpielerNamen();
+        System.out.println();
+        System.out.print("Es beginnt: ");
+        System.out.println(alleSpieler.get(0).getName());
+        System.out.println("May the odds be ever in your favour");
     }
         /*
         int random = 0;
