@@ -8,6 +8,7 @@ public class SpielerManager {
     //  Spieler in  Liste
     protected ArrayList<EchteSpieler> alleSpieler;
     Kartenstapel verteilstapel;
+    //TeststapelWunschkarte verteilstapel;  --> zum Testen mit speziellen Karten
     Kartenstapel ablagestapel;
 
 
@@ -51,6 +52,10 @@ public class SpielerManager {
     //Verteilstack erstellen
    public void beginneRunde() {
        verteilstapel.neuerVerteilstapel();
+
+       //verteilstapel.neuerTeststapel(new Zahlenkarte(Farbe.SCHWARZ, Wert.PLUSVIER), new Zahlenkarte(Farbe.BLAU, Wert.ACHT));
+       //hier wurde ein Teststapel nur mit den Karten +4 und Blau 8 erstellt um zu testen, ob wenn +4 auf Ablagestapel liegt, diese neu in Stapel
+       // gelegt wird, gemischt wird und eine neue Karte aufgelegt wird
        verteilstapel.mischen();
        //Karten austeilen -->7 Karten pro Spieler
        System.out.println("Karten werden ausgeteilt");
@@ -63,10 +68,15 @@ public class SpielerManager {
    }
 
    public void neuerAblagestapelUndErsteKarteAufgedeckt () {
-
        ablagestapel.add(verteilstapel.abheben());
        System.out.println("Die erste Karte ist: ");
        System.out.println(ablagestapel.obersteKarte());
+     if(ablagestapel.obersteKarte().getFarbe()==Farbe.SCHWARZ && ablagestapel.obersteKarte().getWert() == Wert.PLUSVIER){
+           System.out.println("Es liegt eine +4 auf, eine neue Karte wird aufgelegt");
+           verteilstapel.add(ablagestapel.obersteKarte());
+           verteilstapel.mischen();
+         neuerAblagestapelUndErsteKarteAufgedeckt();
+       }
    }
 
 
