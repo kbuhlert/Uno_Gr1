@@ -8,11 +8,13 @@ public class SpielerManager {
     //  Spieler in  Liste
     protected ArrayList<EchteSpieler> alleSpieler;
     Kartenstapel verteilstapel;
+    Kartenstapel ablagestapel;
 
 
     public SpielerManager() {
         alleSpieler = new ArrayList<EchteSpieler>();
         verteilstapel = new Kartenstapel();
+        ablagestapel = new Kartenstapel();
     }
 
     public void addEchteSpieler (EchteSpieler e) {
@@ -56,9 +58,20 @@ public class SpielerManager {
            while (spieler.spielerHand.size() < 7) {
                spieler.spielerHand.add(verteilstapel.abheben());
            }
-           System.out.println(spieler.getName()+ "hat " + spieler.spielerHand.size() + " Handkarten.");
+           System.out.println(spieler.getName()+ " hat " + spieler.spielerHand.size() + " Handkarten.");
        }
    }
+
+   public void neuerAblagestapelUndErsteKarteAufgedeckt () {
+
+       ablagestapel.add(verteilstapel.abheben());
+       System.out.println("Die erste Karte ist: ");
+       System.out.println(ablagestapel.obersteKarte());
+   }
+
+
+
+
 
 
 

@@ -12,6 +12,7 @@ public class App {
         this.input = input;
         this.output = output;
     }
+    SpielerManager spielerManager = new SpielerManager();
 
     public void Run() {
         initializeGame();
@@ -60,7 +61,7 @@ public class App {
  */
         //erstelleBots(); -> bis jetzt ohne Bots
         //get Alle Spieler () = Ausgabe: "Es spielen mit:" getBotName() + getSpielerName();
-        SpielerManager spielerManager = new SpielerManager();
+
         spielerManager.addEchteSpieler(spieler1);
         spielerManager.addEchteSpieler(spieler2);
         spielerManager.addEchteSpieler(spieler3);
@@ -71,12 +72,13 @@ public class App {
         //Reihenfolge der Spieler zufällig festlegen und Startspieler festlegen
         //todo: Arraylist, mit Shuffle
         spielerManager.startSpieler();
+
     }
 
     private void initializeRound() {
-
-
-        /* //Verteilstack erstellen
+        spielerManager.beginneRunde();
+        /*
+        //Verteilstack erstellen
         Kartenstapel verteilstapel = new Kartenstapel();
         verteilstapel.neuerVerteilstapel();
 
@@ -87,11 +89,14 @@ public class App {
 
 
         //1. Karte von Verteilstack auf Ablagestapel = erstellt den Ablagestapel
+
         //Rest vom Verteilstack ist Abhebestapel
         //Prüfen ob Startkarte Aktionskarte ist (Karte Aufnehmen oder Aussetzen/Richtungswechsel oder Farbe festlegen)
 
 
-        */
+         */
+        spielerManager.neuerAblagestapelUndErsteKarteAufgedeckt();
+
     }
 
     private void readUserInput() {
