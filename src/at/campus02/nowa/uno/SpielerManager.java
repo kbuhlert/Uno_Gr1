@@ -24,12 +24,12 @@ public class SpielerManager {
     }
 
     public void printAlleSpielerNamen() {
-        System.out.print("Im Spiel sind: ");
+        //System.out.print("Im Spiel sind: ");
         for (EchteSpieler spieler : alleSpieler) {
             System.out.print(spieler.getName() + ", ");
         }
-        System.out.println();
-        System.out.println("May the odds be ever in your favour");
+        //System.out.println();
+        //System.out.println("May the odds be ever in your favour");
     }
 
     // zufälligen Startspieler festlegen:
@@ -85,8 +85,6 @@ public class SpielerManager {
        alleSpieler.add(spieler2);
        alleSpieler.add(spieler3);
        alleSpieler.add(spieler4);
-
-       printAlleSpielerNamen();
    }
 
    public void neuerAblagestapelUndErsteKarteAufgedeckt () {
