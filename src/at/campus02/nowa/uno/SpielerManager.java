@@ -160,23 +160,19 @@ public class SpielerManager {
        switch(alleSpieler.indexOf(aktuellerSpieler)){
            case 0:
                aktuellerSpieler = alleSpieler.get(1);
-               spielzug();
                break;
            case 1:
                aktuellerSpieler = alleSpieler.get(2);
-               spielzug();
                break;
            case 2:
                aktuellerSpieler = alleSpieler.get(3);
-               spielzug();
                break;
            case 3:
                aktuellerSpieler = alleSpieler.get(0);
-               spielzug();
                break;
 
        }
-
+       spielzug();
        return aktuellerSpieler;
 
 
