@@ -2,6 +2,7 @@ package at.campus02.nowa.uno;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Scanner;
 
 public class SpielerManager {
 
@@ -11,6 +12,7 @@ public class SpielerManager {
     //TeststapelWunschkarte verteilstapel;  --> zum Testen mit speziellen Karten
     Kartenstapel ablagestapel;
     EchteSpieler[] spielerReihenfolge = new EchteSpieler[4];
+    EchteSpieler aktuellerSpieler = null;
 
 
     public SpielerManager() {
@@ -35,6 +37,7 @@ public class SpielerManager {
     // zufälligen Startspieler festlegen:
     public void startSpieler () {
         Collections.shuffle(alleSpieler);
+
         System.out.println("Im Spiel sind in dieser Reihenfolge:  ");
         printAlleSpielerNamen();
         System.out.println();
@@ -99,8 +102,28 @@ public class SpielerManager {
        }
    }
 
-   public void kartenHandzeigen(EchteSpieler e){
-       System.out.println(e.toString());
+   public void aktuelleKarteAblagestapel(){
+       System.out.println("Die aktuelle Karte ist: ");
+       System.out.println(ablagestapel.obersteKarte());
+   }
+
+   public void kartenHandzeigen(){
+       System.out.println(alleSpieler.get(0).spielerHand);
+       //TODO Methode muss noch fertig gemacht werden
+   }
+
+   public void spielzug (){
+
+       kartenHandzeigen(); //TODO Methode muss noch fertig gemacht werden
+       //per Eingabe Karte spielen
+       //check if chosen card matches one available in the Kartenhand-array
+       //check if after playing the card there is only 1 left > UNO
+       System.out.println("Bitte spielen Sie eine Karte!");
+       Scanner scanner = new Scanner(System.in);
+       int position = scanner.nextInt();
+       ablagestapel.add(aktuellerSpieler.spielerHand.get(position));
+       aktuelleKarteAblagestapel();
+       System.out.println(ablagestapel.obersteKarte());
    }
 
 

@@ -74,6 +74,7 @@ public class App {
     private void readUserInput() {
 
         //Scanner aufrufen für Eingabe des aktuellen Spielers
+        spielerManager.spielzug();
 
         //Eingabe des aktuellen Spielers (abgelegte Karte Aufruf regeln, Aufruf Punktestand, Ungültige Eingabe)
         // (Befelhle: "Play X" = X.te Karte aus dem Array/ "Take" = Abheben wenn keine Karte gespielt werden kann, "Take2" = 2 Abheben, "Take4" = 4 Abheben, "Help","uno", "challenge", "Punktestand")
