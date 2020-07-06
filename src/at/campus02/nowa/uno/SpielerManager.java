@@ -8,6 +8,7 @@ public class SpielerManager {
     //  Spieler in  Liste
     protected ArrayList<EchteSpieler> alleSpieler;
     Kartenstapel verteilstapel;
+    //TeststapelWunschkarte verteilstapel;  --> zum Testen mit speziellen Karten
     Kartenstapel ablagestapel;
     EchteSpieler[] spielerReihenfolge = new EchteSpieler[4];
 
@@ -23,29 +24,23 @@ public class SpielerManager {
     }
 
     public void printAlleSpielerNamen() {
-        System.out.print("Im Spiel sind: ");
+        //System.out.print("Im Spiel sind: ");
         for (EchteSpieler spieler : alleSpieler) {
             System.out.print(spieler.getName() + ", ");
         }
-        System.out.println();
-        System.out.println("May the odds be ever in your favour");
+        //System.out.println();
+        //System.out.println("May the odds be ever in your favour");
     }
 
     // zufälligen Startspieler festlegen:
     public void startSpieler () {
-        System.out.print("Es beginnt: ");
         Collections.shuffle(alleSpieler);
-
-        //System.out.println(alleSpieler.get(0).getName());
-        EchteSpieler ersterSpieler = alleSpieler.get(0);
-        System.out.println(ersterSpieler.getName());
-
-//        spielerReihenfolge[0]=ersterSpieler;
-//        spielerReihenfolge[1]=alleSpieler.get(1);
-//        spielerReihenfolge[2]=alleSpieler.get(2);
-//        spielerReihenfolge[3]=alleSpieler.get(3);
-
-        //printAlleSpielerNamen();
+        System.out.println("Im Spiel sind in dieser Reihenfolge:  ");
+        printAlleSpielerNamen();
+        System.out.println();
+        System.out.print("Es beginnt: ");
+        System.out.println(alleSpieler.get(0).getName());
+        System.out.println("May the odds be ever in your favour");
     }
         /*
         int random = 0;
@@ -60,6 +55,10 @@ public class SpielerManager {
     //Verteilstack erstellen
    public void beginneRunde() {
        verteilstapel.neuerVerteilstapel();
+
+       //verteilstapel.neuerTeststapel(new Zahlenkarte(Farbe.SCHWARZ, Wert.PLUSVIER), new Zahlenkarte(Farbe.BLAU, Wert.ACHT));
+       //hier wurde ein Teststapel nur mit den Karten +4 und Blau 8 erstellt um zu testen, ob wenn +4 auf Ablagestapel liegt, diese neu in Stapel
+       // gelegt wird, gemischt wird und eine neue Karte aufgelegt wird
        verteilstapel.mischen();
        //Karten austeilen -->7 Karten pro Spieler
        System.out.println("Karten werden ausgeteilt");
@@ -86,15 +85,18 @@ public class SpielerManager {
        alleSpieler.add(spieler2);
        alleSpieler.add(spieler3);
        alleSpieler.add(spieler4);
-
-       printAlleSpielerNamen();
    }
 
    public void neuerAblagestapelUndErsteKarteAufgedeckt () {
-
        ablagestapel.add(verteilstapel.abheben());
        System.out.println("Die erste Karte ist: ");
        System.out.println(ablagestapel.obersteKarte());
+     if(ablagestapel.obersteKarte().getFarbe()==Farbe.SCHWARZ && ablagestapel.obersteKarte().getWert() == Wert.PLUSVIER){
+           System.out.println("Es liegt eine +4 auf, eine neue Karte wird aufgelegt");
+           verteilstapel.add(ablagestapel.obersteKarte());
+           verteilstapel.mischen();
+         neuerAblagestapelUndErsteKarteAufgedeckt();
+       }
    }
 
    public void kartenHandzeigen(EchteSpieler e){

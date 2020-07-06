@@ -46,7 +46,8 @@ public class App {
     }
 
     private void initializeRound() {
-        spielerManager.beginneRunde();
+
+
         /*
         //Verteilstack erstellen
         Kartenstapel verteilstapel = new Kartenstapel();
@@ -65,6 +66,7 @@ public class App {
 
 
          */
+        spielerManager.beginneRunde();
         spielerManager.neuerAblagestapelUndErsteKarteAufgedeckt();
         //spielerManager.kartenHandzeigen();
     }
