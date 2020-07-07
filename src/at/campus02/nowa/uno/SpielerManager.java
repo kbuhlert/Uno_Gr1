@@ -41,7 +41,8 @@ public class SpielerManager {
         printAlleSpielerNamen();
         System.out.println();
         System.out.print("Es beginnt: ");
-        System.out.println(alleSpieler.get(0).getName());
+        aktuellerSpieler = alleSpieler.get(0);
+        System.out.println(aktuellerSpieler.getName());
         System.out.println("May the odds be ever in your favour");
     }
         /*
