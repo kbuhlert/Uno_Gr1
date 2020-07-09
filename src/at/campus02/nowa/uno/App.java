@@ -71,8 +71,6 @@ public class App {
         //todo:Prüfen ob aktueller Spieler Hilfe braucht/ Befehl "Help" (--> Ausgabe der Regeln)    //todo: Spielregeln in Textdatei einfügen
         //todo:Prüfen ob aktueller Spieler Punktestand ausgegeben haben möchte
         //todo:Wenn Ausgabe von regeln oder Punktestand neuer Aufruf von readUserInput()
-
-
         //todo: prüfen ob Ablage korrekt  --> wenn nein Methode strafe();
         //todo: prüfen ob Ablage Aktionskarte --> Methoden
         //todo: speichern welche Karte gelegt -->oberste Karte auf Ablagestack ändern ablagestack.push()

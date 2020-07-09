@@ -6,21 +6,23 @@ import java.util.Collections;
 import static at.campus02.nowa.uno.Farbe.SCHWARZ;
 
 import java.util.Scanner;
+import java.util.jar.JarOutputStream;
 
 public class SpielerManager {
 
     //  Spieler in  Liste
     protected ArrayList<EchteSpieler> alleSpieler;
-    Kartenstapel verteilstapel;
-    //TeststapelWunschkarte verteilstapel;  --> zum Testen mit speziellen Karten
+    //Kartenstapel verteilstapel;
+    TeststapelWunschkarte verteilstapel;  //--> zum Testen mit speziellen Karten
     Kartenstapel ablagestapel;
     Kartenstapel abhebestapel;
     EchteSpieler aktuellerSpieler = null;
+    boolean spielrichtung = true;
 
 
     public SpielerManager() {
         alleSpieler = new ArrayList<EchteSpieler>();
-        verteilstapel = new Kartenstapel();
+        verteilstapel = new TeststapelWunschkarte();
         ablagestapel = new Kartenstapel();
     }
 
@@ -43,25 +45,18 @@ public class SpielerManager {
         System.out.println("Im Spiel sind in dieser Reihenfolge:  ");
         printAlleSpielerNamen();
         System.out.println();
-        System.out.print("Es beginnt: ");
+        //System.out.print("Es beginnt: ");     //Angabe wird nicht mehr benötigt, die kommt bei Spieleraufruf nochmal
         aktuellerSpieler = alleSpieler.get(0);
-        System.out.println(aktuellerSpieler.getName());
+        //System.out.println(aktuellerSpieler.getName());       //Ausgabe des aktuellen Spieler kommt bei Spieleraufruf
         System.out.println("May the odds be ever in your favour");
+        System.out.println();
     }
-        /*
-        int random = 0;
-        do {
-            random= (int) (Math.random() * 10);
-        } while (random>3);
-        System.out.println(random);
-        System.out.println(alleSpieler.get(random).getName());
-        }
-         */
 
-    //Verteilstack erstellen
+
+    //Verteilstack erstellen & austeilen der Karten auf die Spielerhand
     public void beginneRunde() {
-        verteilstapel.neuerVerteilstapel();
-
+        //verteilstapel.neuerVerteilstapel(); //Erstellt den Verteilstack
+        verteilstapel.neuerTeststapel(new Zahlenkarte(Farbe.BLAU, Wert.RICHTUNGSWECHSEL), new Zahlenkarte(Farbe.BLAU, Wert.ACHT));
         //verteilstapel.neuerTeststapel(new Zahlenkarte(Farbe.SCHWARZ, Wert.PLUSVIER), new Zahlenkarte(Farbe.BLAU, Wert.ACHT));
         //hier wurde ein Teststapel nur mit den Karten +4 und Blau 8 erstellt um zu testen, ob wenn +4 auf Ablagestapel liegt, diese neu in Stapel
         // gelegt wird, gemischt wird und eine neue Karte aufgelegt wird
@@ -74,6 +69,7 @@ public class SpielerManager {
             }
             System.out.println(spieler.getName() + " hat " + spieler.spielerHand.size() + " Handkarten.");
         }
+        System.out.println();
     }
 
     public void spielerZuweisen() {
@@ -87,32 +83,28 @@ public class SpielerManager {
         EchteSpieler spieler4 = new EchteSpieler();
         spieler4.setName();
 
-        alleSpieler.add(spieler1);
+        alleSpieler.add(spieler1);  //Spieler werden dem Spielerarray zugefügt
         alleSpieler.add(spieler2);
         alleSpieler.add(spieler3);
         alleSpieler.add(spieler4);
-
-        //printAlleSpielerNamen();
     }
 
+    //Methode erstellt den Ablagestapel und mischt nochmal wenn +4 oben liegt
     public void neuerAblagestapelUndErsteKarteAufgedeckt() {
-
         ablagestapel.add(verteilstapel.abheben());
         System.out.println("Die erste Karte ist: ");
         System.out.println(ablagestapel.obersteKarte());
+        //Test ob +4 Aufliegt, wenn ja Karte zurück, mischen und neuer Aufruf der Methode
         if (ablagestapel.obersteKarte().getFarbe() == Farbe.SCHWARZ && ablagestapel.obersteKarte().getWert() == Wert.PLUSVIER) {
-            System.out.println("Es liegt eine +4 auf, eine neue Karte wird aufgelegt");
+            System.out.println("Es liegt eine +4 auf, nochmal mischen, eine neue Karte wird aufgelegt");
             verteilstapel.add(ablagestapel.obersteKarte());
             verteilstapel.mischen();
             neuerAblagestapelUndErsteKarteAufgedeckt();
         }
     }
 
-    public void aktuelleKarteAblagestapel() {
-        System.out.println("Die aktuelle Karte ist: ");
-        System.out.println(ablagestapel.obersteKarte());
-    }
 
+    //Fragt aktuellen Spieler ob er vor dem Ablegen der Karte seine eigene Hand auf der Konsole sehen möchte
     public void kartenHandzeigen() {
         //diese Methode prüft zunächst ob der aktuelle Spieler ein Bot ist oder ein echter Spieler,
         //wenn echter Spieler, wird dieser gefragt, ob er seine Hand einsehen möchte
@@ -139,58 +131,41 @@ public class SpielerManager {
                 kartenHandzeigen();
                 //e.printStackTrace();
             }
-            //TODO Methode muss noch fertig gemacht werden
         }
     }
 
-    public void karteAblegen() {
-
-    }
-
     public void ausgabeaktuellerSpieler() {
+        System.out.println();
+        System.out.println("-----");
         System.out.println(aktuellerSpieler.getName() + "  ist an der Reihe!");
-        kartenHandzeigen(); //TODO Methode muss noch fertig gemacht werden
+        kartenHandzeigen();
         Karte k = ablagestapel.obersteKarte();
         System.out.println("Bitte spielen Sie eine Karte, die auf FARBE:" + k.getFarbe() + " oder WERT: " + k.getWert() + " gelegt werden darf.");
 
     }
 
     public void spielzug() {
-
         //per Eingabe Karte spielen
         //check if chosen card matches one available in the Kartenhand-array
-        //check if after playing the card there is only 1 left > UNO
+        //todo: check if after playing the card there is only 1 left > UNO
 
         Scanner scanner = new Scanner(System.in);
         int position = scanner.nextInt();
         Karte handKarte = aktuellerSpieler.spielerHand.get(position);
         if (!passendeKarte(handKarte, ablagestapel.obersteKarte())) {
-            System.out.println("Bitte legen Sie eine passende Karte ab");
+            System.out.println("Falsche Karte gelegt. Bitte legen Sie eine passende Karte ab");
             System.out.println("Es liegt die " + ablagestapel.obersteKarte() + " oben auf!");
         } else {
-
-            System.out.println("Diese Karte wird abgelegt:");
+            System.out.println("Spielzug korrekt. Diese Karte wurde abgelegt:");
             System.out.println(aktuellerSpieler.spielerHand.get(position));
-            //ablagestapel.add(aktuellerSpieler.spielerHand.get(position));
-
-            //todo: INFO: Prüfung ob Spielzug gültig ist wurde zugefügt
-            ablagestapel.karteAblegen(aktuellerSpieler.spielerHand.get(position));
-
-            //todo: HIER IST NOCH EIN FEHLER, METHODE WIRD NACH PRÜFUNG AUF KORREKTE ABLAGE NOCH NICHT WEITER AUSGEFÜHRT; SPIELERWEHSEL WIRD NICHT AUFGERUFEN
-
+            ablagestapel.add(aktuellerSpieler.spielerHand.get(position));
             aktuellerSpieler.spielerHand.remove(position);
-//           System.out.println("diese karte liegt oben auf:");         ueberpruefung ob handkarte nun am stapel oben liegt
-//           System.out.println(ablagestapel.obersteKarte());
-            spielerWechsel();
-            spielzug();
-
+            //spielzug();
         }
-
-
+        spielerWechsel();
     }
 
     public boolean passendeKarte(Karte handKarte, Karte ablageStapel) {
-
         if (ablageStapel.getFarbe().equals(SCHWARZ)) {
             return true;
         } else if (handKarte.getFarbe().equals(ablageStapel.getFarbe()) || handKarte.getWert() == ablageStapel.getWert() || handKarte.getFarbe().equals(SCHWARZ)) {
@@ -200,24 +175,46 @@ public class SpielerManager {
     }
 
     public EchteSpieler spielerWechsel() {
-        // TODO: 06.07.2020 richtungswechsel?
+        // Spielerwechsel nach Beendigung des Spielzuges
+        //Richtungswechsel wenn auf Stapel "Richtungswechsel" liegt
+        //todo: Aussetzenkarte ist Spieler überspringen
 
-        switch (alleSpieler.indexOf(aktuellerSpieler)) {
-            case 0:
-                aktuellerSpieler = alleSpieler.get(1);
-                break;
-            case 1:
-                aktuellerSpieler = alleSpieler.get(2);
-                break;
-            case 2:
-                aktuellerSpieler = alleSpieler.get(3);
-                break;
-            case 3:
-                aktuellerSpieler = alleSpieler.get(0);
-                break;
-
+        if (ablagestapel.obersteKarte().getWert().equals(Wert.RICHTUNGSWECHSEL)) {
+            spielrichtung = !spielrichtung;
         }
-        spielzug();
+
+        if (spielrichtung == true) {
+            switch (alleSpieler.indexOf(aktuellerSpieler)) {
+                case 0:
+                    aktuellerSpieler = alleSpieler.get(1);
+                    break;
+                case 1:
+                    aktuellerSpieler = alleSpieler.get(2);
+                    break;
+                case 2:
+                    aktuellerSpieler = alleSpieler.get(3);
+                    break;
+                case 3:
+                    aktuellerSpieler = alleSpieler.get(0);
+                    break;
+            }
+        }
+        if (spielrichtung == false) {
+            switch (alleSpieler.indexOf(aktuellerSpieler)) {
+                case 0:
+                    aktuellerSpieler = alleSpieler.get(3);
+                    break;
+                case 1:
+                    aktuellerSpieler = alleSpieler.get(0);
+                    break;
+                case 2:
+                    aktuellerSpieler = alleSpieler.get(1);
+                    break;
+                case 3:
+                    aktuellerSpieler = alleSpieler.get(2);
+                    break;
+            }
+        }
         return aktuellerSpieler;
 
 
