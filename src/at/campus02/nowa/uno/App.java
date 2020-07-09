@@ -33,39 +33,26 @@ public class App {
             printFinalScore();
         }catch (Exception ex){
             output.println(ex);
+            //todo Exceptions passend erweitern (Bsp. Auswahlzahl von Karte auf Hand ist Größer als Array)
         }
     }
 
     private void initializeGame() {
         spielerManager.spielerZuweisen();
-
-        //Reihenfolge der Spieler zufällig festlegen und Startspieler festlegen
-        //todo: Arraylist, mit Shuffle
         spielerManager.startSpieler();
+        //Reihenfolge der Spieler zufällig festlegen und Startspieler festlegen
 
     }
 
     private void initializeRound() {
 
-
-        /*
         //Verteilstack erstellen
-        Kartenstapel verteilstapel = new Kartenstapel();
-        verteilstapel.neuerVerteilstapel();
-
         //Verteilstack mischen
-        verteilstapel.mischen();
         //Karten austeilen -->7 Karten pro Spieler
-
-
-
         //1. Karte von Verteilstack auf Ablagestapel = erstellt den Ablagestapel
-
-        //Rest vom Verteilstack ist Abhebestapel
-        //Prüfen ob Startkarte Aktionskarte ist (Karte Aufnehmen oder Aussetzen/Richtungswechsel oder Farbe festlegen)
-
-
-         */
+        //todo: Rest vom Verteilstack ist Abhebestapel
+        //Prüfen ob oberste Karte im Ablagestapel eine +4 ist
+        //todo: Prüfen ob Startkarte Aktionskarte ist (Karte Aufnehmen oder Aussetzen/Richtungswechsel oder Farbe festlegen)
         spielerManager.beginneRunde();
         spielerManager.neuerAblagestapelUndErsteKarteAufgedeckt();
         //spielerManager.kartenHandzeigen();
@@ -75,18 +62,20 @@ public class App {
 
         //Scanner aufrufen für Eingabe des aktuellen Spielers
         spielerManager.spielzug();
+        //todo: Info an Alle. Habe die Ausgabe der obersten Karte Ablagestapel, die Aufforderung des nächsten Spielers, Abfrage ob Hand angezeigt
+        // werden soll und Eingabeaufforderung in PrintState() gegeben
 
         //Eingabe des aktuellen Spielers (abgelegte Karte Aufruf regeln, Aufruf Punktestand, Ungültige Eingabe)
         // (Befelhle: "Play X" = X.te Karte aus dem Array/ "Take" = Abheben wenn keine Karte gespielt werden kann, "Take2" = 2 Abheben, "Take4" = 4 Abheben, "Help","uno", "challenge", "Punktestand")
-        //Nach Befehl "Take" --> Spieler wird gefragt, ob er Karte legen kann/möchte
-        //Prüfen ob aktueller Spieler Hilfe braucht/ Befehl "Help" (--> Ausgabe der Regeln)    //todo: Spielregeln in Textdatei einfügen
-        //Prüfen ob aktueller Spieler Punktestand ausgegeben haben möchte
-        //Wenn Ausgabe von regeln oder Punktestand neuer Aufruf von readUserInput()
+        //todo:Nach Befehl "Take" --> Spieler wird gefragt, ob er Karte legen kann/möchte
+        //todo:Prüfen ob aktueller Spieler Hilfe braucht/ Befehl "Help" (--> Ausgabe der Regeln)    //todo: Spielregeln in Textdatei einfügen
+        //todo:Prüfen ob aktueller Spieler Punktestand ausgegeben haben möchte
+        //todo:Wenn Ausgabe von regeln oder Punktestand neuer Aufruf von readUserInput()
 
 
-        //prüfen ob Ablage korrekt  --> wenn nein Methode strafe();
-        //prüfen ob Ablage Aktionskarte --> Methoden
-        //speichern welche Karte gelegt -->oberste Karte auf Ablagestack ändern ablagestack.push()
+        //todo: prüfen ob Ablage korrekt  --> wenn nein Methode strafe();
+        //todo: prüfen ob Ablage Aktionskarte --> Methoden
+        //todo: speichern welche Karte gelegt -->oberste Karte auf Ablagestack ändern ablagestack.push()
         //wenn falsche Karte gelegt: Methode falscheKartegelegt(); aufrufen
         //Nach Befehl "Play X": Prüfen wieviel Karten hat aktueller Spieler    --> bei 1 Karten Uno-Ausruf abprüfen, wenn false, Methode strafe();
         //Methode beenden wenn Überprüfung beendet, nach Befehl "Play X", "Take2", "Take4", "Take" + "PlayX", "Take" + "Fertig"
@@ -94,6 +83,7 @@ public class App {
     }
 
     private void updateState() {
+        // TODO: 09.07.2020
         //Variable obersteKarteAblagestapel neuen Wert zuweisen
         //Punktestand neu berechnen
         //Spielerhand ArrayList aktualisieren (nach Spielzug, nach Strafkarten)
@@ -106,6 +96,7 @@ public class App {
     }
 
     private void printState() {
+        spielerManager.ausgabeaktuellerSpieler();
         //Ausgeben welche Karte auf Ablagestapel oben liegt (variable obersteKarteAblagestapel)
         //Aufvorderung des nächsten Spielers
         //Spielerhand auf Konsole ausgeben (könnte auch mit SpielerInput abgefragt werden, dann muss Bot die Hand nicht ausgeben -->toString beim echten Spieler)
