@@ -1,6 +1,6 @@
 package at.campus02.nowa.uno;
 
-public class BotSpieler {
+public class BotSpieler extends Spieler{
 
     private static int botNr = 0;       //wird beim erstellen des Bots um 1 hochgezählt, bot erhaäkt dann Name: "bot" + Integer.toString("botNr")
 

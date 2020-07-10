@@ -75,19 +75,57 @@ public class SpielerManager {
 
     public void spielerZuweisen() {
         // 4 echte Spieler können Namen eingeben
-        Spieler spieler1 = new EchteSpieler(input);
-        //spieler1.setName();
-        /*EchteSpieler spieler2 = new EchteSpieler();
-        //spieler2.setName();
-        EchteSpieler spieler3 = new EchteSpieler();
-        //spieler3.setName();
-        EchteSpieler spieler4 = new EchteSpieler();
-        //spieler4.setName();*/
+        // todo: Echte und Botspieler erstellen
+        //Abfrage: Wieviel echte Spieler muss eingegeben werden, dann mit Switch entsprechend erstellen
+        System.out.println("Bitte geben Sie die Zahl (0-4) der echten Spieler ein: ");
+        //todo: FalscheEingabeException zufügen
+        int echteSpieler = input.nextInt();
+        Spieler spieler1 = null;
+        Spieler spieler2 = null;
+        Spieler spieler3 = null;
+        Spieler spieler4 = null;
 
+        //todo: switch für Botspieler erweitern
+        switch (echteSpieler) {
+            case (4):
+                spieler1 = new EchteSpieler(input);
+                spieler2 = new EchteSpieler(input);
+                spieler3 = new EchteSpieler(input);
+                spieler4 = new EchteSpieler(input);
+                break;
+
+            case (3):
+                spieler1 = new EchteSpieler(input);
+                spieler2 = new EchteSpieler(input);
+                spieler3 = new EchteSpieler(input);
+                spieler4 = new BotSpieler();
+                break;
+
+            case (2):
+                spieler1 = new EchteSpieler(input);
+                spieler2 = new EchteSpieler(input);
+                spieler3 = new BotSpieler();
+                spieler4 = new BotSpieler();
+                break;
+
+            case (1):
+                spieler1 = new EchteSpieler(input);
+                spieler2 = new BotSpieler();
+                spieler3 = new BotSpieler();
+                spieler4 = new BotSpieler();
+                break;
+
+            case (0):
+                spieler1 = new BotSpieler();
+                spieler2 = new BotSpieler();
+                spieler3 = new BotSpieler();
+                spieler4 = new BotSpieler();
+                break;
+        }
         alleSpieler.add(spieler1);  //Spieler werden dem Spielerarray zugefügt
-       /* alleSpieler.add(spieler2);
+        alleSpieler.add(spieler2);
         alleSpieler.add(spieler3);
-        alleSpieler.add(spieler4);*/
+        alleSpieler.add(spieler4);
     }
 
     //Methode erstellt den Ablagestapel und mischt nochmal wenn +4 oben liegt
