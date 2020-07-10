@@ -9,30 +9,31 @@ import java.util.Scanner;
 import java.util.jar.JarOutputStream;
 
 public class SpielerManager {
+    Scanner input = new Scanner(System.in);
 
     //  Spieler in  Liste
-    protected ArrayList<EchteSpieler> alleSpieler;
+    protected ArrayList<Spieler> alleSpieler;
     //Kartenstapel verteilstapel;
     TeststapelWunschkarte verteilstapel;  //--> zum Testen mit speziellen Karten
     Kartenstapel ablagestapel;
-    Kartenstapel abhebestapel;
-    EchteSpieler aktuellerSpieler = null;
+    //Kartenstapel abhebestapel;
+    Spieler aktuellerSpieler = null;
     boolean spielrichtung = true;
 
 
     public SpielerManager() {
-        alleSpieler = new ArrayList<EchteSpieler>();
+        alleSpieler = new ArrayList<Spieler>();
         verteilstapel = new TeststapelWunschkarte();
         ablagestapel = new Kartenstapel();
     }
 
-    public void addEchteSpieler(EchteSpieler e) {
+    public void addSpieler(Spieler e) {
         alleSpieler.add(e);
     }
 
     public void printAlleSpielerNamen() {
 //        System.out.print("Im Spiel sind: ");
-        for (EchteSpieler spieler : alleSpieler) {
+        for (Spieler spieler : alleSpieler) {
             System.out.print(spieler.getName() + ", ");
         }
 //        System.out.println();
@@ -63,7 +64,7 @@ public class SpielerManager {
         verteilstapel.mischen();
         //Karten austeilen -->7 Karten pro Spieler
         System.out.println("Karten werden ausgeteilt");
-        for (EchteSpieler spieler : alleSpieler) {
+        for (Spieler spieler : alleSpieler) {
             while (spieler.spielerHand.size() < 7) {
                 spieler.spielerHand.add(verteilstapel.abheben());
             }
@@ -74,19 +75,19 @@ public class SpielerManager {
 
     public void spielerZuweisen() {
         // 4 echte Spieler können Namen eingeben
-        EchteSpieler spieler1 = new EchteSpieler();
-        spieler1.setName();
-        EchteSpieler spieler2 = new EchteSpieler();
-        spieler2.setName();
+        Spieler spieler1 = new EchteSpieler(input);
+        //spieler1.setName();
+        /*EchteSpieler spieler2 = new EchteSpieler();
+        //spieler2.setName();
         EchteSpieler spieler3 = new EchteSpieler();
-        spieler3.setName();
+        //spieler3.setName();
         EchteSpieler spieler4 = new EchteSpieler();
-        spieler4.setName();
+        //spieler4.setName();*/
 
         alleSpieler.add(spieler1);  //Spieler werden dem Spielerarray zugefügt
-        alleSpieler.add(spieler2);
+       /* alleSpieler.add(spieler2);
         alleSpieler.add(spieler3);
-        alleSpieler.add(spieler4);
+        alleSpieler.add(spieler4);*/
     }
 
     //Methode erstellt den Ablagestapel und mischt nochmal wenn +4 oben liegt
@@ -174,7 +175,7 @@ public class SpielerManager {
         // TODO: 06.07.2020 aktionskarten ?
     }
 
-    public EchteSpieler spielerWechsel() {
+    public Spieler spielerWechsel() {
         // Spielerwechsel nach Beendigung des Spielzuges
         //Richtungswechsel wenn auf Stapel "Richtungswechsel" liegt
         //todo: Aussetzenkarte ist Spieler überspringen
@@ -216,8 +217,6 @@ public class SpielerManager {
             }
         }
         return aktuellerSpieler;
-
-
     }
 
 
