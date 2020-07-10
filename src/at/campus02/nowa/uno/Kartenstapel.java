@@ -23,6 +23,8 @@ public class Kartenstapel {
 
     private ArrayList<Karte> kartenstapel;     //die Arraylist wird im Konstruktor initialisiert
     private int kartenImStapel;             //zählt wieviele Karten im Stapel sind
+    private Kartenstapel ablagestapel;
+    private Kartenstapel verteilstapel;
 
     public Kartenstapel() {
         kartenstapel = new ArrayList<>();
@@ -34,6 +36,26 @@ public class Kartenstapel {
 
     public void setKartenstapel(ArrayList<Karte> kartenstapel) {
         this.kartenstapel = kartenstapel;
+    }
+
+    public void setKartenImStapel(int kartenImStapel) {
+        this.kartenImStapel = kartenImStapel;
+    }
+
+    public Kartenstapel getAblagestapel() {
+        return ablagestapel;
+    }
+
+    public void setAblagestapel(Kartenstapel ablagestapel) {
+        this.ablagestapel = ablagestapel;
+    }
+
+    public Kartenstapel getVerteilstapel() {
+        return verteilstapel;
+    }
+
+    public void setVerteilstapel(Kartenstapel verteilstapel) {
+        this.verteilstapel = verteilstapel;
     }
 
     public int getKartenImStapel() {
@@ -77,11 +99,15 @@ public class Kartenstapel {
     }
 
     //Methode mischen : Collections shuffle
-    public ArrayList<Karte> mischen(){
+    public void mischen(){
         Collections.shuffle(kartenstapel);
         //for(Karte k:kartenstapel){    //Kartenstapel ausgeben zum Testen ob Mischen funktioniert
         //    System.out.println(k);}
-        return kartenstapel;
+    }
+
+    public void stapelErstellen(){
+        neuerVerteilstapel();
+        mischen();
     }
 
 
@@ -110,6 +136,17 @@ public class Kartenstapel {
         return gültigeAblage;
     }
 
-    //Größe des Stacks überprüfen/ Abfrage ob leer
+    /*public void neuerAblagestapelUndErsteKarteAufgedeckt() {
+        ablagestapel.add(verteilstapel.abheben());
+        System.out.println("Die erste Karte ist: ");
+        System.out.println(ablagestapel.obersteKarte());
+        //Test ob +4 Aufliegt, wenn ja Karte zurück, mischen und neuer Aufruf der Methode
+        if (ablagestapel.obersteKarte().getFarbe() == Farbe.SCHWARZ && ablagestapel.obersteKarte().getWert() == Wert.PLUSVIER) {
+            System.out.println("Es liegt eine +4 auf, nochmal mischen, eine neue Karte wird aufgelegt");
+            verteilstapel.add(ablagestapel.obersteKarte());
+            verteilstapel.mischen();
+            neuerAblagestapelUndErsteKarteAufgedeckt();
+        }
+    }*/
 
 }

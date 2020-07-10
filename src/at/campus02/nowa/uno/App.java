@@ -13,6 +13,8 @@ public class App {
         this.output = output;
     }
     SpielerManager spielerManager = new SpielerManager();
+    //TeststapelWunschkarte verteilstapel = new TeststapelWunschkarte();  //--> zum Testen mit speziellen Karten
+    //Kartenstapel ablagestapel = new Kartenstapel();
 
     public void Run() {
         initializeGame();

@@ -13,31 +13,27 @@ public class SpielerManager {
 
     //  Spieler in  Liste
     protected ArrayList<Spieler> alleSpieler;
-    //Kartenstapel verteilstapel;
-    TeststapelWunschkarte verteilstapel;  //--> zum Testen mit speziellen Karten
+    Kartenstapel verteilstapel;
+    //TeststapelWunschkarte verteilstapel;  //--> zum Testen mit speziellen Karten
     Kartenstapel ablagestapel;
-    //Kartenstapel abhebestapel;
     Spieler aktuellerSpieler = null;
     boolean spielrichtung = true;
 
 
     public SpielerManager() {
         alleSpieler = new ArrayList<Spieler>();
-        verteilstapel = new TeststapelWunschkarte();
+        verteilstapel = new Kartenstapel();
         ablagestapel = new Kartenstapel();
     }
 
-    public void addSpieler(Spieler e) {
+    /*public void addSpieler(Spieler e) {
         alleSpieler.add(e);
-    }
+    }*/
 
     public void printAlleSpielerNamen() {
-//        System.out.print("Im Spiel sind: ");
         for (Spieler spieler : alleSpieler) {
             System.out.print(spieler.getName() + ", ");
         }
-//        System.out.println();
-//        System.out.println("May the odds be ever in your favour");
     }
 
     // zufälligen Startspieler festlegen:
@@ -46,24 +42,19 @@ public class SpielerManager {
         System.out.println("Im Spiel sind in dieser Reihenfolge:  ");
         printAlleSpielerNamen();
         System.out.println();
-        //System.out.print("Es beginnt: ");     //Angabe wird nicht mehr benötigt, die kommt bei Spieleraufruf nochmal
         aktuellerSpieler = alleSpieler.get(0);
-        //System.out.println(aktuellerSpieler.getName());       //Ausgabe des aktuellen Spieler kommt bei Spieleraufruf
         System.out.println("May the odds be ever in your favour");
         System.out.println();
     }
 
 
     //Verteilstack erstellen & austeilen der Karten auf die Spielerhand
+    //Verteilstapel erstellen, Methode ist jetzt im Kartenstapel
+    //todo: Austeilen der Spielerhand gehört in abstrakte Spielerklasse, da sowohl Bot als auch echter Spieler das Implementieren müssen
     public void beginneRunde() {
-        //verteilstapel.neuerVerteilstapel(); //Erstellt den Verteilstack
-        verteilstapel.neuerTeststapel(new Zahlenkarte(Farbe.BLAU, Wert.RICHTUNGSWECHSEL), new Zahlenkarte(Farbe.BLAU, Wert.ACHT));
-        //verteilstapel.neuerTeststapel(new Zahlenkarte(Farbe.SCHWARZ, Wert.PLUSVIER), new Zahlenkarte(Farbe.BLAU, Wert.ACHT));
-        //hier wurde ein Teststapel nur mit den Karten +4 und Blau 8 erstellt um zu testen, ob wenn +4 auf Ablagestapel liegt, diese neu in Stapel
-        // gelegt wird, gemischt wird und eine neue Karte aufgelegt wird
-        verteilstapel.mischen();
-        //Karten austeilen -->7 Karten pro Spieler
-        System.out.println("Karten werden ausgeteilt");
+        verteilstapel.stapelErstellen();
+        //verteilstapel.neuerTeststapel(new Zahlenkarte(Farbe.BLAU,Wert.ACHT), new Zahlenkarte(Farbe.BLAU,Wert.RICHTUNGSWECHSEL));  //--> Wenn mit Teststapel gespielt wird
+        System.out.println("Karten werden ausgeteilt");     //Karten austeilen -->7 Karten pro Spieler
         for (Spieler spieler : alleSpieler) {
             while (spieler.spielerHand.size() < 7) {
                 spieler.spielerHand.add(verteilstapel.abheben());
@@ -73,10 +64,9 @@ public class SpielerManager {
         System.out.println();
     }
 
+    //Eingabe der Zahl der echten Spieler & Eingabe der Spielrnamen per Scanner
     public void spielerZuweisen() {
-        // 4 echte Spieler können Namen eingeben
         // todo: Echte und Botspieler erstellen
-        //Abfrage: Wieviel echte Spieler muss eingegeben werden, dann mit Switch entsprechend erstellen
         System.out.println("Bitte geben Sie die Zahl (0-4) der echten Spieler ein: ");
         //todo: FalscheEingabeException zufügen
         int echteSpieler = input.nextInt();
@@ -84,8 +74,6 @@ public class SpielerManager {
         Spieler spieler2 = null;
         Spieler spieler3 = null;
         Spieler spieler4 = null;
-
-        //todo: switch für Botspieler erweitern
         switch (echteSpieler) {
             case (4):
                 spieler1 = new EchteSpieler(input);
@@ -129,7 +117,8 @@ public class SpielerManager {
     }
 
     //Methode erstellt den Ablagestapel und mischt nochmal wenn +4 oben liegt
-    public void neuerAblagestapelUndErsteKarteAufgedeckt() {
+    //todo: diese Methode gehört zum Kartenstapel
+   public void neuerAblagestapelUndErsteKarteAufgedeckt() {
         ablagestapel.add(verteilstapel.abheben());
         System.out.println("Die erste Karte ist: ");
         System.out.println(ablagestapel.obersteKarte());
@@ -154,7 +143,6 @@ public class SpielerManager {
             try {
                 Scanner scanner = new Scanner(System.in);
                 String c = scanner.nextLine();
-                //char c = (char) scanner.nextInt();
                 if (c.equalsIgnoreCase("y")) {
                     System.out.println(aktuellerSpieler.spielerHand);
                     return;
@@ -183,6 +171,7 @@ public class SpielerManager {
 
     }
 
+    //todo: Spielzug sollte wahrscheinlich eher in App-Klasse sein?
     public void spielzug() {
         //per Eingabe Karte spielen
         //check if chosen card matches one available in the Kartenhand-array
@@ -199,11 +188,11 @@ public class SpielerManager {
             System.out.println(aktuellerSpieler.spielerHand.get(position));
             ablagestapel.add(aktuellerSpieler.spielerHand.get(position));
             aktuellerSpieler.spielerHand.remove(position);
-            //spielzug();
         }
         spielerWechsel();
     }
 
+    //todo: die Methode gehört evtl zu Karten?
     public boolean passendeKarte(Karte handKarte, Karte ablageStapel) {
         if (ablageStapel.getFarbe().equals(SCHWARZ)) {
             return true;
