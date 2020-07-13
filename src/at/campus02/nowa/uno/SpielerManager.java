@@ -2,15 +2,12 @@ package at.campus02.nowa.uno;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
 import static at.campus02.nowa.uno.Farbe.SCHWARZ;
-
 import java.util.Scanner;
 import java.util.jar.JarOutputStream;
 
 public class SpielerManager {
     Scanner input = new Scanner(System.in);
-
     //  Spieler in  Liste
     protected ArrayList<Spieler> alleSpieler;
     Kartenstapel verteilstapel;
@@ -19,52 +16,16 @@ public class SpielerManager {
     Spieler aktuellerSpieler = null;
     boolean spielrichtung = true;
 
-
-    public SpielerManager() {
-        alleSpieler = new ArrayList<Spieler>();
-        verteilstapel = new Kartenstapel();
-        ablagestapel = new Kartenstapel();
-    }
-
-    /*public void addSpieler(Spieler e) {
-        alleSpieler.add(e);
-    }*/
-
-    public void printAlleSpielerNamen() {
-        for (Spieler spieler : alleSpieler) {
-            System.out.print(spieler.getName() + ", ");
-        }
-    }
-
-    // zufälligen Startspieler festlegen:
-    public void startSpieler() {
-        Collections.shuffle(alleSpieler);
-        System.out.println("Im Spiel sind in dieser Reihenfolge:  ");
-        printAlleSpielerNamen();
-        System.out.println();
-        aktuellerSpieler = alleSpieler.get(0);
-        System.out.println("May the odds be ever in your favour");
-        System.out.println();
-    }
-
-
-    //Verteilstack erstellen & austeilen der Karten auf die Spielerhand
-    //Verteilstapel erstellen, Methode ist jetzt im Kartenstapel
-    //todo: Austeilen der Spielerhand gehört in abstrakte Spielerklasse, da sowohl Bot als auch echter Spieler das Implementieren müssen
-    public void beginneRunde() {
-        verteilstapel.stapelErstellen();
-        //verteilstapel.neuerTeststapel(new Zahlenkarte(Farbe.BLAU,Wert.ACHT), new Zahlenkarte(Farbe.BLAU,Wert.RICHTUNGSWECHSEL));  //--> Wenn mit Teststapel gespielt wird
-        System.out.println("Karten werden ausgeteilt");     //Karten austeilen -->7 Karten pro Spieler
-        for (Spieler spieler : alleSpieler) {
-            while (spieler.spielerHand.size() < 7) {
-                spieler.spielerHand.add(verteilstapel.abheben());
-            }
-            System.out.println(spieler.getName() + " hat " + spieler.spielerHand.size() + " Handkarten.");
-        }
-        System.out.println();
+    public SpielerManager(Kartenstapel verteilstapel, Kartenstapel ablagestapel, ArrayList<Spieler> alleSpieler) {   //todo: Ablagestapel, Verteilstapel, Scanner, alleSpieler-Array werden dem SpielerManager als Parameter übergeben.
+        // todo: So können diese von App erstellt werden un Spielermanager nutzt dann die gleichen Objekte
+       this.alleSpieler =  alleSpieler;
+       this.verteilstapel = verteilstapel;
+       this.ablagestapel = ablagestapel;
+       this.input = input;
     }
 
     //Eingabe der Zahl der echten Spieler & Eingabe der Spielrnamen per Scanner
+    //hier wird alleSpieler-Array befüllt
     public void spielerZuweisen() {
         // todo: Echte und Botspieler erstellen
         System.out.println("Bitte geben Sie die Zahl (0-4) der echten Spieler ein: ");
@@ -116,21 +77,36 @@ public class SpielerManager {
         alleSpieler.add(spieler4);
     }
 
-    //Methode erstellt den Ablagestapel und mischt nochmal wenn +4 oben liegt
-    //todo: diese Methode gehört zum Kartenstapel
-   public void neuerAblagestapelUndErsteKarteAufgedeckt() {
-        ablagestapel.add(verteilstapel.abheben());
-        System.out.println("Die erste Karte ist: ");
-        System.out.println(ablagestapel.obersteKarte());
-        //Test ob +4 Aufliegt, wenn ja Karte zurück, mischen und neuer Aufruf der Methode
-        if (ablagestapel.obersteKarte().getFarbe() == Farbe.SCHWARZ && ablagestapel.obersteKarte().getWert() == Wert.PLUSVIER) {
-            System.out.println("Es liegt eine +4 auf, nochmal mischen, eine neue Karte wird aufgelegt");
-            verteilstapel.add(ablagestapel.obersteKarte());
-            verteilstapel.mischen();
-            neuerAblagestapelUndErsteKarteAufgedeckt();
+    // zufälligen Startspieler festlegen:
+    public void startSpielerAusgeben() {
+        Collections.shuffle(alleSpieler);
+        System.out.println("Im Spiel sind in dieser Reihenfolge:  ");
+        printAlleSpielerNamen();
+        System.out.println();
+        aktuellerSpieler = alleSpieler.get(0);
+        System.out.println("May the odds be ever in your favour");
+        System.out.println();
+    }
+
+    public void printAlleSpielerNamen() {
+        for (Spieler spieler : alleSpieler) {
+            System.out.print(spieler.getName() + ", ");
         }
     }
 
+    //Verteilstack erstellen & austeilen der Karten auf die Spielerhand
+    public void kartenAusteilen() {
+        verteilstapel.stapelErstellen();
+        //verteilstapel.neuerTeststapel(new Zahlenkarte(Farbe.BLAU,Wert.ACHT), new Zahlenkarte(Farbe.BLAU,Wert.RICHTUNGSWECHSEL));  //--> Wenn mit Teststapel gespielt wird
+        System.out.println("Karten werden ausgeteilt");     //Karten austeilen -->7 Karten pro Spieler
+        for (Spieler spieler : alleSpieler) {
+            while (spieler.spielerHand.size() < 7) {
+                spieler.spielerHand.add(verteilstapel.abheben());
+            }
+            System.out.println(spieler.getName() + " hat " + spieler.spielerHand.size() + " Handkarten.");
+        }
+        System.out.println();
+    }
 
     //Fragt aktuellen Spieler ob er vor dem Ablegen der Karte seine eigene Hand auf der Konsole sehen möchte
     public void kartenHandzeigen() {
@@ -161,25 +137,22 @@ public class SpielerManager {
         }
     }
 
-    public void ausgabeaktuellerSpieler() {
+    public void WerIstDranUndWelcheKarte() {
         System.out.println();
         System.out.println("-----");
         System.out.println(aktuellerSpieler.getName() + "  ist an der Reihe!");
         kartenHandzeigen();
-        Karte k = ablagestapel.obersteKarte();
-        System.out.println("Bitte spielen Sie eine Karte, die auf FARBE:" + k.getFarbe() + " oder WERT: " + k.getWert() + " gelegt werden darf.");
-
+        ablagestapel.AusgabeObersteKarteAblagestapel(ablagestapel);
     }
 
-    //todo: Spielzug sollte wahrscheinlich eher in App-Klasse sein?
-    public void spielzug() {
+    public void karteAblegen() {
         //per Eingabe Karte spielen
         //check if chosen card matches one available in the Kartenhand-array
         //todo: check if after playing the card there is only 1 left > UNO
-
         Scanner scanner = new Scanner(System.in);
         int position = scanner.nextInt();
         Karte handKarte = aktuellerSpieler.spielerHand.get(position);
+
         if (!passendeKarte(handKarte, ablagestapel.obersteKarte())) {
             System.out.println("Falsche Karte gelegt. Bitte legen Sie eine passende Karte ab");
             System.out.println("Es liegt die " + ablagestapel.obersteKarte() + " oben auf!");
@@ -192,8 +165,8 @@ public class SpielerManager {
         spielerWechsel();
     }
 
-    //todo: die Methode gehört evtl zu Karten?
     public boolean passendeKarte(Karte handKarte, Karte ablageStapel) {
+        //todo Abfrage ob passende Karte gelegt wurde erweiter
         if (ablageStapel.getFarbe().equals(SCHWARZ)) {
             return true;
         } else if (handKarte.getFarbe().equals(ablageStapel.getFarbe()) || handKarte.getWert() == ablageStapel.getWert() || handKarte.getFarbe().equals(SCHWARZ)) {
@@ -210,7 +183,6 @@ public class SpielerManager {
         if (ablagestapel.obersteKarte().getWert().equals(Wert.RICHTUNGSWECHSEL)) {
             spielrichtung = !spielrichtung;
         }
-
         if (spielrichtung == true) {
             switch (alleSpieler.indexOf(aktuellerSpieler)) {
                 case 0:
@@ -246,12 +218,10 @@ public class SpielerManager {
         return aktuellerSpieler;
     }
 
-
     @Override
     public String toString() {
         return "SpielerManager{" +
                 "alleSpieler=" + alleSpieler +
                 '}';
     }
-
 }

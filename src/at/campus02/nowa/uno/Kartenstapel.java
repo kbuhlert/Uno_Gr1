@@ -124,6 +124,8 @@ public class Kartenstapel {
         return kartenstapel.get(kartenstapel.size()-1);
     }
 
+
+
     //Methode Karte drauflegen (put) + Aufruf Prüfung Kartenablage gültig
     //todo: Prüfung erweitern auf Aktionskarten, bisher wird nur geprüft ob gleiche Farbe oder gleicher Wert gelegt wurden
     public boolean karteAblegen(Karte k){
@@ -136,7 +138,9 @@ public class Kartenstapel {
         return gültigeAblage;
     }
 
-    /*public void neuerAblagestapelUndErsteKarteAufgedeckt() {
+    //Methode erstellt den Ablagestapel und mischt nochmal wenn +4 oben liegt
+    //todo: diese Methode gehört zum Kartenstapel
+   public void ablagestapelErstellen(Kartenstapel verteilstapel, Kartenstapel ablagestapel) {
         ablagestapel.add(verteilstapel.abheben());
         System.out.println("Die erste Karte ist: ");
         System.out.println(ablagestapel.obersteKarte());
@@ -145,8 +149,13 @@ public class Kartenstapel {
             System.out.println("Es liegt eine +4 auf, nochmal mischen, eine neue Karte wird aufgelegt");
             verteilstapel.add(ablagestapel.obersteKarte());
             verteilstapel.mischen();
-            neuerAblagestapelUndErsteKarteAufgedeckt();
+            ablagestapelErstellen(verteilstapel, ablagestapel);
         }
-    }*/
+    }
+
+    public void AusgabeObersteKarteAblagestapel(Kartenstapel ablagestapel) {
+        Karte k = ablagestapel.obersteKarte();
+        System.out.println("Bitte spielen Sie eine Karte, die auf FARBE:" + k.getFarbe() + " oder WERT: " + k.getWert() + " gelegt werden darf.");
+    }
 
 }
