@@ -1,8 +1,34 @@
 package at.campus02.nowa.uno;
 
+import java.util.ArrayList;
+
 public class BotSpieler extends Spieler{
 
     private static int botNr = 0;       //wird beim erstellen des Bots um 1 hochgezählt, bot erhaäkt dann Name: "bot" + Integer.toString("botNr")
+
+    public BotSpieler(String name) {
+        super(name);
+    }
+
+    @Override
+    public String getName() {
+        return super.getName();
+    }
+
+    @Override
+    public void setName(String name) {
+        super.setName(name);
+    }
+
+    @Override
+    public ArrayList<Karte> getSpielerHand() {
+        return super.getSpielerHand();
+    }
+
+    @Override
+    public void spielen() {
+
+    }
 
     //Methoden:
     //im Kontruktor wir botNr mit erstellt;

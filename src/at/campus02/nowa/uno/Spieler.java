@@ -7,7 +7,8 @@ public abstract class Spieler {
   String name;
   ArrayList<Karte> spielerHand;
 
-    public Spieler() {
+    public Spieler(String name) {
+        this.name = name;
         this.spielerHand = new ArrayList<>();
     }
 
@@ -22,6 +23,11 @@ public abstract class Spieler {
     public ArrayList<Karte> getSpielerHand() {
         return spielerHand;
     }
+
+    public abstract void spielen();
+
+
+
 
     //Methoden:
 

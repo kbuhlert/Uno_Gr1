@@ -4,6 +4,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+// konstruktor echter spieler hat scanner
 public class App {
     private final Scanner input;
     private final PrintStream output;
@@ -89,7 +90,6 @@ public class App {
         //welche Aktion muss als nächstes durchgeführt werden
         //prüfen ob Spielzug fertig ist
         //Prüfen ob Abhebestapel noch genug Karten für nächsten Zug hat (mind. 4) ansonsten Aufruf Methode AblegestapelZuAbhebestapel();
-
 
     }
 
