@@ -9,7 +9,6 @@ public abstract class Spieler {
 
     public Spieler(String name) {
         this.name = name;
-        this.spielerHand = new ArrayList<>();
     }
 
     public String getName() {
