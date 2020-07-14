@@ -35,7 +35,7 @@ public abstract class Karte {
         if (this == o) return true;
         if (!(o instanceof Karte)) return false;
         Karte karte = (Karte) o;
-        return getFarbe() == karte.getFarbe() &&
+        return getFarbe() == karte.getFarbe() ||
                 getWert() == karte.getWert();
     }
 
