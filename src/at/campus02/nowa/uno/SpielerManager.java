@@ -9,69 +9,25 @@ import java.util.Scanner;
 import java.util.jar.JarOutputStream;
 
 public class SpielerManager {
-    Scanner input = new Scanner(System.in);
+        Scanner input = new Scanner(System.in);
+        //  Spieler in  Liste
+        protected ArrayList<Spieler> alleSpieler;
+        Kartenstapel verteilstapel;
+        //TeststapelWunschkarte verteilstapel;  //--> zum Testen mit speziellen Karten
+        Kartenstapel ablagestapel;
+        Spieler aktuellerSpieler = null;
+        boolean spielrichtung = true;
+        //private PrintStream output;
+        //private final Scanner input;
 
-    //  Spieler in  Liste
-    protected ArrayList<Spieler> alleSpieler;
-    Kartenstapel verteilstapel;
-    //TeststapelWunschkarte verteilstapel;  //--> zum Testen mit speziellen Karten
-    Kartenstapel ablagestapel;
-    //Kartenstapel abhebestapel;
-    Spieler aktuellerSpieler = null;
-    boolean spielrichtung = true;
-
-
-    public SpielerManager() {
-        alleSpieler = new ArrayList<Spieler>();
-        verteilstapel = new Kartenstapel();
-        ablagestapel = new Kartenstapel();
-    }
-
-    public void addSpieler(Spieler e) {
-        alleSpieler.add(e);
-    }
-
-    public void printAlleSpielerNamen() {
-//        System.out.print("Im Spiel sind: ");
-        for (Spieler spieler : alleSpieler) {
-            System.out.print(spieler.getName() + ", ");
+        public SpielerManager(Kartenstapel verteilstapel, Kartenstapel ablagestapel, ArrayList<Spieler> alleSpieler) {   //todo: Ablagestapel, Verteilstapel, Scanner, alleSpieler-Array werden dem SpielerManager als Parameter übergeben.
+            // todo: So können diese von App erstellt werden un Spielermanager nutzt dann die gleichen Objekte
+            this.alleSpieler =  alleSpieler;
+            this.verteilstapel = verteilstapel;
+            this.ablagestapel = ablagestapel;
+            //this.input = input;
+            //this.output = output;
         }
-//        System.out.println();
-//        System.out.println("May the odds be ever in your favour");
-    }
-
-    // zufälligen Startspieler festlegen:
-    public void startSpieler() {
-        Collections.shuffle(alleSpieler);
-        System.out.println("Im Spiel sind in dieser Reihenfolge:  ");
-        printAlleSpielerNamen();
-        System.out.println();
-        //System.out.print("Es beginnt: ");     //Angabe wird nicht mehr benötigt, die kommt bei Spieleraufruf nochmal
-        aktuellerSpieler = alleSpieler.get(0);
-        //System.out.println(aktuellerSpieler.getName());       //Ausgabe des aktuellen Spieler kommt bei Spieleraufruf
-        System.out.println("May the odds be ever in your favour");
-        System.out.println();
-    }
-
-
-    //Verteilstack erstellen & austeilen der Karten auf die Spielerhand
-    public void beginneRunde() {
-        verteilstapel.neuerVerteilstapel(); //Erstellt den Verteilstack
-  //      verteilstapel.neuerTeststapel(new Zahlenkarte(Farbe.BLAU, Wert.RICHTUNGSWECHSEL), new Zahlenkarte(Farbe.BLAU, Wert.ACHT));
-        //verteilstapel.neuerTeststapel(new Zahlenkarte(Farbe.SCHWARZ, Wert.PLUSVIER), new Zahlenkarte(Farbe.BLAU, Wert.ACHT));
-        //hier wurde ein Teststapel nur mit den Karten +4 und Blau 8 erstellt um zu testen, ob wenn +4 auf Ablagestapel liegt, diese neu in Stapel
-        // gelegt wird, gemischt wird und eine neue Karte aufgelegt wird
-        verteilstapel.mischen();
-        //Karten austeilen -->7 Karten pro Spieler
-        System.out.println("Karten werden ausgeteilt");
-        for (Spieler spieler : alleSpieler) {
-            while (spieler.spielerHand.size() < 7) {
-                spieler.spielerHand.add(verteilstapel.abheben());
-            }
-            System.out.println(spieler.getName() + " hat " + spieler.spielerHand.size() + " Handkarten.");
-        }
-        System.out.println();
-    }
 
     public void spielerZuweisen() {
         Spieler spieler;
@@ -96,89 +52,81 @@ public class SpielerManager {
             alleSpieler.add(spieler);
         }
 
-
-//        // 4 echte Spieler können Namen eingeben
-//        // todo: Echte und Botspieler erstellen
-//        //Abfrage: Wieviel echte Spieler muss eingegeben werden, dann mit Switch entsprechend erstellen
-//        System.out.println("Bitte geben Sie die Zahl (0-4) der echten Spieler ein: ");
-//        //todo: FalscheEingabeException zufügen
-//        int echteSpieler = input.nextInt();
-//        Spieler spieler1 = null;
-//        Spieler spieler2 = null;
-//        Spieler spieler3 = null;
-//        Spieler spieler4 = null;
-//
-//        //todo: switch für Botspieler erweitern
-//        switch (echteSpieler) {
-//            case (4):
-//                spieler1 = new EchteSpieler(input);
-//                spieler2 = new EchteSpieler(input);
-//                spieler3 = new EchteSpieler(input);
-//                spieler4 = new EchteSpieler(input);
-//                break;
-//
-//            case (3):
-//                spieler1 = new EchteSpieler(input);
-//                spieler2 = new EchteSpieler(input);
-//                spieler3 = new EchteSpieler(input);
-//                spieler4 = new BotSpieler();
-//                break;
-//
-//            case (2):
-//                spieler1 = new EchteSpieler(input);
-//                spieler2 = new EchteSpieler(input);
-//                spieler3 = new BotSpieler();
-//                spieler4 = new BotSpieler();
-//                break;
-//
-//            case (1):
-//                spieler1 = new EchteSpieler(input);
-//                spieler2 = new BotSpieler();
-//                spieler3 = new BotSpieler();
-//                spieler4 = new BotSpieler();
-//                break;
-//
-//            case (0):
-//                spieler1 = new BotSpieler();
-//                spieler2 = new BotSpieler();
-//                spieler3 = new BotSpieler();
-//                spieler4 = new BotSpieler();
-//                break;
-//        }
-//        alleSpieler.add(spieler1);  //Spieler werden dem Spielerarray zugefügt
-//        alleSpieler.add(spieler2);
-//        alleSpieler.add(spieler3);
-//        alleSpieler.add(spieler4);
     }
 
-    //Methode erstellt den Ablagestapel und mischt nochmal wenn +4 oben liegt
-    public void neuerAblagestapelUndErsteKarteAufgedeckt() {
-        ablagestapel.add(verteilstapel.abheben());
-        System.out.println("Die erste Karte ist: ");
-        System.out.println(ablagestapel.obersteKarte());
-        //Test ob +4 Aufliegt, wenn ja Karte zurück, mischen und neuer Aufruf der Methode
-        if (ablagestapel.obersteKarte().getFarbe() == Farbe.SCHWARZ && ablagestapel.obersteKarte().getWert() == Wert.PLUSVIER) {
-            System.out.println("Es liegt eine +4 auf, nochmal mischen, eine neue Karte wird aufgelegt");
-            verteilstapel.add(ablagestapel.obersteKarte());
-            verteilstapel.mischen();
-            neuerAblagestapelUndErsteKarteAufgedeckt();
+    // zufälligen Startspieler festlegen:
+    public void startSpielerFestlegen() {
+        Collections.shuffle(alleSpieler);
+        System.out.println("Im Spiel sind in dieser Reihenfolge:  ");
+        printAlleSpielerNamen();
+        System.out.println();
+        aktuellerSpieler = alleSpieler.get(0);
+        System.out.println("May the odds be ever in your favour");
+        System.out.println();
+        //return aktuellerSpieler;
+    }
+
+
+    public void printAlleSpielerNamen() {
+        for (Spieler spieler : alleSpieler) {
+            System.out.print(spieler.getName() + ", ");
         }
     }
 
+    //Verteilstack erstellen & austeilen der Karten auf die Spielerhand
+    public void kartenAusteilen() {
+        verteilstapel.stapelErstellen();
+        //verteilstapel.neuerTeststapel(new Zahlenkarte(Farbe.BLAU,Wert.ACHT), new Zahlenkarte(Farbe.BLAU,Wert.RICHTUNGSWECHSEL));  //--> Wenn mit Teststapel gespielt wird
+        System.out.println("Karten werden ausgeteilt");     //Karten austeilen -->7 Karten pro Spieler
+        for (Spieler spieler : alleSpieler) {
+            while (spieler.spielerHand.size() < 7) {
+                spieler.spielerHand.add(verteilstapel.abheben());
+            }
+            System.out.println(spieler.getName() + " hat " + spieler.spielerHand.size() + " Handkarten.");
+        }
+        System.out.println();
+    }
 
+    //Fragt aktuellen Spieler ob er vor dem Ablegen der Karte seine eigene Hand auf der Konsole sehen möchte
+    public void abfrageKartenhandZeigen() {
+        //diese Methode prüft zunächst ob der aktuelle Spieler ein Bot ist oder ein echter Spieler,
+        //wenn echter Spieler, wird dieser gefragt, ob er seine Hand einsehen möchte
+        //die Abfrage wird über Konsole mit y oder n getätigt, bei falscher Eingabe gibt es eine Exception
+        if (aktuellerSpieler instanceof EchteSpieler) {
+            System.out.println("Möchten sie ihre Hand angezeigt bekommen?");
+            System.out.println("Bitte Y (YES) oder N (No) eingeben");
+            try {
+                Scanner scanner = new Scanner(System.in);
+                String c = scanner.nextLine();
+                if (c.equalsIgnoreCase("y")) {
+                    System.out.println(aktuellerSpieler.spielerHand);//todo: hier soll Methode printSpielerhand aufgerufen werden
+                    return;
+                }
+                if (c.equalsIgnoreCase("n")) {
+                    return;
+                }
+                while (!c.equalsIgnoreCase("y") || !c.equalsIgnoreCase("n")) {
+                    System.out.println("Falsche Eingabe!");
+                    throw new FalscheEingabeException("Falsche Eingabe");
+                }
+            } catch (FalscheEingabeException e) {
+                abfrageKartenhandZeigen();
+                //e.printStackTrace();
+            }
+        }
+    }
 
-
-    public void ausgabeaktuellerSpieler() {
+    public void WerIstDranUndWelcheKarte() {    //todo: wird zu wer ist dran
         System.out.println();
         System.out.println("-----");
         System.out.println(aktuellerSpieler.getName() + "  ist an der Reihe!");
-        aktuellerSpieler.getSpielerHand();
-        Karte k = ablagestapel.obersteKarte();
-        System.out.println("Bitte spielen Sie eine Karte, die auf FARBE:" + k.getFarbe() + " oder WERT: " + k.getWert() + " gelegt werden darf.");
-
+        abfrageKartenhandZeigen();      //todo: die Methoden direkt in der App aufrufen
+        ablagestapel.AusgabeObersteKarteAblagestapel(ablagestapel);
     }
 
-    public void spielzug() {
+
+
+    public void karteAblegen() {
         //per Eingabe Karte spielen
         //check if chosen card matches one available in the Kartenhand-array
         //todo: check if after playing the card there is only 1 left > UNO
@@ -250,8 +198,6 @@ public class SpielerManager {
 //                    }
 //                }
                 }
-
-
             }
             spielerWechsel();
         }
