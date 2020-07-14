@@ -60,6 +60,7 @@ public class Main {
 
         */
         Scanner input = new Scanner(System.in);
+        //todo: try/catch/finally mit .close() für Scanner
 
         App app = new App(input, System.out);
 

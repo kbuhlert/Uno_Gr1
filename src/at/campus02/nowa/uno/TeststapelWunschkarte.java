@@ -3,7 +3,7 @@ package at.campus02.nowa.uno;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class TeststapelWunschkarte {
+public class TeststapelWunschkarte extends Kartenstapel{
 
     private ArrayList<Karte> teststapel;     //die Arraylist wird im Konstruktor initialisiert
     private int kartenImStapel;             //zählt wieviele Karten im Stapel sind
@@ -31,19 +31,17 @@ public class TeststapelWunschkarte {
     }
 
     public void neuerTeststapel(Karte k, Karte k2){
-        //zu testende Karte als Parameter in den Stapel geben
-        //Diese Karte wird 108x in den Stapel gelegt
+        //zu testende Karten als Parameter in den Stapel geben
+        //Diese Karten wird 108x in den Stapel gelegt
         for(int i=1; i<=54; i++){
             teststapel.add(k);
             teststapel.add(k2);
         }
+        mischen();      //Teststapel wird direkt nach erstellen gemischt,
     }
 
-    public ArrayList<Karte> mischen(){
+    public void mischen(){
         Collections.shuffle(teststapel);
-        //for(Karte k:kartenstapel){    //Kartenstapel ausgeben zum Testen ob Mischen funktioniert
-        //    System.out.println(k);}
-        return teststapel;
     }
 
 

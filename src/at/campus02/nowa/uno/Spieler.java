@@ -4,11 +4,24 @@ import java.util.ArrayList;
 
 public abstract class Spieler {
 
-  //  private String name;
+  String name;
+  ArrayList<Karte> spielerHand;
 
+    public Spieler() {
+        this.spielerHand = new ArrayList<>();
+    }
 
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
 
+    public ArrayList<Karte> getSpielerHand() {
+        return spielerHand;
+    }
 
     //Methoden:
 

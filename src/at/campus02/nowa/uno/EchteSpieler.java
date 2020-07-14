@@ -1,22 +1,28 @@
 package at.campus02.nowa.uno;
 
+import javax.xml.namespace.QName;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class EchteSpieler extends Spieler{
     //private static int anzahlEchteSpieler = 0;
-   private String name;    //todo: müsste das ein Final sein?
+      //todo: müsste das ein Final sein?
 
-    protected ArrayList<Karte> spielerHand;
+
+    public EchteSpieler(Scanner scanner) {
+        scanner = new Scanner(System.in);
+        System.out.println("Bitte geben Sie Ihren Namen ein: ");
+        name = scanner.nextLine();
+        System.out.println("Ihr Name ist: " + name +".");
+        System.out.println("Willkommen und viel Spaß!");
+        System.out.println();
+    }
+
 
     public String getName() {
         return name;
     }
 
-    public EchteSpieler() {
-
-        spielerHand = new ArrayList<Karte>();
-    }
 
     public void setName () {
         Scanner scanner = new Scanner(System.in);
