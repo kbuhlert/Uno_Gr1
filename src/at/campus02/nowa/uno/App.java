@@ -4,16 +4,24 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-// konstruktor echter spieler hat scanner
 public class App {
     private final Scanner input;
     private final PrintStream output;
+
+    //TeststapelWunschkarte verteilstapel;  //--> zum Testen mit speziellen Karten
 
     public App(Scanner input, PrintStream output){
         this.input = input;
         this.output = output;
     }
-    SpielerManager spielerManager = new SpielerManager();
+
+    Kartenstapel verteilstapel = new Kartenstapel();
+    Kartenstapel ablagestapel = new Kartenstapel();
+    ArrayList<Spieler> alleSpieler = new ArrayList<>();
+
+    SpielerManager spielerManager = new SpielerManager(verteilstapel, ablagestapel, alleSpieler);
+    //TeststapelWunschkarte verteilstapel = new TeststapelWunschkarte();  //--> zum Testen mit speziellen Karten
+    //Kartenstapel ablagestapel = new Kartenstapel();
 
     public void Run() {
         initializeGame();
@@ -40,7 +48,7 @@ public class App {
 
     private void initializeGame() {
         spielerManager.spielerZuweisen();
-        spielerManager.startSpieler();
+        spielerManager.startSpielerFestlegen();
         //Reihenfolge der Spieler zufällig festlegen und Startspieler festlegen
 
     }
@@ -54,15 +62,14 @@ public class App {
         //todo: Rest vom Verteilstack ist Abhebestapel
         //Prüfen ob oberste Karte im Ablagestapel eine +4 ist
         //todo: Prüfen ob Startkarte Aktionskarte ist (Karte Aufnehmen oder Aussetzen/Richtungswechsel oder Farbe festlegen)
-        spielerManager.beginneRunde();
-        spielerManager.neuerAblagestapelUndErsteKarteAufgedeckt();
-        //spielerManager.kartenHandzeigen();
+        spielerManager.kartenAusteilen();
+        verteilstapel.ablagestapelErstellen(verteilstapel, ablagestapel);
     }
 
     private void readUserInput() {
 
         //Scanner aufrufen für Eingabe des aktuellen Spielers
-        spielerManager.spielzug();
+        spielerManager.karteAblegen();
         //todo: Info an Alle. Habe die Ausgabe der obersten Karte Ablagestapel, die Aufforderung des nächsten Spielers, Abfrage ob Hand angezeigt
         // werden soll und Eingabeaufforderung in PrintState() gegeben
 
@@ -78,7 +85,6 @@ public class App {
         //wenn falsche Karte gelegt: Methode falscheKartegelegt(); aufrufen
         //Nach Befehl "Play X": Prüfen wieviel Karten hat aktueller Spieler    --> bei 1 Karten Uno-Ausruf abprüfen, wenn false, Methode strafe();
         //Methode beenden wenn Überprüfung beendet, nach Befehl "Play X", "Take2", "Take4", "Take" + "PlayX", "Take" + "Fertig"
-
     }
 
     private void updateState() {
@@ -86,20 +92,17 @@ public class App {
         //Variable obersteKarteAblagestapel neuen Wert zuweisen
         //Punktestand neu berechnen
         //Spielerhand ArrayList aktualisieren (nach Spielzug, nach Strafkarten)
-        //Ausgeben welcher Spieler ist als nächstes dran
         //welche Aktion muss als nächstes durchgeführt werden
         //prüfen ob Spielzug fertig ist
         //Prüfen ob Abhebestapel noch genug Karten für nächsten Zug hat (mind. 4) ansonsten Aufruf Methode AblegestapelZuAbhebestapel();
-
     }
 
     private void printState() {
-        spielerManager.ausgabeaktuellerSpieler();
+        //Ausgeben welcher Spieler ist als nächstes dran
+        spielerManager.WerIstDranUndWelcheKarte();
         //Ausgeben welche Karte auf Ablagestapel oben liegt (variable obersteKarteAblagestapel)
         //Aufvorderung des nächsten Spielers
         //Spielerhand auf Konsole ausgeben (könnte auch mit SpielerInput abgefragt werden, dann muss Bot die Hand nicht ausgeben -->toString beim echten Spieler)
-
-
     }
 
     private boolean roundEnded(){
