@@ -52,59 +52,6 @@ public class SpielerManager {
             alleSpieler.add(spieler);
         }
 
-
-//        // 4 echte Spieler können Namen eingeben
-//        // todo: Echte und Botspieler erstellen
-//        //Abfrage: Wieviel echte Spieler muss eingegeben werden, dann mit Switch entsprechend erstellen
-//        System.out.println("Bitte geben Sie die Zahl (0-4) der echten Spieler ein: ");
-//        //todo: FalscheEingabeException zufügen
-//        int echteSpieler = input.nextInt();
-//        Spieler spieler1 = null;
-//        Spieler spieler2 = null;
-//        Spieler spieler3 = null;
-//        Spieler spieler4 = null;
-//
-//        //todo: switch für Botspieler erweitern
-//        switch (echteSpieler) {
-//            case (4):
-//                spieler1 = new EchteSpieler(input);
-//                spieler2 = new EchteSpieler(input);
-//                spieler3 = new EchteSpieler(input);
-//                spieler4 = new EchteSpieler(input);
-//                break;
-//
-//            case (3):
-//                spieler1 = new EchteSpieler(input);
-//                spieler2 = new EchteSpieler(input);
-//                spieler3 = new EchteSpieler(input);
-//                spieler4 = new BotSpieler();
-//                break;
-//
-//            case (2):
-//                spieler1 = new EchteSpieler(input);
-//                spieler2 = new EchteSpieler(input);
-//                spieler3 = new BotSpieler();
-//                spieler4 = new BotSpieler();
-//                break;
-//
-//            case (1):
-//                spieler1 = new EchteSpieler(input);
-//                spieler2 = new BotSpieler();
-//                spieler3 = new BotSpieler();
-//                spieler4 = new BotSpieler();
-//                break;
-//
-//            case (0):
-//                spieler1 = new BotSpieler();
-//                spieler2 = new BotSpieler();
-//                spieler3 = new BotSpieler();
-//                spieler4 = new BotSpieler();
-//                break;
-//        }
-//        alleSpieler.add(spieler1);  //Spieler werden dem Spielerarray zugefügt
-//        alleSpieler.add(spieler2);
-//        alleSpieler.add(spieler3);
-//        alleSpieler.add(spieler4);
     }
 
     // zufälligen Startspieler festlegen:
@@ -177,30 +124,9 @@ public class SpielerManager {
         ablagestapel.AusgabeObersteKarteAblagestapel(ablagestapel);
     }
 
+
+
     public void karteAblegen() {
-        //per Eingabe Karte spielen
-        //check if chosen card matches one available in the Kartenhand-array
-        //todo: check if after playing the card there is only 1 left > UNO
-        Scanner scanner = new Scanner(System.in);
-        int position = scanner.nextInt();
-        Karte handKarte = aktuellerSpieler.spielerHand.get(position);
-
-        if (!passendeKarte(handKarte, ablagestapel.obersteKarte())) {
-            System.out.println("Falsche Karte gelegt. Bitte legen Sie eine passende Karte ab");
-            System.out.println("Es liegt die " + ablagestapel.obersteKarte() + " oben auf!");
-        } else {
-            System.out.println("Spielzug korrekt. Diese Karte wurde abgelegt:");
-            System.out.println(aktuellerSpieler.spielerHand.get(position));
-            ablagestapel.add(aktuellerSpieler.spielerHand.get(position));
-            aktuellerSpieler.spielerHand.remove(position);
-        }
-        spielerWechsel();
-    }
-
-
-
-
-    public void spielzug() {
         //per Eingabe Karte spielen
         //check if chosen card matches one available in the Kartenhand-array
         //todo: check if after playing the card there is only 1 left > UNO
