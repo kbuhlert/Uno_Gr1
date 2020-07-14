@@ -12,6 +12,7 @@ public class EchteSpieler extends Spieler{
     public EchteSpieler(String name) {
         super(name);
 
+
     }
 
     public String getName() {
@@ -21,6 +22,12 @@ public class EchteSpieler extends Spieler{
     @Override
     public void spielen() {
 
+    }
+    public void printSpielerHand (Spieler aktuellerSpieler){
+        int index = 0;
+        for (Karte k : aktuellerSpieler.spielerHand){
+            System.out.println("  " + (index++) + k);
+        }
     }
 
     @Override

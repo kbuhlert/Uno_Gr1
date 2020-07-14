@@ -17,9 +17,9 @@ public class App {
 
     Kartenstapel verteilstapel = new Kartenstapel();
     Kartenstapel ablagestapel = new Kartenstapel();
-    ArrayList<Spieler> alleSpieler = new ArrayList<>();
+//    ArrayList<Spieler> alleSpieler = new ArrayList<>();
 
-    SpielerManager spielerManager = new SpielerManager(verteilstapel, ablagestapel, alleSpieler);
+    SpielerManager spielerManager = new SpielerManager(verteilstapel, ablagestapel);
     //TeststapelWunschkarte verteilstapel = new TeststapelWunschkarte();  //--> zum Testen mit speziellen Karten
     //Kartenstapel ablagestapel = new Kartenstapel();
 

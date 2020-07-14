@@ -44,11 +44,12 @@ public abstract class Karte {
         return Objects.hash(getFarbe(), getWert());
     }
 
+
     @Override
     public String toString() {
-        return "Karte{" +
-                "farbe=" + farbe +
-                ", wert=" + wert +
+        return "{"
+                + farbe +
+                " || " + wert +
                 '}';
     }
 }
