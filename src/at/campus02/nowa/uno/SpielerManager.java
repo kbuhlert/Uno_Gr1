@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import static at.campus02.nowa.uno.Farbe.SCHWARZ;
 import java.util.Scanner;
-import java.util.jar.JarOutputStream;
 
 public class SpielerManager {
     Scanner input = new Scanner(System.in);
@@ -15,13 +14,16 @@ public class SpielerManager {
     Kartenstapel ablagestapel;
     Spieler aktuellerSpieler = null;
     boolean spielrichtung = true;
+    //private PrintStream output;
+    //private final Scanner input;
 
     public SpielerManager(Kartenstapel verteilstapel, Kartenstapel ablagestapel, ArrayList<Spieler> alleSpieler) {   //todo: Ablagestapel, Verteilstapel, Scanner, alleSpieler-Array werden dem SpielerManager als Parameter übergeben.
         // todo: So können diese von App erstellt werden un Spielermanager nutzt dann die gleichen Objekte
        this.alleSpieler =  alleSpieler;
        this.verteilstapel = verteilstapel;
        this.ablagestapel = ablagestapel;
-       this.input = input;
+       //this.input = input;
+       //this.output = output;
     }
 
     //Eingabe der Zahl der echten Spieler & Eingabe der Spielrnamen per Scanner
@@ -78,7 +80,7 @@ public class SpielerManager {
     }
 
     // zufälligen Startspieler festlegen:
-    public void startSpielerAusgeben() {
+    public void startSpielerFestlegen() {
         Collections.shuffle(alleSpieler);
         System.out.println("Im Spiel sind in dieser Reihenfolge:  ");
         printAlleSpielerNamen();
@@ -86,6 +88,7 @@ public class SpielerManager {
         aktuellerSpieler = alleSpieler.get(0);
         System.out.println("May the odds be ever in your favour");
         System.out.println();
+        //return aktuellerSpieler;
     }
 
     public void printAlleSpielerNamen() {
@@ -109,7 +112,7 @@ public class SpielerManager {
     }
 
     //Fragt aktuellen Spieler ob er vor dem Ablegen der Karte seine eigene Hand auf der Konsole sehen möchte
-    public void kartenHandzeigen() {
+    public void abfrageKartenhandZeigen() {
         //diese Methode prüft zunächst ob der aktuelle Spieler ein Bot ist oder ein echter Spieler,
         //wenn echter Spieler, wird dieser gefragt, ob er seine Hand einsehen möchte
         //die Abfrage wird über Konsole mit y oder n getätigt, bei falscher Eingabe gibt es eine Exception
@@ -120,7 +123,7 @@ public class SpielerManager {
                 Scanner scanner = new Scanner(System.in);
                 String c = scanner.nextLine();
                 if (c.equalsIgnoreCase("y")) {
-                    System.out.println(aktuellerSpieler.spielerHand);
+                    System.out.println(aktuellerSpieler.spielerHand);//todo: hier soll Methode printSpielerhand aufgerufen werden
                     return;
                 }
                 if (c.equalsIgnoreCase("n")) {
@@ -131,17 +134,17 @@ public class SpielerManager {
                     throw new FalscheEingabeException("Falsche Eingabe");
                 }
             } catch (FalscheEingabeException e) {
-                kartenHandzeigen();
+                abfrageKartenhandZeigen();
                 //e.printStackTrace();
             }
         }
     }
 
-    public void WerIstDranUndWelcheKarte() {
+    public void WerIstDranUndWelcheKarte() {    //todo: wird zu wer ist dran
         System.out.println();
         System.out.println("-----");
         System.out.println(aktuellerSpieler.getName() + "  ist an der Reihe!");
-        kartenHandzeigen();
+        abfrageKartenhandZeigen();      //todo: die Methoden direkt in der App aufrufen
         ablagestapel.AusgabeObersteKarteAblagestapel(ablagestapel);
     }
 

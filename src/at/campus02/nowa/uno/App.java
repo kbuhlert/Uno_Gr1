@@ -48,7 +48,7 @@ public class App {
 
     private void initializeGame() {
         spielerManager.spielerZuweisen();
-        spielerManager.startSpielerAusgeben();
+        spielerManager.startSpielerFestlegen();
         //Reihenfolge der Spieler zufällig festlegen und Startspieler festlegen
 
     }
