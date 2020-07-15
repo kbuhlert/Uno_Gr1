@@ -15,11 +15,7 @@ public class App {
         this.output = output;
     }
 
-    Kartenstapel verteilstapel = new Kartenstapel();
-    Kartenstapel ablagestapel = new Kartenstapel();
-    ArrayList<Spieler> alleSpieler = new ArrayList<>();
-
-    SpielerManager spielerManager = new SpielerManager(verteilstapel, ablagestapel, alleSpieler);
+    SpielerManager spielerManager = new SpielerManager();
     //TeststapelWunschkarte verteilstapel = new TeststapelWunschkarte();  //--> zum Testen mit speziellen Karten
     //Kartenstapel ablagestapel = new Kartenstapel();
 
@@ -41,7 +37,7 @@ public class App {
 
             printFinalScore();
         }catch (Exception ex){
-            output.println(ex);
+            ex.printStackTrace();
             //todo Exceptions passend erweitern (Bsp. Auswahlzahl von Karte auf Hand ist Größer als Array)
         }
     }
@@ -55,6 +51,7 @@ public class App {
 
     private void initializeRound() {
 
+
         //Verteilstack erstellen
         //Verteilstack mischen
         //Karten austeilen -->7 Karten pro Spieler
@@ -63,7 +60,6 @@ public class App {
         //Prüfen ob oberste Karte im Ablagestapel eine +4 ist
         //todo: Prüfen ob Startkarte Aktionskarte ist (Karte Aufnehmen oder Aussetzen/Richtungswechsel oder Farbe festlegen)
         spielerManager.kartenAusteilen();
-        verteilstapel.ablagestapelErstellen(verteilstapel, ablagestapel);
     }
 
     private void readUserInput() {

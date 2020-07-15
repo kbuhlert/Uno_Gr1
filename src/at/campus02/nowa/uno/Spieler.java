@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public abstract class Spieler {
 
   String name;
-  ArrayList<Karte> spielerHand;
+  ArrayList<Karte> spielerHand = new ArrayList<>();
 
     public Spieler(String name) {
         this.name = name;
