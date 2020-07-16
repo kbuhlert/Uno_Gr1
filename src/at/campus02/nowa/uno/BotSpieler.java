@@ -8,6 +8,7 @@ public class BotSpieler extends Spieler{
 
     public BotSpieler(String name) {
         super(name);
+
     }
 
     @Override

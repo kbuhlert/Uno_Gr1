@@ -20,10 +20,12 @@ public class SpielerManager {
         //private PrintStream output;
         //private final Scanner input;
 
+
         public SpielerManager() {   //todo: Ablagestapel, Verteilstapel, Scanner, alleSpieler-Array werden dem SpielerManager als Parameter übergeben.
             // todo: So können diese von App erstellt werden un Spielermanager nutzt dann die gleichen Objekte
             this.kartenstapel = new Kartenmanager();
             this.alleSpieler = new ArrayList<>();
+
             //this.input = input;
             //this.output = output;
         }
