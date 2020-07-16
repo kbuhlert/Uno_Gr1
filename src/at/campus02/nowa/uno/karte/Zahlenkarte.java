@@ -1,4 +1,4 @@
-package at.campus02.nowa.uno;
+package at.campus02.nowa.uno.karte;
 
 public class Zahlenkarte extends Karte{
     public Zahlenkarte(Farbe farbe, Wert wert) {

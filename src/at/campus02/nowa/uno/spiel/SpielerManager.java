@@ -1,9 +1,18 @@
-package at.campus02.nowa.uno;
+package at.campus02.nowa.uno.spiel;
+
+import at.campus02.nowa.uno.*;
+import at.campus02.nowa.uno.karte.Karte;
+import at.campus02.nowa.uno.karte.Kartenmanager;
+import at.campus02.nowa.uno.karte.Wert;
+import at.campus02.nowa.uno.kartenstapel.Kartenstapel;
+import at.campus02.nowa.uno.spieler.BotSpieler;
+import at.campus02.nowa.uno.spieler.EchteSpieler;
+import at.campus02.nowa.uno.spieler.Spieler;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static at.campus02.nowa.uno.Farbe.SCHWARZ;
+import static at.campus02.nowa.uno.karte.Farbe.SCHWARZ;
 
 import java.util.Scanner;
 
@@ -146,7 +155,7 @@ public class SpielerManager {
         //todo: check if after playing the card there is only 1 left > UNO
 
         Karte k = null;
-        if (aktuellerSpieler instanceof EchteSpieler) {
+        if (aktuellerSpieler instanceof EchteSpieler) {                // INSTANCEOF VERMEIDEN!!!!!!gehört nicht ins spiel sondern in die klasse
             int position = input.nextInt();
             Karte handKarte = aktuellerSpieler.spielerHand.get(position);
             if (!passendeKarte(handKarte, kartenstapel.obersteKarte())) {
@@ -189,28 +198,6 @@ public class SpielerManager {
                     System.out.println("Spieler bekommt neue karte: " + neu);}
 
 
-//                if (passendeKarte(k,ablagestapel.obersteKarte())) {
-//                    System.out.println(k + " wird ausgespielt");
-//                    ablagestapel.add(k);
-//                    System.out.println("wurde abgelegt!");
-//                    aktuellerSpieler.spielerHand.remove(k);
-//                    System.out.println("geht do jetz no wos?");
-//                    continue;
-//                } else {
-//                    System.out.println("Keine passende Karte - " + aktuellerSpieler.getName() + " muss abheben");
-//                    Karte neu = verteilstapel.abheben();
-//                    System.out.println(neu);
-//                    if (!passendeKarte(neu, ablagestapel.obersteKarte())) {
-//                        System.out.println(aktuellerSpieler.getSpielerHand());
-//                        aktuellerSpieler.spielerHand.add(neu);
-//                        System.out.println("Spieler bekommt neue karte: " + neu);
-//                    } else {
-//                        System.out.println(neu + " wird ausgespielt");
-//                        ablagestapel.add(k);
-//                        System.out.println(aktuellerSpieler.getSpielerHand());
-//
-//                    }
-//                }
                 }
             }
             spielerWechsel();

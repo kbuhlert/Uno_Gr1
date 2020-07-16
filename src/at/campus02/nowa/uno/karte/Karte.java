@@ -1,4 +1,4 @@
-package at.campus02.nowa.uno;
+package at.campus02.nowa.uno.karte;
 
 import java.util.Objects;
 

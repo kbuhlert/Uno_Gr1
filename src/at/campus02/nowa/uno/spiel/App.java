@@ -1,7 +1,8 @@
-package at.campus02.nowa.uno;
+package at.campus02.nowa.uno.spiel;
+
+import at.campus02.nowa.uno.kartenstapel.Kartenstapel;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class App {
