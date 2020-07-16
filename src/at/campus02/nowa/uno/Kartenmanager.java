@@ -5,7 +5,7 @@ import java.util.Collections;
 
 import static at.campus02.nowa.uno.Farbe.SCHWARZ;
 
-public class Kartenstapel {
+public class Kartenmanager {
 
     //Ablegestapel und Aufnehmstapel sind beides Objekte der Klasse Kartenstapel
 
@@ -21,66 +21,30 @@ public class Kartenstapel {
     // 4x: 4+ (4 Karten)
 
 
-    private ArrayList<Karte> kartenstapel;     //die Arraylist wird im Konstruktor initialisiert
-    private int kartenImStapel;             //zählt wieviele Karten im Stapel sind
-    private Kartenstapel ablagestapel;
-    private Kartenstapel verteilstapel;
+    protected ArrayList<Karte> kartenstapel;     //die Arraylist wird im Konstruktor initialisiert
 
-    public Kartenstapel() {
+    protected ArrayList<Karte> ablagestapel;
+
+
+    public Kartenmanager() {
         kartenstapel = new ArrayList<>();
-    }
-
-    public ArrayList<Karte> getKartenstapel() {
-        return kartenstapel;
-    }
-
-    public void setKartenstapel(ArrayList<Karte> kartenstapel) {
-        this.kartenstapel = kartenstapel;
-    }
-
-    public void setKartenImStapel(int kartenImStapel) {
-        this.kartenImStapel = kartenImStapel;
-    }
-
-    public Kartenstapel getAblagestapel() {
-        return ablagestapel;
-    }
-
-    public void setAblagestapel(Kartenstapel ablagestapel) {
-        this.ablagestapel = ablagestapel;
-    }
-
-    public Kartenstapel getVerteilstapel() {
-        return verteilstapel;
-    }
-
-    public void setVerteilstapel(Kartenstapel verteilstapel) {
-        this.verteilstapel = verteilstapel;
-    }
-
-    public int getKartenImStapel() {
-        kartenImStapel = kartenstapel.size();
-        System.out.println("Anzahl der Karten im Stapel: " + kartenImStapel);
-        return kartenImStapel;
-    }
-
-    public void add(Karte k) {
-        kartenstapel.add(k);
+        ablagestapel = new ArrayList<>();
     }
 
     //Methode Stapel erstellen: Stack mit allen verfügbaren Karten befüllen (108Karten)
-    public void neuerVerteilstapel() {
-        kartenImStapel = 0;                     //zu Beginn sind keine Karten im Stapel
+    private void neuerVerteilstapel() {
+        kartenstapel.clear();
+        ablagestapel.clear();
         for (Farbe f : Farbe.values()) {       //for-Schleife durch alle Farbenums
             if (!f.equals(SCHWARZ))          //Geht durch alle Farben, außer Schwarz
             {
                 kartenstapel.add(new Zahlenkarte(f, Wert.NULL));    //Fügt die NULLer Karten der Farben Gelb, Blau, Rot, Grün zu, da es diese nur 1x je Farbe gibt
-                kartenImStapel++;           //Zählt die Karten im Stapel, eine Karte mehr
+
                 for (Wert w : Wert.values()) {
                     if (!w.equals(Wert.NULL) && !w.equals(Wert.PLUSVIER) && !w.equals(Wert.FARBWAHL)) {  //Null gibt es nur einmal je Farbe und wurde bereits oben zugefügt, Schwarze Aktionskarten werden später zugefügt
                         for(int i=1; i<=2; i++) {                    //Das Zufügen wird 2x wiederholt, da von den Zahlenkarten von jeder Farbe jeder Wert zweimal enthalten ist
                             kartenstapel.add(new Zahlenkarte(f, w));     //Fügt die Karte mit der Farbe f und dem Wert w dem KArtenstapel zu (Außer Null und Aktionskarten)
-                            kartenImStapel++;
+
                         }
                     }
                 }
@@ -90,7 +54,7 @@ public class Kartenstapel {
                     if (w.equals(Wert.PLUSVIER) || w.equals(Wert.FARBWAHL)) {  //Es werden wieder alle Enumwerte durchlaufen und dann die Plusvier und Farbwahl zugefügt
                         for(int i=1; i<=4; i++){
                         kartenstapel.add(new Zahlenkarte(f, w));     //da es jede Aktionskarte 4x gibt, wird das 4x wiederholt
-                        kartenImStapel++;}
+                        }
                     }
                 }
             }
@@ -119,42 +83,25 @@ public class Kartenstapel {
 
     //Methode oberste Karte auf Stapel ausgeben
     public Karte obersteKarte(){
-        Karte obersteKarte = kartenstapel.get(kartenstapel.size()-1);
+        Karte obersteKarte = ablagestapel.get(ablagestapel.size()-1);
      //   System.out.println(obersteKarte);
-        return kartenstapel.get(kartenstapel.size()-1);
+        return obersteKarte;
     }
 
 
 
     //Methode Karte drauflegen (put) + Aufruf Prüfung Kartenablage gültig
     //todo: Prüfung erweitern auf Aktionskarten, bisher wird nur geprüft ob gleiche Farbe oder gleicher Wert gelegt wurden
-    public boolean karteAblegen(Karte k){
-        boolean gültigeAblage = false;      //boolean gibt zurück ob Ablage gültig ist
-        kartenstapel.add(k);
-        Karte neueKarte = kartenstapel.get(kartenstapel.size()-1);  //neueKarte ist die gerade abgelegte (oberste Karte) auf dem Stapel
-        Karte letzteKarte = kartenstapel.get(kartenstapel.size()-2);    //letzteKarte ist die obersteKarte auf dem Stapel, auf die die neue Karte gelegt werden soll
-        if(neueKarte.getWert().equals(letzteKarte.getWert()) || neueKarte.getFarbe().equals(letzteKarte.getFarbe()))    //Test ob gleiche Farbe oder gleicher Kartenwert
-        {gültigeAblage = true;}                 //Wenn abgelegte den passenden Wert oder die passende Farbe hat ist die Ablage gültig
-        return gültigeAblage;
+    public void karteAblegen(Karte k){
+        ablagestapel.add(k);
     }
 
     //Methode erstellt den Ablagestapel und mischt nochmal wenn +4 oben liegt
-    //todo: diese Methode gehört zum Kartenstapel
-   public void ablagestapelErstellen(Kartenstapel verteilstapel, Kartenstapel ablagestapel) {
-        ablagestapel.add(verteilstapel.abheben());
-        System.out.println("Die erste Karte ist: ");
-        System.out.println(ablagestapel.obersteKarte());
-        //Test ob +4 Aufliegt, wenn ja Karte zurück, mischen und neuer Aufruf der Methode
-        if (ablagestapel.obersteKarte().getFarbe() == Farbe.SCHWARZ && ablagestapel.obersteKarte().getWert() == Wert.PLUSVIER) {
-            System.out.println("Es liegt eine +4 auf, nochmal mischen, eine neue Karte wird aufgelegt");
-            verteilstapel.add(ablagestapel.obersteKarte());
-            verteilstapel.mischen();
-            ablagestapelErstellen(verteilstapel, ablagestapel);
-        }
-    }
+    //todo: Methode LÖSCHEN und NEU Ablagestapel isst eigentlich leere ArrayList, Methode muss nur erste Karte auflegen können, das geht im Spielermanager
 
-    public void AusgabeObersteKarteAblagestapel(Kartenstapel ablagestapel) {
-        Karte k = ablagestapel.obersteKarte();
+
+    public void AusgabeObersteKarteAblagestapel() {
+        Karte k = obersteKarte();
         System.out.println("Bitte spielen Sie eine Karte, die auf FARBE:" + k.getFarbe() + " oder WERT: " + k.getWert() + " gelegt werden darf.");
     }
 
