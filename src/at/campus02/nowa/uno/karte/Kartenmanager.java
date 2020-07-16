@@ -1,9 +1,9 @@
-package at.campus02.nowa.uno;
+package at.campus02.nowa.uno.karte;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static at.campus02.nowa.uno.Farbe.SCHWARZ;
+import static at.campus02.nowa.uno.karte.Farbe.SCHWARZ;
 
 public class Kartenmanager {
 

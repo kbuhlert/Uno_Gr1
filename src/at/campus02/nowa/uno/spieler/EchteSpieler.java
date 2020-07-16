@@ -43,7 +43,6 @@ public class EchteSpieler extends Spieler{
             try {
                 Scanner scanner = new Scanner(System.in);
                 String c = scanner.nextLine();
-                //char c = (char) scanner.nextInt();
                 if (c.equalsIgnoreCase("y")) {
                     System.out.println(spielerHand);
                     return spielerHand;
@@ -91,6 +90,7 @@ public class EchteSpieler extends Spieler{
                 //e.printStackTrace();
             }
         }
+
 
 
 

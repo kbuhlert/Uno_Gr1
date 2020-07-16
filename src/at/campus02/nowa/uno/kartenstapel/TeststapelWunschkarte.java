@@ -1,4 +1,6 @@
-package at.campus02.nowa.uno;
+package at.campus02.nowa.uno.kartenstapel;
+
+import at.campus02.nowa.uno.karte.Karte;
 
 import java.util.ArrayList;
 import java.util.Collections;

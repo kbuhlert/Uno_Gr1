@@ -1,9 +1,18 @@
-package at.campus02.nowa.uno;
+package at.campus02.nowa.uno.spiel;
+
+import at.campus02.nowa.uno.*;
+import at.campus02.nowa.uno.karte.Karte;
+import at.campus02.nowa.uno.karte.Kartenmanager;
+import at.campus02.nowa.uno.karte.Wert;
+import at.campus02.nowa.uno.kartenstapel.Kartenstapel;
+import at.campus02.nowa.uno.spieler.BotSpieler;
+import at.campus02.nowa.uno.spieler.EchteSpieler;
+import at.campus02.nowa.uno.spieler.Spieler;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static at.campus02.nowa.uno.Farbe.SCHWARZ;
+import static at.campus02.nowa.uno.karte.Farbe.SCHWARZ;
 
 import java.util.Scanner;
 
