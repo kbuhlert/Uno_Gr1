@@ -2,9 +2,7 @@ package at.campus02.nowa.uno.spiel;
 
 import at.campus02.nowa.uno.*;
 
-import at.campus02.nowa.uno.karte.Karte;
-import at.campus02.nowa.uno.karte.Kartenmanager;
-import at.campus02.nowa.uno.karte.Wert;
+import at.campus02.nowa.uno.karte.*;
 
 import at.campus02.nowa.uno.spieler.BotSpieler;
 import at.campus02.nowa.uno.spieler.EchteSpieler;
@@ -173,51 +171,55 @@ public class SpielerManager {
             }
         } else {
 
-            if(aktuellerSpieler.spielerHand.contains(kartenstapel.obersteKarte()) ||
-            aktuellerSpieler.spielerHand.contains(pl4)){
+            if (aktuellerSpieler.spielerHand.contains(kartenstapel.obersteKarte()) ||
+                    aktuellerSpieler.spielerHand.contains(pl4)) {
                 System.out.println("Passende Karte gefunden!");
 
-            if(aktuellerSpieler.spielerHand.contains(kartenstapel.obersteKarte())){
+                if (aktuellerSpieler.spielerHand.contains(kartenstapel.obersteKarte())) {
 //                System.out.println("Karte gefunden!");
 
 
-            for (int i = 0; i < aktuellerSpieler.spielerHand.size(); i++){
-                k = aktuellerSpieler.spielerHand.get(i);
-                System.out.println(k);
+                    for (int i = 0; i < aktuellerSpieler.spielerHand.size(); i++) {
+                        k = aktuellerSpieler.spielerHand.get(i);
+                        System.out.println(k);
 
-                if (k.equals(kartenstapel.obersteKarte()) || k.getFarbe().equals(SCHWARZ)) {
-                    kartenstapel.karteAblegen(k);
+                        if (k.equals(kartenstapel.obersteKarte()) || k.getFarbe().equals(SCHWARZ)) {
+                            kartenstapel.karteAblegen(k);
 
-                if (k.equals(kartenstapel.obersteKarte())) {
-                    kartenstapel.karteAblegen(k);
-                    System.out.println(k + " wird ausgespielt");
+                            if (k.equals(kartenstapel.obersteKarte())) {
+                                kartenstapel.karteAblegen(k);
+                                System.out.println(k + " wird ausgespielt");
 
-                    System.out.println(k + " wurde soeben abgelegt!");
-                    aktuellerSpieler.spielerHand.remove(k);
-                    System.out.println(aktuellerSpieler.spielerHand);
-                    break; }
-
-                }
-
-                } else {
-                    System.out.println(aktuellerSpieler.getSpielerHand());
-                    System.out.println("Keine passende Karte - " + aktuellerSpieler.getName() + " muss abheben");
-                    Karte neu = kartenstapel.abheben();
-                    if(passendeKarte(neu, kartenstapel.obersteKarte())){
-                        kartenstapel.karteAblegen(neu);
-
-                        System.out.println(neu + " wird ausgespielt");
-                        System.out.println(neu + " wurde soeben abgelegt!");
-
-                    } else {
-                    aktuellerSpieler.spielerHand.add(neu);
-                    System.out.println("Spieler bekommt neue karte: " + neu);}
+                                System.out.println(k + " wurde soeben abgelegt!");
+                                aktuellerSpieler.spielerHand.remove(k);
+                                System.out.println(aktuellerSpieler.spielerHand);
+                                break;
+                            }
 
 
+                        } else {
+                            System.out.println(aktuellerSpieler.getSpielerHand());
+                            System.out.println("Keine passende Karte - " + aktuellerSpieler.getName() + " muss abheben");
+                            Karte neu = kartenstapel.abheben();
+                            if (passendeKarte(neu, kartenstapel.obersteKarte())) {
+                                kartenstapel.karteAblegen(neu);
+
+                                System.out.println(neu + " wird ausgespielt");
+                                System.out.println(neu + " wurde soeben abgelegt!");
+
+                            } else {
+                                aktuellerSpieler.spielerHand.add(neu);
+                                System.out.println("Spieler bekommt neue karte: " + neu);
+                            }
+
+
+                        }
+                    }
+                    spielerWechsel();
                 }
             }
-            spielerWechsel();
         }
+    }
 
 
     private boolean passendeKarte(Karte handKarte, Karte ablageStapel) {
