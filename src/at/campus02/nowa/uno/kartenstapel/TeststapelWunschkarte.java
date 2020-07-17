@@ -1,7 +1,9 @@
 package at.campus02.nowa.uno.kartenstapel;
 
 import at.campus02.nowa.uno.karte.Karte;
+
 import at.campus02.nowa.uno.karte.Kartenmanager;
+
 
 import java.util.ArrayList;
 import java.util.Collections;

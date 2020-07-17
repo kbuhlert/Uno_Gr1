@@ -1,3 +1,4 @@
+
 package at.campus02.nowa.uno.spieler;
 
 import at.campus02.nowa.uno.FalscheEingabeException;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class EchteSpieler extends Spieler {
+
 
 
     public EchteSpieler(String name) {
