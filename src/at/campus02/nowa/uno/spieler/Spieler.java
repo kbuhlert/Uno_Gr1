@@ -1,5 +1,6 @@
 package at.campus02.nowa.uno.spieler;
 
+
 import at.campus02.nowa.uno.karte.Karte;
 
 import java.util.ArrayList;
