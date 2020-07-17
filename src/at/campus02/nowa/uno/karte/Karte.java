@@ -5,6 +5,7 @@ import java.util.Objects;
 public abstract class Karte {
     private Farbe farbe;
     private Wert wert;
+    private int punkte;
 
     public Karte(Farbe farbe, Wert wert) {
         this.farbe = farbe;
@@ -14,6 +15,7 @@ public abstract class Karte {
     public Farbe getFarbe() {
         return farbe;
     }
+
 
     public void setFarbe(Farbe farbe) {
         this.farbe = farbe;
@@ -29,6 +31,14 @@ public abstract class Karte {
 
     //EqualsMethode wird für Vergleich der Karten benötigt
 
+
+    public int getPunkte() {
+        return punkte;
+    }
+
+    public void setPunkte(int punkte) {
+        this.punkte = punkte;
+    }
 
     @Override
     public boolean equals(Object o) {

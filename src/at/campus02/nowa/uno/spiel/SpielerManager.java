@@ -4,6 +4,7 @@ import at.campus02.nowa.uno.*;
 
 import at.campus02.nowa.uno.karte.*;
 
+import at.campus02.nowa.uno.kartenstapel.TeststapelWunschkarte;
 import at.campus02.nowa.uno.spieler.BotSpieler;
 import at.campus02.nowa.uno.spieler.EchteSpieler;
 import at.campus02.nowa.uno.spieler.Spieler;
@@ -19,11 +20,12 @@ public class SpielerManager {
         Scanner input = new Scanner(System.in);
         //  Spieler in  Liste
         protected ArrayList<Spieler> alleSpieler;
-        Kartenmanager kartenstapel;
-        //TeststapelWunschkarte verteilstapel;  //--> zum Testen mit speziellen Karten
+        //Kartenmanager kartenstapel;
+        TeststapelWunschkarte kartenstapel;  //--> zum Testen mit speziellen Karten
 
         Spieler aktuellerSpieler = null;
         boolean spielrichtung = true;
+    Karte pl4 = new Zahlenkarte(SCHWARZ, Wert.PLUSVIER);
 
         //private PrintStream output;
         //private final Scanner input;
@@ -31,7 +33,8 @@ public class SpielerManager {
 
         public SpielerManager() {   //todo: Ablagestapel, Verteilstapel, Scanner, alleSpieler-Array werden dem SpielerManager als Parameter übergeben.
             // todo: So können diese von App erstellt werden un Spielermanager nutzt dann die gleichen Objekte
-            this.kartenstapel = new Kartenmanager();
+            //this.kartenstapel = new Kartenmanager();
+            this.kartenstapel = new TeststapelWunschkarte();
             this.alleSpieler = new ArrayList<>();
 
             //this.input = input;
@@ -84,8 +87,8 @@ public class SpielerManager {
 
     //Verteilstack erstellen & austeilen der Karten auf die Spielerhand
     public void kartenAusteilen() {
-        kartenstapel.stapelErstellen();
-        //verteilstapel.neuerTeststapel(new Zahlenkarte(Farbe.BLAU,Wert.ACHT), new Zahlenkarte(Farbe.BLAU,Wert.RICHTUNGSWECHSEL));  //--> Wenn mit Teststapel gespielt wird
+        //kartenstapel.stapelErstellen();
+        kartenstapel.neuerTeststapel(new Zahlenkarte(Farbe.BLAU,Wert.ACHT), new Zahlenkarte(Farbe.BLAU,Wert.ZWEI));  //--> Wenn mit Teststapel gespielt wird
         System.out.println("Karten werden ausgeteilt");     //Karten austeilen -->7 Karten pro Spieler
         for (Spieler spieler : alleSpieler) {
             while (spieler.spielerHand.size() < 7) {
@@ -121,7 +124,8 @@ public class SpielerManager {
                 Scanner scanner = new Scanner(System.in);
                 String c = scanner.nextLine();
                 if (c.equalsIgnoreCase("y")) {
-                    System.out.println(aktuellerSpieler.spielerHand);//todo: hier soll Methode printSpielerhand aufgerufen werden
+                    //System.out.println(aktuellerSpieler.spielerHand);//todo: hier soll Methode printSpielerhand aufgerufen werden
+                    printSpielerHand();
                     return;
                 }
                 if (c.equalsIgnoreCase("n")) {
@@ -135,6 +139,13 @@ public class SpielerManager {
                 abfrageKartenhandZeigen();
                 //e.printStackTrace();
             }
+        }
+    }
+
+    public void printSpielerHand (){
+        int index = 0;
+        for (Karte k : aktuellerSpieler.spielerHand){
+            System.out.println("  " + (index++) + k);
         }
     }
 
@@ -153,7 +164,7 @@ public class SpielerManager {
         //check if chosen card matches one available in the Kartenhand-array
         //todo: check if after playing the card there is only 1 left > UNO
 
-        Karte pl4 = new Zahlenkarte(SCHWARZ, Wert.PLUSVIER);
+
 
         Karte k = null;
         if (aktuellerSpieler instanceof EchteSpieler) {                // INSTANCEOF VERMEIDEN!!!!!!gehört nicht ins spiel sondern in die klasse

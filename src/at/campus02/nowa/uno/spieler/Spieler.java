@@ -12,6 +12,7 @@ public abstract class Spieler {
 
   public String name;
   public ArrayList<Karte> spielerHand;
+  public int punkte;
 
 
     public Spieler(String name) {

@@ -2,6 +2,8 @@ package at.campus02.nowa.uno.spiel;
 
 
 
+import at.campus02.nowa.uno.spieler.Spieler;
+
 import java.io.PrintStream;
 import java.util.Scanner;
 
@@ -97,26 +99,52 @@ public class App {
 
     private void printState() {
         //Ausgeben welcher Spieler ist als nächstes dran
-        spielerManager.WerIstDranUndWelcheKarte();
+        if (!roundEnded()){
+            spielerManager.WerIstDranUndWelcheKarte();
+        }
+        return;
         //Ausgeben welche Karte auf Ablagestapel oben liegt (variable obersteKarteAblagestapel)
         //Aufvorderung des nächsten Spielers
         //Spielerhand auf Konsole ausgeben (könnte auch mit SpielerInput abgefragt werden, dann muss Bot die Hand nicht ausgeben -->toString beim echten Spieler)
     }
 
     private boolean roundEnded(){
+        //check whether anyone's spielerhand is empty
+        if(spielerManager.aktuellerSpieler.spielerHand.isEmpty()){
+            output.println("Die Runde ist zu Ende. Es hat gewonnen: " + spielerManager.aktuellerSpieler.getName());
+            // if one spielerhand is empty, there is a winner, so all remaining hands need to be counted up and the sum added to a database
+            for (Spieler s : spielerManager.alleSpieler){
+                int summeSpielerHand = 0;
+                for (int i = 0; i < s.spielerHand.size() ; i++) {
+                    summeSpielerHand += s.getSpielerHand().get(i).getPunkte();
+                    i++;
+                }
+                //summeSpielerHand add to database
+                spielerManager.aktuellerSpieler.punkte += summeSpielerHand;
+                output.println(spielerManager.aktuellerSpieler.getName() + " hat die folgenden Punkte gewonnen: " + summeSpielerHand);
+            }
+            initializeRound();
+            return true;
+        }
+        else {
+            return false;}
+
         //true = Wenn Spieler keine Karte im Array hat
         //Berechnen der Punkte (Übertrag in Datenbank)
         //Überprüft ob Endspielstand (500 Punkte) von einem Spieler erreicht wurde nach Rundenende, wenn ja, dann Methode gameEnded() aufrufen
-        return false;
     }
 
     private boolean gameEnded(){
+        if (spielerManager.aktuellerSpieler.punkte > 500){
+            return true;
+        }
+        else {
+            return false;
+        }
         //Ausgabe Rangliste + Gratulation
         //Ausgabe finaler Punktestand
         // Ausgabe GameOver
         //Abfrage "Neues Spiel starten"
-        return false;
-
     }
 
     private void printFinalScore(){
