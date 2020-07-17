@@ -1,16 +1,22 @@
 package at.campus02.nowa.uno.spieler;
 
+
+import at.campus02.nowa.uno.spieler.Spieler;
+
 import at.campus02.nowa.uno.kartenstapel.Kartenstapel;
+
 import at.campus02.nowa.uno.karte.Karte;
 
 import java.util.ArrayList;
 
-public class BotSpieler extends Spieler{
 
+public class BotSpieler extends Spieler {
+
+    private static int botNr = 0;       //wird beim erstellen des Bots um 1 hochgezählt, bot erhaäkt dann Name: "bot" + Integer.toString("botNr")
 
     public BotSpieler(String name) {
         super(name);
-    }
+
 
     @Override
     public String getName() {
@@ -28,6 +34,7 @@ public class BotSpieler extends Spieler{
     }
 
     @Override
+
     public void karteSpielen(Karte karte) {
         for(Karte k : spielerHand){
             if(k.getWert().equals(karte.getWert()) || k.getFarbe().equals(karte.getFarbe())){
@@ -65,6 +72,7 @@ public class BotSpieler extends Spieler{
 
     }
 
+
     //Methoden:
     //im Kontruktor wir botNr mit erstellt;
 
@@ -73,3 +81,4 @@ public class BotSpieler extends Spieler{
     //erstelleBots(){} --> holt mit getAnzahlEchteSpieler() die Anzahl der Spieler und generiert dann die nötige Anzahl Bots um 4 Spieler zu haben (hier würde sich Sitch anbieten)
 
 }
+
