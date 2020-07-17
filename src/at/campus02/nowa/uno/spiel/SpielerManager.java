@@ -1,10 +1,7 @@
 package at.campus02.nowa.uno.spiel;
 
 import at.campus02.nowa.uno.*;
-import at.campus02.nowa.uno.karte.Karte;
-import at.campus02.nowa.uno.karte.Kartenmanager;
-import at.campus02.nowa.uno.karte.Wert;
-import at.campus02.nowa.uno.kartenstapel.Kartenstapel;
+import at.campus02.nowa.uno.karte.*;
 import at.campus02.nowa.uno.spieler.BotSpieler;
 import at.campus02.nowa.uno.spieler.EchteSpieler;
 import at.campus02.nowa.uno.spieler.Spieler;
@@ -153,7 +150,7 @@ public class SpielerManager {
         //per Eingabe Karte spielen
         //check if chosen card matches one available in the Kartenhand-array
         //todo: check if after playing the card there is only 1 left > UNO
-
+        Karte pl4 = new Zahlenkarte(SCHWARZ, Wert.PLUSVIER);
         Karte k = null;
         if (aktuellerSpieler instanceof EchteSpieler) {                // INSTANCEOF VERMEIDEN!!!!!!gehört nicht ins spiel sondern in die klasse
             int position = input.nextInt();
@@ -169,15 +166,15 @@ public class SpielerManager {
                 //spielzug();
             }
         } else {
-            if(aktuellerSpieler.spielerHand.contains(kartenstapel.obersteKarte())){
-//                System.out.println("Karte gefunden!");
+            if(aktuellerSpieler.spielerHand.contains(kartenstapel.obersteKarte()) ||
+            aktuellerSpieler.spielerHand.contains(pl4)){
+                System.out.println("Passende Karte gefunden!");
 
             for (int i = 0; i < aktuellerSpieler.spielerHand.size(); i++){
                 k = aktuellerSpieler.spielerHand.get(i);
                 System.out.println(k);
-                if (k.equals(kartenstapel.obersteKarte())) {
+                if (k.equals(kartenstapel.obersteKarte()) || k.getFarbe().equals(SCHWARZ)) {
                     kartenstapel.karteAblegen(k);
-                    System.out.println(k + " wird ausgespielt");
                     System.out.println(k + " wurde soeben abgelegt!");
                     aktuellerSpieler.spielerHand.remove(k);
                     System.out.println(aktuellerSpieler.spielerHand);
@@ -191,8 +188,7 @@ public class SpielerManager {
                     Karte neu = kartenstapel.abheben();
                     if(passendeKarte(neu, kartenstapel.obersteKarte())){
                         kartenstapel.karteAblegen(neu);
-                        System.out.println(neu + " wird ausgespielt");
-                        System.out.println(neu + " wurde soeben abgelegt!");
+                        System.out.println(neu + " kann ausgespielt werden");
                     } else {
                     aktuellerSpieler.spielerHand.add(neu);
                     System.out.println("Spieler bekommt neue karte: " + neu);}

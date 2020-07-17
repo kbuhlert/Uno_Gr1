@@ -1,12 +1,13 @@
-package at.campus02.nowa.uno;
+package at.campus02.nowa.uno.spieler;
 
-import javax.xml.namespace.QName;
+import at.campus02.nowa.uno.FalscheEingabeException;
+import at.campus02.nowa.uno.karte.Karte;
+
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class EchteSpieler extends Spieler{
-    //private static int anzahlEchteSpieler = 0;
-      //todo: müsste das ein Final sein?
+public class EchteSpieler extends Spieler {
 
 
     public EchteSpieler(String name) {
