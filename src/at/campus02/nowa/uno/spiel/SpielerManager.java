@@ -287,6 +287,22 @@ public class SpielerManager {
         return aktuellerSpieler;
     }
 
+    public int getPunkteVonSpielerHand (Spieler s){
+        int summeSpielerHand = 0;
+        for (int i = 0; i < s.spielerHand.size() ; i++) {
+            summeSpielerHand += s.getSpielerHand().get(i).getPunkte();
+            i++;
+        }
+        return summeSpielerHand;
+    }
+
+    public int getPunkteVonAllenSpielern (){
+        int punkteAlleSpieler = 0;
+            for (Spieler s : alleSpieler){
+            punkteAlleSpieler += getPunkteVonSpielerHand(s);
+        }
+        return punkteAlleSpieler;
+    }
 
     @Override
     public String toString() {

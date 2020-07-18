@@ -38,7 +38,7 @@ public class Zahlenkarte extends Karte{
         if (getWert().equals("NEUN")){
             punkte += 9;
         }
-        return getPunkte();
+        return punkte;
     }
 }
 

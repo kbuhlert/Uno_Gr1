@@ -111,23 +111,13 @@ public class App {
     private boolean roundEnded(){
         //check whether anyone's spielerhand is empty
         if(spielerManager.aktuellerSpieler.spielerHand.isEmpty()){
-            output.println("Die Runde ist zu Ende. Es hat gewonnen: " + spielerManager.aktuellerSpieler.getName());
-            // if one spielerhand is empty, there is a winner, so all remaining hands need to be counted up and the sum added to a database
-            for (Spieler s : spielerManager.alleSpieler){
-                int summeSpielerHand = 0;
-                for (int i = 0; i < s.spielerHand.size() ; i++) {
-                    summeSpielerHand += s.getSpielerHand().get(i).getPunkte();
-                    i++;
-                }
-                //summeSpielerHand add to database
-                spielerManager.aktuellerSpieler.punkte += summeSpielerHand;
-                output.println(spielerManager.aktuellerSpieler.getName() + " hat die folgenden Punkte gewonnen: " + summeSpielerHand);
-            }
-            initializeRound();
+            output.println("Die Runde ist zu Ende. " + spielerManager.aktuellerSpieler.getName() + " hat " + spielerManager.getPunkteVonAllenSpielern() + " Punkte gewonnen.");
             return true;
         }
+            //summeSpielerHand add to database
         else {
-            return false;}
+            return false;
+        }
 
         //true = Wenn Spieler keine Karte im Array hat
         //Berechnen der Punkte (Übertrag in Datenbank)

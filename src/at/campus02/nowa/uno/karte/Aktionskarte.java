@@ -28,7 +28,7 @@ public class Aktionskarte extends Karte{
         if (getWert().equals("PLUSVIER")){
             punkte += 50;
         }
-        return getPunkte();
+        return punkte;
     }
 
     //Methoden:
