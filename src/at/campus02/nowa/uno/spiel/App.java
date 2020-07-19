@@ -2,6 +2,8 @@ package at.campus02.nowa.uno.spiel;
 
 
 
+import at.campus02.nowa.uno.karte.Kartenmanager;
+
 import java.io.PrintStream;
 import java.util.Scanner;
 

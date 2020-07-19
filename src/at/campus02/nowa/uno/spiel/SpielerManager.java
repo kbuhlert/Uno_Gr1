@@ -154,22 +154,38 @@ public class SpielerManager {
     public void karteAblegen() {
         //per Eingabe Karte spielen
         //check if chosen card matches one available in the Kartenhand-array
-        //todo: check if after playing the card there is only 1 left > UNO
-        boolean gefunden = false;
 
-        Karte k = null;
-        if (aktuellerSpieler instanceof EchteSpieler) {                // INSTANCEOF VERMEIDEN!!!!!!gehört nicht ins spiel sondern in die klasse
-            int position = input.nextInt();
+        if (aktuellerSpieler instanceof EchteSpieler) {
+
+                int position = input.nextInt();
             Karte handKarte = aktuellerSpieler.spielerHand.get(position);
+
             if (!passendeKarte(handKarte, kartenstapel.obersteKarte())) {
                 System.out.println("Falsche Karte gelegt. Bitte legen Sie eine passende Karte ab");
                 System.out.println("Es liegt die " + kartenstapel.obersteKarte() + " oben auf!");
+                System.out.println("Möchten Sie eine neue Karte abheben? Bitte Y (YES) oder N (NO) eingeben");
+                if(input.nextLine().toLowerCase().equals("y")){
+                    Karte karte = kartenstapel.abheben();
+                    System.out.println(karte);
+                    System.out.println("Möchten Sie die neue Karte spielen? Bitte Y (YES) oder N (NO) eingeben");
+                    if(input.nextLine().toLowerCase().equals("y")){
+                        karteAblegen();
+
+                    } else if(input.nextLine().toLowerCase().equals("n")){
+                        aktuellerSpieler.spielerHand.add(karte);
+                    }
+                } else if (input.nextLine().toLowerCase().equals("n")){
+                    System.out.println("Bitte legen Sie eine passende Karte ab");
+                    karteAblegen();
+                }
+                // TODO: 19.07.2020 abheben oä implementieren! falls keine passende karte
             } else {
                 System.out.println("Spielzug korrekt. Diese Karte wurde abgelegt:");
                 System.out.println(aktuellerSpieler.spielerHand.get(position));
                 kartenstapel.karteAblegen(aktuellerSpieler.spielerHand.get(position));
                 aktuellerSpieler.spielerHand.remove(position);
             }
+
         } else {
             boolean karteGespielt = false;
             int i = 0;
@@ -189,39 +205,11 @@ public class SpielerManager {
 //                                    "(Beispiel: 4Blau)");
 //                            if(input.nextLine().equals("4Blau")
                 } else {
-                    System.out.println("Karte nicht gefunden");
-                    System.out.println(kartenstapel.obersteKarte() + " " + aktuellerSpieler.spielerHand.get(i));
+//                    System.out.println("Karte nicht gefunden");
+//                    System.out.println(kartenstapel.obersteKarte() + " " + aktuellerSpieler.spielerHand.get(i));
                     i++;
 
-//                for (int i = 0; i < aktuellerSpieler.spielerHand.size(); i++) {
-//                    k = aktuellerSpieler.spielerHand.get(i);
-//                    if (passendeKarte(k, kartenstapel.obersteKarte())){
-//                        kartenstapel.karteAblegen(k);
-//                    System.out.println(k + " wurde soeben abgelegt!");
-//                    aktuellerSpieler.spielerHand.remove(k);
-//                    System.out.println(aktuellerSpieler.spielerHand);
-//                    spielerWechsel();
-//                }
-//            } if(!passendeKarte(k, kartenstapel.obersteKarte())) {
-//                kartenstapel.obersteKarte();
-//                System.out.println(aktuellerSpieler.getSpielerHand());
-//                            System.out.println("Keine passende Karte - " + aktuellerSpieler.getName() + " muss abheben");
-//                            Karte neu = kartenstapel.abheben();
-//                                System.out.println(neu);
-//                            if (neu.getFarbe().equals(SCHWARZ) || neu.getFarbe().equals(kartenstapel.obersteKarte().getFarbe()) ||
-//                                    neu.getWert().equals(kartenstapel.obersteKarte().getWert())) {
-//                                kartenstapel.karteAblegen(neu);
-//
-//                                System.out.println(neu + " wird ausgespielt");
-//                                System.out.println(neu + " wurde soeben abgelegt!");
-//
-//                            } else {
-//                                aktuellerSpieler.spielerHand.add(neu);
-//                                System.out.println("Spieler bekommt neue karte: " + neu);
-//                            }
-//
-//
-//                        }
+
                 }
             }
             if (!karteGespielt) {
@@ -241,7 +229,7 @@ public class SpielerManager {
                 }
             }
         } spielerWechsel();
-        }
+    }
 
 
 
@@ -281,7 +269,7 @@ public class SpielerManager {
                     aktuellerSpieler = alleSpieler.get(2+i);
                     break;
                 case 2:
-                    aktuellerSpieler = alleSpieler.get(3+i);
+                    aktuellerSpieler = alleSpieler.get(3-(3*i));
                     break;
                 case 3:
                     aktuellerSpieler = alleSpieler.get(0+i);
@@ -291,16 +279,16 @@ public class SpielerManager {
         if (!spielrichtung) {
             switch (alleSpieler.indexOf(aktuellerSpieler)) {
                 case 0:
-                    aktuellerSpieler = alleSpieler.get(3);
+                    aktuellerSpieler = alleSpieler.get(3-i);
                     break;
                 case 1:
-                    aktuellerSpieler = alleSpieler.get(0);
+                    aktuellerSpieler = alleSpieler.get(0+(3*i));
                     break;
                 case 2:
-                    aktuellerSpieler = alleSpieler.get(1);
+                    aktuellerSpieler = alleSpieler.get(1-i);
                     break;
                 case 3:
-                    aktuellerSpieler = alleSpieler.get(2);
+                    aktuellerSpieler = alleSpieler.get(2-i);
                     break;
             }
         }
