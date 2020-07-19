@@ -30,14 +30,14 @@ public abstract class Karte {
     //EqualsMethode wird für Vergleich der Karten benötigt
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Karte)) return false;
-        Karte karte = (Karte) o;
-        return getFarbe() == karte.getFarbe() ||
-                getWert() == karte.getWert();
-    }
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (!(o instanceof Karte)) return false;
+//        Karte karte = (Karte) o;
+//        return getFarbe() == karte.getFarbe() &&
+//                getWert() == karte.getWert();
+//    }
 
     @Override
     public int hashCode() {

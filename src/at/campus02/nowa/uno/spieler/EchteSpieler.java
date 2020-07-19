@@ -9,8 +9,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class EchteSpieler extends Spieler {
-
-
+    Scanner input = new Scanner(System.in);
 
     public EchteSpieler(String name) {
         super(name);

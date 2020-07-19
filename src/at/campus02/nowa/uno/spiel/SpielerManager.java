@@ -21,9 +21,11 @@ public class SpielerManager {
         protected ArrayList<Spieler> alleSpieler;
         Kartenmanager kartenstapel;
         //TeststapelWunschkarte verteilstapel;  //--> zum Testen mit speziellen Karten
+        Karte pl4 = new Zahlenkarte(SCHWARZ, Wert.PLUSVIER);
 
         Spieler aktuellerSpieler = null;
         boolean spielrichtung = true;
+        boolean aussetzten = false;
 
         //private PrintStream output;
         //private final Scanner input;
@@ -105,6 +107,7 @@ public class SpielerManager {
         //Test ob +4 Aufliegt, wenn ja Karte zurück, mischen und neuer Aufruf der Methode
         while (kartenstapel.obersteKarte().getFarbe() == Farbe.SCHWARZ && kartenstapel.obersteKarte().getWert() == Wert.PLUSVIER) {
             System.out.println("Es liegt eine +4 auf, nochmal mischen, eine neue Karte wird aufgelegt");
+            kartenstapel.mischen();
             kartenstapel.karteAblegen(kartenstapel.obersteKarte());
         }
     }
@@ -152,8 +155,7 @@ public class SpielerManager {
         //per Eingabe Karte spielen
         //check if chosen card matches one available in the Kartenhand-array
         //todo: check if after playing the card there is only 1 left > UNO
-
-        Karte pl4 = new Zahlenkarte(SCHWARZ, Wert.PLUSVIER);
+        boolean gefunden = false;
 
         Karte k = null;
         if (aktuellerSpieler instanceof EchteSpieler) {                // INSTANCEOF VERMEIDEN!!!!!!gehört nicht ins spiel sondern in die klasse
@@ -167,66 +169,90 @@ public class SpielerManager {
                 System.out.println(aktuellerSpieler.spielerHand.get(position));
                 kartenstapel.karteAblegen(aktuellerSpieler.spielerHand.get(position));
                 aktuellerSpieler.spielerHand.remove(position);
-                //spielzug();
             }
         } else {
+            boolean karteGespielt = false;
+            int i = 0;
+            while (i < aktuellerSpieler.getSpielerHand().size()) {
+                Karte karte = aktuellerSpieler.spielerHand.get(i);
+                if (kartenstapel.obersteKarte().getFarbe() == (SCHWARZ)
+                        || karte.getFarbe() == (SCHWARZ)
+                        || kartenstapel.obersteKarte().getFarbe() == (karte.getFarbe())
+                        || kartenstapel.obersteKarte().getWert() == (karte.getWert())) {
+                    kartenstapel.karteAblegen(karte);
+                    aktuellerSpieler.spielerHand.remove(aktuellerSpieler.spielerHand.get(i));
+                    System.out.println("Karte abgelegt: " + kartenstapel.obersteKarte());
+                    i = aktuellerSpieler.getSpielerHand().size() + 1;
+                    karteGespielt = true;
+//                        else if(kartenstapel.obersteKarte().getFarbe().equals(SCHWARZ)){
+//                            System.out.println("Bitte Farbe und falls + 4 heben, bitte Eingabe mit 4 beginnen \n" +
+//                                    "(Beispiel: 4Blau)");
+//                            if(input.nextLine().equals("4Blau")
+                } else {
+                    System.out.println("Karte nicht gefunden");
+                    System.out.println(kartenstapel.obersteKarte() + " " + aktuellerSpieler.spielerHand.get(i));
+                    i++;
 
-            if (aktuellerSpieler.spielerHand.contains(kartenstapel.obersteKarte()) ||
-                    aktuellerSpieler.spielerHand.contains(pl4)) {
-                System.out.println("Passende Karte gefunden!");
-
-                if (aktuellerSpieler.spielerHand.contains(kartenstapel.obersteKarte())) {
-//                System.out.println("Karte gefunden!");
-
-
-                    for (int i = 0; i < aktuellerSpieler.spielerHand.size(); i++) {
-                        k = aktuellerSpieler.spielerHand.get(i);
-                        System.out.println(k);
-
-                        if (k.equals(kartenstapel.obersteKarte()) || k.getFarbe().equals(SCHWARZ)) {
-                            kartenstapel.karteAblegen(k);
-
-                            if (k.equals(kartenstapel.obersteKarte())) {
-                                kartenstapel.karteAblegen(k);
-                                System.out.println(k + " wird ausgespielt");
-
-                                System.out.println(k + " wurde soeben abgelegt!");
-                                aktuellerSpieler.spielerHand.remove(k);
-                                System.out.println(aktuellerSpieler.spielerHand);
-                                break;
-                            }
-
-
-                        } else {
-                            System.out.println(aktuellerSpieler.getSpielerHand());
-                            System.out.println("Keine passende Karte - " + aktuellerSpieler.getName() + " muss abheben");
-                            Karte neu = kartenstapel.abheben();
-                            if (passendeKarte(neu, kartenstapel.obersteKarte())) {
-                                kartenstapel.karteAblegen(neu);
-
-                                System.out.println(neu + " wird ausgespielt");
-                                System.out.println(neu + " wurde soeben abgelegt!");
-
-                            } else {
-                                aktuellerSpieler.spielerHand.add(neu);
-                                System.out.println("Spieler bekommt neue karte: " + neu);
-                            }
-
-
-                        }
-                    }
-                    spielerWechsel();
+//                for (int i = 0; i < aktuellerSpieler.spielerHand.size(); i++) {
+//                    k = aktuellerSpieler.spielerHand.get(i);
+//                    if (passendeKarte(k, kartenstapel.obersteKarte())){
+//                        kartenstapel.karteAblegen(k);
+//                    System.out.println(k + " wurde soeben abgelegt!");
+//                    aktuellerSpieler.spielerHand.remove(k);
+//                    System.out.println(aktuellerSpieler.spielerHand);
+//                    spielerWechsel();
+//                }
+//            } if(!passendeKarte(k, kartenstapel.obersteKarte())) {
+//                kartenstapel.obersteKarte();
+//                System.out.println(aktuellerSpieler.getSpielerHand());
+//                            System.out.println("Keine passende Karte - " + aktuellerSpieler.getName() + " muss abheben");
+//                            Karte neu = kartenstapel.abheben();
+//                                System.out.println(neu);
+//                            if (neu.getFarbe().equals(SCHWARZ) || neu.getFarbe().equals(kartenstapel.obersteKarte().getFarbe()) ||
+//                                    neu.getWert().equals(kartenstapel.obersteKarte().getWert())) {
+//                                kartenstapel.karteAblegen(neu);
+//
+//                                System.out.println(neu + " wird ausgespielt");
+//                                System.out.println(neu + " wurde soeben abgelegt!");
+//
+//                            } else {
+//                                aktuellerSpieler.spielerHand.add(neu);
+//                                System.out.println("Spieler bekommt neue karte: " + neu);
+//                            }
+//
+//
+//                        }
                 }
             }
+            if (!karteGespielt) {
+                System.out.println(kartenstapel.obersteKarte());
+                System.out.println(aktuellerSpieler.getSpielerHand());
+                System.out.println("Keine passende Karte - " + aktuellerSpieler.getName() + " muss abheben");
+                Karte neu = kartenstapel.abheben();
+                System.out.println(neu);
+                if (neu.getFarbe().equals(SCHWARZ) || neu.getFarbe().equals(kartenstapel.obersteKarte().getFarbe()) ||
+                        neu.getWert() == (kartenstapel.obersteKarte().getWert())) {
+                    kartenstapel.karteAblegen(neu);
+                    System.out.println(neu + " wurde soeben abgelegt!");
+
+                } else {
+                    aktuellerSpieler.spielerHand.add(neu);
+                    System.out.println("Spieler bekommt neue karte: " + neu);
+                }
+            }
+        } spielerWechsel();
         }
-    }
+
+
+
 
 
     private boolean passendeKarte(Karte handKarte, Karte ablageStapel) {
         boolean ausgabe;
         if (ablageStapel.getFarbe().equals(SCHWARZ)) {
             ausgabe = true;
-        } else if (handKarte.getFarbe().equals(ablageStapel.getFarbe()) || handKarte.getWert() == ablageStapel.getWert() || handKarte.getFarbe().equals(SCHWARZ)) {
+        } else if (handKarte.getFarbe().equals(ablageStapel.getFarbe()) || handKarte.getWert() == ablageStapel.getWert()
+                || handKarte.getFarbe().equals(SCHWARZ)) {
             ausgabe = true;
         } else ausgabe = false;
 
@@ -235,25 +261,30 @@ public class SpielerManager {
     }
 
     public Spieler spielerWechsel() {
+            int i = 0;
+
         // Spielerwechsel nach Beendigung des Spielzuges
         //Richtungswechsel wenn auf Stapel "Richtungswechsel" liegt
         //todo: Aussetzenkarte ist Spieler überspringen
+        if (kartenstapel.obersteKarte().getWert().equals(Wert.AUSSETZEN)){
+                 i = 1;}
+
         if (kartenstapel.obersteKarte().getWert().equals(Wert.RICHTUNGSWECHSEL)) {
             spielrichtung = !spielrichtung;
         }
         if (spielrichtung) {
             switch (alleSpieler.indexOf(aktuellerSpieler)) {
                 case 0:
-                    aktuellerSpieler = alleSpieler.get(1);
+                    aktuellerSpieler = alleSpieler.get(1+i);
                     break;
                 case 1:
-                    aktuellerSpieler = alleSpieler.get(2);
+                    aktuellerSpieler = alleSpieler.get(2+i);
                     break;
                 case 2:
-                    aktuellerSpieler = alleSpieler.get(3);
+                    aktuellerSpieler = alleSpieler.get(3+i);
                     break;
                 case 3:
-                    aktuellerSpieler = alleSpieler.get(0);
+                    aktuellerSpieler = alleSpieler.get(0+i);
                     break;
             }
         }
@@ -273,6 +304,7 @@ public class SpielerManager {
                     break;
             }
         }
+        i = 0;
         return aktuellerSpieler;
     }
 

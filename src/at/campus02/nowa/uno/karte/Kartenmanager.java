@@ -88,8 +88,6 @@ public class Kartenmanager {
         return obersteKarte;
     }
 
-
-
     //Methode Karte drauflegen (put) + Aufruf Prüfung Kartenablage gültig
     //todo: Prüfung erweitern auf Aktionskarten, bisher wird nur geprüft ob gleiche Farbe oder gleicher Wert gelegt wurden
     public void karteAblegen(Karte k){
@@ -102,6 +100,9 @@ public class Kartenmanager {
 
     public void AusgabeObersteKarteAblagestapel() {
         Karte k = obersteKarte();
+        if(k.getFarbe().equals(SCHWARZ)){
+            System.out.println("Bitte spielen Sie die soeben gewünschte Farbe");
+        } else
         System.out.println("Bitte spielen Sie eine Karte, die auf FARBE:" + k.getFarbe() + " oder WERT: " + k.getWert() + " gelegt werden darf.");
     }
 
