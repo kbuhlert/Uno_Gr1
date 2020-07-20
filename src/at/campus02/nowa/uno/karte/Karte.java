@@ -15,6 +15,7 @@ public abstract class Karte {
         return farbe;
     }
 
+
     public void setFarbe(Farbe farbe) {
         this.farbe = farbe;
     }
@@ -28,6 +29,7 @@ public abstract class Karte {
     }
 
     //EqualsMethode wird für Vergleich der Karten benötigt
+
 
 
     @Override
@@ -52,4 +54,6 @@ public abstract class Karte {
                 " || " + wert +
                 '}';
     }
+
+    public abstract int getPunkte();
 }

@@ -1,8 +1,9 @@
 package at.campus02.nowa.uno.spiel;
 
 
-import at.campus02.nowa.uno.kartenstapel.Kartenstapel;
 
+import at.campus02.nowa.uno.FalscheEingabeException;
+import at.campus02.nowa.uno.spieler.Spieler;
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -89,6 +90,7 @@ public class App {
 
     private void updateState() {
         // TODO: 09.07.2020
+        spielerManager.spielerWechsel();
         //Variable obersteKarteAblagestapel neuen Wert zuweisen
         //Punktestand neu berechnen
         //Spielerhand ArrayList aktualisieren (nach Spielzug, nach Strafkarten)
@@ -99,26 +101,60 @@ public class App {
 
     private void printState() {
         //Ausgeben welcher Spieler ist als nächstes dran
-        spielerManager.WerIstDranUndWelcheKarte();
+        if (!roundEnded()){
+            spielerManager.WerIstDranUndWelcheKarte();
+        }
+        return;
         //Ausgeben welche Karte auf Ablagestapel oben liegt (variable obersteKarteAblagestapel)
         //Aufvorderung des nächsten Spielers
         //Spielerhand auf Konsole ausgeben (könnte auch mit SpielerInput abgefragt werden, dann muss Bot die Hand nicht ausgeben -->toString beim echten Spieler)
     }
 
     private boolean roundEnded(){
+        //check whether anyone's spielerhand is empty
+        if(spielerManager.aktuellerSpieler.spielerHand.isEmpty()){
+            output.println("Die Runde ist zu Ende. " + spielerManager.aktuellerSpieler.getName() + " hat gewonnen");
+            output.println(spielerManager.getPunkteVonAllenSpielern() + " Punkte gewonnen.");
+
+            output.println("Noch eine Runde?");
+            try {
+                String c = input.nextLine();
+                if (c.equalsIgnoreCase("y")) {
+                    return true;
+                }
+                if (c.equalsIgnoreCase("n")) {
+                    return true;
+                }
+                while (!c.equalsIgnoreCase("y") || !c.equalsIgnoreCase("n")) {
+                    System.out.println("Falsche Eingabe!");
+                    throw new FalscheEingabeException("Falsche Eingabe");
+                }
+            } catch (FalscheEingabeException e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
+            //summeSpielerHand add to database
+        else {
+            return false;
+        }
+
         //true = Wenn Spieler keine Karte im Array hat
         //Berechnen der Punkte (Übertrag in Datenbank)
         //Überprüft ob Endspielstand (500 Punkte) von einem Spieler erreicht wurde nach Rundenende, wenn ja, dann Methode gameEnded() aufrufen
-        return false;
     }
 
     private boolean gameEnded(){
+        if (spielerManager.aktuellerSpieler.punkte > 500){
+            return true;
+        }
+        else {
+            return false;
+        }
         //Ausgabe Rangliste + Gratulation
         //Ausgabe finaler Punktestand
         // Ausgabe GameOver
         //Abfrage "Neues Spiel starten"
-        return false;
-
     }
 
     private void printFinalScore(){
