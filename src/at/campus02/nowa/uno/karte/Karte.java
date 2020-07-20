@@ -15,6 +15,7 @@ public abstract class Karte {
         return farbe;
     }
 
+
     public void setFarbe(Farbe farbe) {
         this.farbe = farbe;
     }
@@ -26,6 +27,7 @@ public abstract class Karte {
     public void setWert(Wert wert) {
         this.wert = wert;
     }
+
 
     //***************ATTENTION***************
     //Bitte keine equals Methoden implementieren, meine Methoden funktionieren sonst nicht :D lg Divali
@@ -43,4 +45,6 @@ public abstract class Karte {
                 " || " + wert +
                 '}';
     }
+
+    public abstract int getPunkte();
 }

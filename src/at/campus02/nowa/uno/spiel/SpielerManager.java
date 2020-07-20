@@ -20,6 +20,7 @@ public class SpielerManager {
         Scanner input = new Scanner(System.in);
         //  Spieler in  Liste
         protected ArrayList<Spieler> alleSpieler;
+
         Kartenmanager kartenstapel;
         Karte vergleich = null;
 //        TeststapelWunschkarte kartenstapel;  //--> zum Testen mit speziellen Karten
@@ -29,13 +30,14 @@ public class SpielerManager {
         boolean spielrichtung = true;
         boolean aussetzten = false;
 
+
         //private PrintStream output;
         //private final Scanner input;
 
 
         public SpielerManager() {   //todo: Ablagestapel, Verteilstapel, Scanner, alleSpieler-Array werden dem SpielerManager als Parameter übergeben.
             // todo: So können diese von App erstellt werden un Spielermanager nutzt dann die gleichen Objekte
-    //       this.kartenstapel = new Kartenmanager();
+
             this.kartenstapel = new TeststapelWunschkarte();
             this.alleSpieler = new ArrayList<>();
 
@@ -89,12 +91,14 @@ public class SpielerManager {
 
     //Verteilstack erstellen & austeilen der Karten auf die Spielerhand
     public void kartenAusteilen() {
+
         kartenstapel.stapelErstellen();
 //        kartenstapel.neuerTeststapel(new Zahlenkarte(Farbe.BLAU,Wert.ACHT), new Zahlenkarte(Farbe.BLAU,Wert.RICHTUNGSWECHSEL));  //--> Wenn mit Teststapel gespielt wird
 //        kartenstapel.neuerTeststapel(new Zahlenkarte(SCHWARZ,Wert.PLUSVIER), new Zahlenkarte(Farbe.BLAU,Wert.RICHTUNGSWECHSEL));  //--> Wenn mit Teststapel gespielt wird
         System.out.println("Karten werden ausgeteilt");     //Karten austeilen -->7 Karten pro Spieler
         for (Spieler spieler : alleSpieler) {
-            while (spieler.spielerHand.size() < 2) {
+            while (spieler.spielerHand.size() < 2) { //todo 2 statt 7
+
                 spieler.spielerHand.add(kartenstapel.abheben());
             }
             System.out.println(spieler.getName() + " hat " + spieler.spielerHand.size() + " Handkarten.");
@@ -128,7 +132,7 @@ public class SpielerManager {
                 Scanner scanner = new Scanner(System.in);
                 String c = scanner.nextLine();
                 if (c.equalsIgnoreCase("y")) {
-                    aktuellerSpieler.printSpielerHand();//todo: hier soll Methode printSpielerhand aufgerufen werden
+
                     return;
                 }
                 if (c.equalsIgnoreCase("n")) {
@@ -142,6 +146,13 @@ public class SpielerManager {
                 abfrageKartenhandZeigen();
                 //e.printStackTrace();
             }
+        }
+    }
+
+    public void printSpielerHand (){
+        int index = 0;
+        for (Karte k : aktuellerSpieler.spielerHand){
+            System.out.println("  " + (index++) + k);
         }
     }
 
@@ -160,6 +171,7 @@ public class SpielerManager {
     public void karteAblegen() {
         //per Eingabe Karte spielen
         //check if chosen card matches one available in the Kartenhand-array
+
 
         if (aktuellerSpieler instanceof EchteSpieler) {
 
@@ -216,6 +228,7 @@ public class SpielerManager {
                     i++;
 
 
+
                 }
             }
             if (!karteGespielt) {
@@ -232,6 +245,7 @@ public class SpielerManager {
                 } else {
                     aktuellerSpieler.spielerHand.add(neu);
                     System.out.println("Spieler bekommt neue karte: " + neu);
+
                 }
             }
         }
@@ -258,6 +272,8 @@ public class SpielerManager {
         // Spielerwechsel nach Beendigung des Spielzuges
         //Richtungswechsel wenn auf Stapel "Richtungswechsel" liegt
         //todo: Aussetzenkarte ist Spieler überspringen
+       if(!aktuellerSpieler.getSpielerHand().isEmpty()) {
+
         if (kartenstapel.obersteKarte().getWert().equals(Wert.AUSSETZEN)){
                  i = 1;}
 
@@ -295,6 +311,8 @@ public class SpielerManager {
                     aktuellerSpieler = alleSpieler.get(2-i);
                     break;
             }
+
+            }
         }
         i = 0;
         return aktuellerSpieler;
@@ -328,6 +346,14 @@ public class SpielerManager {
 //    }
 //}
 //    }
+
+    public int getPunkteVonAllenSpielern (){
+        int punkteAlleSpieler = 0;
+            for (Spieler s : alleSpieler){
+            punkteAlleSpieler += s.getPunkteVonSpielerHand();
+        }
+        return punkteAlleSpieler;
+    }
 
     @Override
     public String toString() {
