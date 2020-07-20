@@ -21,6 +21,7 @@ public class SpielerManager {
         //  Spieler in  Liste
         protected ArrayList<Spieler> alleSpieler;
         Kartenmanager kartenstapel;
+        Karte vergleich = null;
 //        TeststapelWunschkarte kartenstapel;  //--> zum Testen mit speziellen Karten
 
 
@@ -34,8 +35,8 @@ public class SpielerManager {
 
         public SpielerManager() {   //todo: Ablagestapel, Verteilstapel, Scanner, alleSpieler-Array werden dem SpielerManager als Parameter übergeben.
             // todo: So können diese von App erstellt werden un Spielermanager nutzt dann die gleichen Objekte
-           this.kartenstapel = new Kartenmanager();
-//            this.kartenstapel = new TeststapelWunschkarte();
+    //       this.kartenstapel = new Kartenmanager();
+            this.kartenstapel = new TeststapelWunschkarte();
             this.alleSpieler = new ArrayList<>();
 
             //this.input = input;
@@ -89,11 +90,11 @@ public class SpielerManager {
     //Verteilstack erstellen & austeilen der Karten auf die Spielerhand
     public void kartenAusteilen() {
         kartenstapel.stapelErstellen();
-  //      kartenstapel.neuerTeststapel(new Zahlenkarte(Farbe.BLAU,Wert.ACHT), new Zahlenkarte(Farbe.BLAU,Wert.RICHTUNGSWECHSEL));  //--> Wenn mit Teststapel gespielt wird
+//        kartenstapel.neuerTeststapel(new Zahlenkarte(Farbe.BLAU,Wert.ACHT), new Zahlenkarte(Farbe.BLAU,Wert.RICHTUNGSWECHSEL));  //--> Wenn mit Teststapel gespielt wird
 //        kartenstapel.neuerTeststapel(new Zahlenkarte(SCHWARZ,Wert.PLUSVIER), new Zahlenkarte(Farbe.BLAU,Wert.RICHTUNGSWECHSEL));  //--> Wenn mit Teststapel gespielt wird
         System.out.println("Karten werden ausgeteilt");     //Karten austeilen -->7 Karten pro Spieler
         for (Spieler spieler : alleSpieler) {
-            while (spieler.spielerHand.size() < 7) {
+            while (spieler.spielerHand.size() < 2) {
                 spieler.spielerHand.add(kartenstapel.abheben());
             }
             System.out.println(spieler.getName() + " hat " + spieler.spielerHand.size() + " Handkarten.");
@@ -127,7 +128,7 @@ public class SpielerManager {
                 Scanner scanner = new Scanner(System.in);
                 String c = scanner.nextLine();
                 if (c.equalsIgnoreCase("y")) {
-                    System.out.println(aktuellerSpieler.spielerHand);//todo: hier soll Methode printSpielerhand aufgerufen werden
+                    aktuellerSpieler.printSpielerHand();//todo: hier soll Methode printSpielerhand aufgerufen werden
                     return;
                 }
                 if (c.equalsIgnoreCase("n")) {
@@ -150,6 +151,8 @@ public class SpielerManager {
         System.out.println(aktuellerSpieler.getName() + "  ist an der Reihe!");
         abfrageKartenhandZeigen();      //todo: die Methoden direkt in der App aufrufen
         kartenstapel.AusgabeObersteKarteAblagestapel();
+        // Nur zum TESTEN
+        // aktuellerSpieler.printSpielerHand();
     }
 
 
@@ -217,7 +220,7 @@ public class SpielerManager {
             }
             if (!karteGespielt) {
                 System.out.println(kartenstapel.obersteKarte());
-                System.out.println(aktuellerSpieler.getSpielerHand());
+                aktuellerSpieler.getSpielerHand();
                 System.out.println("Keine passende Karte - " + aktuellerSpieler.getName() + " muss abheben");
                 Karte neu = kartenstapel.abheben();
                 System.out.println(neu);
@@ -231,10 +234,8 @@ public class SpielerManager {
                     System.out.println("Spieler bekommt neue karte: " + neu);
                 }
             }
-        } spielerWechsel();
+        }
     }
-
-
 
 
 
@@ -299,6 +300,34 @@ public class SpielerManager {
         return aktuellerSpieler;
     }
 
+//    public void endeSpielzug(){
+//            if((kartenstapel.obersteKarte().getFarbe() == (SCHWARZ)
+//        System.out.println("Ist Ihr Spielzug beendet?");
+//        try {
+//            String s = input.nextLine();
+//           if(s.equalsIgnoreCase("y")) {
+//                return;
+//            }
+//            if (s.equalsIgnoreCase("n")) {
+//                System.out.println("Bitte \"Uno\" oder \"Farbe + (blau,gelb,grün,rot)\" eingeben:");
+//                String next = input.nextLine();
+//                try {
+//                    if(next.equalsIgnoreCase("UNO")) {
+//                        aktuellerSpieler.setUno(true);
+//                    } else if(next.startsWith("Farbe")){
+//                        kartenstapel.se
+//                    }
+//            while (!input.equalsIgnoreCase("y") || !input.equalsIgnoreCase("n")) {
+//                System.out.println("Falsche Eingabe!");
+//                throw new FalscheEingabeException("Falsche Eingabe");
+//            }
+//        } catch (FalscheEingabeException e) {
+//            abfrageKartenhandZeigen();
+//            //e.printStackTrace();
+//        }
+//    }
+//}
+//    }
 
     @Override
     public String toString() {

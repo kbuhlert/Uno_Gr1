@@ -25,11 +25,10 @@ public class EchteSpieler extends Spieler {
     public void spielen() {
 
     }
-    public void printSpielerHand (){
-        int index = 0;
-        for (Karte k : spielerHand){
-            System.out.println("  " + (index++) + k);
-        }
+
+    @Override
+    public void printSpielerHand() {
+        super.printSpielerHand();
     }
 
     @Override

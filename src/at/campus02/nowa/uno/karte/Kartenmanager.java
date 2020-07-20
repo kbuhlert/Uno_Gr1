@@ -72,16 +72,14 @@ public class Kartenmanager {
     public void stapelErstellen(){
         neuerVerteilstapel();
         mischen();
+
     }
 
 
     //Methode oberste Karte abheben (pull)
     public Karte abheben (){
                // Prüfen ob genug Karten am Stapel sind
-        if(kartenstapel.size() < 4){
-            System.out.println(kartenstapel.size());
-            stapelZusammenMischen();
-        }
+
         Karte abgehobeneKarte = kartenstapel.remove(kartenstapel.size()-1);
         return abgehobeneKarte;
     }
@@ -92,6 +90,8 @@ public class Kartenmanager {
      //   System.out.println(obersteKarte);
         return obersteKarte;
     }
+
+
 
     //Methode Karte drauflegen (put) + Aufruf Prüfung Kartenablage gültig
     //todo: Prüfung erweitern auf Aktionskarten, bisher wird nur geprüft ob gleiche Farbe oder gleicher Wert gelegt wurden
@@ -117,4 +117,7 @@ public class Kartenmanager {
         } System.out.println("Verteilstapel wurde soeben neu gemischt!");
     }
 
+    public int size(){
+        return kartenstapel.size();
+    }
 }

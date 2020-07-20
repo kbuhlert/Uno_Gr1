@@ -12,11 +12,13 @@ public abstract class Spieler {
 
   public String name;
   public ArrayList<Karte> spielerHand;
+  private boolean uno;
 
 
     public Spieler(String name) {
         this.name = name;
         this.spielerHand = new ArrayList<>();
+        this.uno = false;
     }
 
     public String getName() {
@@ -31,8 +33,23 @@ public abstract class Spieler {
         return spielerHand;
     }
 
+    public boolean isUno() {
+        return uno;
+    }
+
+    public void setUno(boolean uno) {
+        this.uno = uno;
+    }
+
     public abstract void spielen();
 
+
+    public void printSpielerHand (){
+        int index = 0;
+        for (Karte k : spielerHand){
+            System.out.println("  " + (index++) + k);
+        }
+    }
 
 
 

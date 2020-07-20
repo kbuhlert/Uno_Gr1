@@ -34,6 +34,10 @@ public class BotSpieler extends Spieler {
 
     }
 
+    @Override
+    public void printSpielerHand() {
+        super.printSpielerHand();
+    }
 
     //Methoden:
     //im Kontruktor wir botNr mit erstellt;
