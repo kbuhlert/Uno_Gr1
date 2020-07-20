@@ -2,6 +2,7 @@ package at.campus02.nowa.uno.spiel;
 
 
 
+import at.campus02.nowa.uno.FalscheEingabeException;
 import at.campus02.nowa.uno.spieler.Spieler;
 
 import java.io.PrintStream;
@@ -89,6 +90,7 @@ public class App {
 
     private void updateState() {
         // TODO: 09.07.2020
+        spielerManager.spielerWechsel();
         //Variable obersteKarteAblagestapel neuen Wert zuweisen
         //Punktestand neu berechnen
         //Spielerhand ArrayList aktualisieren (nach Spielzug, nach Strafkarten)
@@ -111,7 +113,25 @@ public class App {
     private boolean roundEnded(){
         //check whether anyone's spielerhand is empty
         if(spielerManager.aktuellerSpieler.spielerHand.isEmpty()){
-            output.println("Die Runde ist zu Ende. " + spielerManager.aktuellerSpieler.getName() + " hat " + spielerManager.getPunkteVonAllenSpielern() + " Punkte gewonnen.");
+            output.println("Die Runde ist zu Ende. " + spielerManager.aktuellerSpieler.getName() + " hat gewonnen");
+            output.println(spielerManager.getPunkteVonAllenSpielern() + " Punkte gewonnen.");
+
+            output.println("Noch eine Runde?");
+            try {
+                String c = input.nextLine();
+                if (c.equalsIgnoreCase("y")) {
+                    return true;
+                }
+                if (c.equalsIgnoreCase("n")) {
+                    return true;
+                }
+                while (!c.equalsIgnoreCase("y") || !c.equalsIgnoreCase("n")) {
+                    System.out.println("Falsche Eingabe!");
+                    throw new FalscheEingabeException("Falsche Eingabe");
+                }
+            } catch (FalscheEingabeException e) {
+                e.printStackTrace();
+            }
             return true;
         }
             //summeSpielerHand add to database

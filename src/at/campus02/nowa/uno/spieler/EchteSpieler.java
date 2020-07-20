@@ -117,7 +117,10 @@ public class EchteSpieler extends Spieler {
                 '}';
     }
 
-
+    @Override
+    public int getPunkteVonSpielerHand() {
+        return super.getPunkteVonSpielerHand();
+    }
 
     //Konstruktor zählt static int mit anzahlSpieler hoch, hiermit wird festgelegt wieviele bots mitspielen
 

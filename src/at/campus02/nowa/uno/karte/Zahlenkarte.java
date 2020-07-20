@@ -1,13 +1,14 @@
 package at.campus02.nowa.uno.karte;
 
 public class Zahlenkarte extends Karte{
+    private int punkte;
+
     public Zahlenkarte(Farbe farbe, Wert wert) {
         super(farbe, wert);
+        this.punkte = getPunkte();
     }
 
-    @Override
     public int getPunkte() {
-        int punkte = 0;
         if (getWert().equals("NULL")){
             punkte += 0;
         }

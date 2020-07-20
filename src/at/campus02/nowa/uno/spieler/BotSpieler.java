@@ -34,6 +34,10 @@ public class BotSpieler extends Spieler {
 
     }
 
+    @Override
+    public int getPunkteVonSpielerHand() {
+        return super.getPunkteVonSpielerHand();
+    }
 
     //Methoden:
     //im Kontruktor wir botNr mit erstellt;

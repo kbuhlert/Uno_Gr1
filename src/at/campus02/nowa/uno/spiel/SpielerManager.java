@@ -91,7 +91,7 @@ public class SpielerManager {
         kartenstapel.neuerTeststapel(new Zahlenkarte(Farbe.BLAU,Wert.ACHT), new Zahlenkarte(Farbe.BLAU,Wert.ZWEI));  //--> Wenn mit Teststapel gespielt wird
         System.out.println("Karten werden ausgeteilt");     //Karten austeilen -->7 Karten pro Spieler
         for (Spieler spieler : alleSpieler) {
-            while (spieler.spielerHand.size() < 7) {
+            while (spieler.spielerHand.size() < 3) { //todo 3 statt 7
                 spieler.spielerHand.add(kartenstapel.abheben());
             }
             System.out.println(spieler.getName() + " hat " + spieler.spielerHand.size() + " Handkarten.");
@@ -226,7 +226,7 @@ public class SpielerManager {
 
                         }
                     }
-                    spielerWechsel();
+                    //spielerWechsel();
                 }
             }
         }
@@ -249,57 +249,52 @@ public class SpielerManager {
         // Spielerwechsel nach Beendigung des Spielzuges
         //Richtungswechsel wenn auf Stapel "Richtungswechsel" liegt
         //todo: Aussetzenkarte ist Spieler überspringen
-        if (kartenstapel.obersteKarte().getWert().equals(Wert.RICHTUNGSWECHSEL)) {
-            spielrichtung = !spielrichtung;
-        }
-        if (spielrichtung) {
-            switch (alleSpieler.indexOf(aktuellerSpieler)) {
-                case 0:
-                    aktuellerSpieler = alleSpieler.get(1);
-                    break;
-                case 1:
-                    aktuellerSpieler = alleSpieler.get(2);
-                    break;
-                case 2:
-                    aktuellerSpieler = alleSpieler.get(3);
-                    break;
-                case 3:
-                    aktuellerSpieler = alleSpieler.get(0);
-                    break;
+        if(!aktuellerSpieler.getSpielerHand().isEmpty()) {
+
+            if (kartenstapel.obersteKarte().getWert().equals(Wert.RICHTUNGSWECHSEL)) {
+                spielrichtung = !spielrichtung;
             }
-        }
-        if (!spielrichtung) {
-            switch (alleSpieler.indexOf(aktuellerSpieler)) {
-                case 0:
-                    aktuellerSpieler = alleSpieler.get(3);
-                    break;
-                case 1:
-                    aktuellerSpieler = alleSpieler.get(0);
-                    break;
-                case 2:
-                    aktuellerSpieler = alleSpieler.get(1);
-                    break;
-                case 3:
-                    aktuellerSpieler = alleSpieler.get(2);
-                    break;
+            if (spielrichtung) {
+                switch (alleSpieler.indexOf(aktuellerSpieler)) {
+                    case 0:
+                        aktuellerSpieler = alleSpieler.get(1);
+                        break;
+                    case 1:
+                        aktuellerSpieler = alleSpieler.get(2);
+                        break;
+                    case 2:
+                        aktuellerSpieler = alleSpieler.get(3);
+                        break;
+                    case 3:
+                        aktuellerSpieler = alleSpieler.get(0);
+                        break;
+                }
+            }
+            if (!spielrichtung) {
+                switch (alleSpieler.indexOf(aktuellerSpieler)) {
+                    case 0:
+                        aktuellerSpieler = alleSpieler.get(3);
+                        break;
+                    case 1:
+                        aktuellerSpieler = alleSpieler.get(0);
+                        break;
+                    case 2:
+                        aktuellerSpieler = alleSpieler.get(1);
+                        break;
+                    case 3:
+                        aktuellerSpieler = alleSpieler.get(2);
+                        break;
+                }
             }
         }
         return aktuellerSpieler;
     }
 
-    public int getPunkteVonSpielerHand (Spieler s){
-        int summeSpielerHand = 0;
-        for (int i = 0; i < s.spielerHand.size() ; i++) {
-            summeSpielerHand += s.getSpielerHand().get(i).getPunkte();
-            i++;
-        }
-        return summeSpielerHand;
-    }
 
     public int getPunkteVonAllenSpielern (){
         int punkteAlleSpieler = 0;
             for (Spieler s : alleSpieler){
-            punkteAlleSpieler += getPunkteVonSpielerHand(s);
+            punkteAlleSpieler += s.getPunkteVonSpielerHand();
         }
         return punkteAlleSpieler;
     }
