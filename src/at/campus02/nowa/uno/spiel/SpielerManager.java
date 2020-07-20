@@ -4,6 +4,7 @@ import at.campus02.nowa.uno.*;
 
 import at.campus02.nowa.uno.karte.*;
 
+import at.campus02.nowa.uno.kartenstapel.TeststapelWunschkarte;
 import at.campus02.nowa.uno.spieler.BotSpieler;
 import at.campus02.nowa.uno.spieler.EchteSpieler;
 import at.campus02.nowa.uno.spieler.Spieler;
@@ -20,8 +21,8 @@ public class SpielerManager {
         //  Spieler in  Liste
         protected ArrayList<Spieler> alleSpieler;
         Kartenmanager kartenstapel;
-        //TeststapelWunschkarte verteilstapel;  //--> zum Testen mit speziellen Karten
-        Karte pl4 = new Zahlenkarte(SCHWARZ, Wert.PLUSVIER);
+//        TeststapelWunschkarte kartenstapel;  //--> zum Testen mit speziellen Karten
+
 
         Spieler aktuellerSpieler = null;
         boolean spielrichtung = true;
@@ -33,7 +34,8 @@ public class SpielerManager {
 
         public SpielerManager() {   //todo: Ablagestapel, Verteilstapel, Scanner, alleSpieler-Array werden dem SpielerManager als Parameter übergeben.
             // todo: So können diese von App erstellt werden un Spielermanager nutzt dann die gleichen Objekte
-            this.kartenstapel = new Kartenmanager();
+           this.kartenstapel = new Kartenmanager();
+//            this.kartenstapel = new TeststapelWunschkarte();
             this.alleSpieler = new ArrayList<>();
 
             //this.input = input;
@@ -87,7 +89,8 @@ public class SpielerManager {
     //Verteilstack erstellen & austeilen der Karten auf die Spielerhand
     public void kartenAusteilen() {
         kartenstapel.stapelErstellen();
-        //verteilstapel.neuerTeststapel(new Zahlenkarte(Farbe.BLAU,Wert.ACHT), new Zahlenkarte(Farbe.BLAU,Wert.RICHTUNGSWECHSEL));  //--> Wenn mit Teststapel gespielt wird
+  //      kartenstapel.neuerTeststapel(new Zahlenkarte(Farbe.BLAU,Wert.ACHT), new Zahlenkarte(Farbe.BLAU,Wert.RICHTUNGSWECHSEL));  //--> Wenn mit Teststapel gespielt wird
+//        kartenstapel.neuerTeststapel(new Zahlenkarte(SCHWARZ,Wert.PLUSVIER), new Zahlenkarte(Farbe.BLAU,Wert.RICHTUNGSWECHSEL));  //--> Wenn mit Teststapel gespielt wird
         System.out.println("Karten werden ausgeteilt");     //Karten austeilen -->7 Karten pro Spieler
         for (Spieler spieler : alleSpieler) {
             while (spieler.spielerHand.size() < 7) {
@@ -107,8 +110,8 @@ public class SpielerManager {
         //Test ob +4 Aufliegt, wenn ja Karte zurück, mischen und neuer Aufruf der Methode
         while (kartenstapel.obersteKarte().getFarbe() == Farbe.SCHWARZ && kartenstapel.obersteKarte().getWert() == Wert.PLUSVIER) {
             System.out.println("Es liegt eine +4 auf, nochmal mischen, eine neue Karte wird aufgelegt");
-            kartenstapel.mischen();
             kartenstapel.karteAblegen(kartenstapel.obersteKarte());
+            System.out.println(kartenstapel.obersteKarte());
         }
     }
 

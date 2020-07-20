@@ -78,7 +78,8 @@ public class Kartenmanager {
     //Methode oberste Karte abheben (pull)
     public Karte abheben (){
                // Prüfen ob genug Karten am Stapel sind
-        if(kartenstapel.size() > 6){
+        if(kartenstapel.size() < 4){
+            System.out.println(kartenstapel.size());
             stapelZusammenMischen();
         }
         Karte abgehobeneKarte = kartenstapel.remove(kartenstapel.size()-1);
@@ -113,8 +114,7 @@ public class Kartenmanager {
     public void stapelZusammenMischen(){
         for(Karte k : ablagestapel){
             kartenstapel.add(k);
-            System.out.println("Verteilstapel wurde soeben neu gemischt!");
-        }
+        } System.out.println("Verteilstapel wurde soeben neu gemischt!");
     }
 
 }
