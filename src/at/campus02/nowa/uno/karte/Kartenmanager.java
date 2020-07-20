@@ -72,11 +72,14 @@ public class Kartenmanager {
     public void stapelErstellen(){
         neuerVerteilstapel();
         mischen();
+
     }
 
 
     //Methode oberste Karte abheben (pull)
     public Karte abheben (){
+               // Prüfen ob genug Karten am Stapel sind
+
         Karte abgehobeneKarte = kartenstapel.remove(kartenstapel.size()-1);
         return abgehobeneKarte;
     }
@@ -102,7 +105,19 @@ public class Kartenmanager {
 
     public void AusgabeObersteKarteAblagestapel() {
         Karte k = obersteKarte();
+        if(k.getFarbe().equals(SCHWARZ)){
+            System.out.println("Bitte spielen Sie die soeben gewünschte Farbe");
+        } else
         System.out.println("Bitte spielen Sie eine Karte, die auf FARBE:" + k.getFarbe() + " oder WERT: " + k.getWert() + " gelegt werden darf.");
     }
 
+    public void stapelZusammenMischen(){
+        for(Karte k : ablagestapel){
+            kartenstapel.add(k);
+        } System.out.println("Verteilstapel wurde soeben neu gemischt!");
+    }
+
+    public int size(){
+        return kartenstapel.size();
+    }
 }

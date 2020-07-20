@@ -17,6 +17,7 @@ public class TeststapelWunschkarte extends Kartenmanager {
         for (int i = 1; i <= 54; i++) {
             kartenstapel.add(k);
             kartenstapel.add(k2);
+            kartenstapel.add(k2);
         }
         mischen();      //Teststapel wird direkt nach erstellen gemischt,
     }

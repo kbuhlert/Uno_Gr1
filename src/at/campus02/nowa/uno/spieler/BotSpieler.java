@@ -35,8 +35,13 @@ public class BotSpieler extends Spieler {
     }
 
     @Override
+
+    public void printSpielerHand() {
+        super.printSpielerHand();
+
     public int getPunkteVonSpielerHand() {
         return super.getPunkteVonSpielerHand();
+
     }
 
     //Methoden:

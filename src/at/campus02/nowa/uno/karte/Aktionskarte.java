@@ -4,6 +4,7 @@ public class Aktionskarte extends Karte{
     //Aktionskarten sind alle Karten die Aktion auslösen (abheben, richtungswechsel, aussetzen, farbwahl)
 
     //zusätzlich zur Farbe (abstrakte Klasse) hat Aktionskarte weitere Werte
+
     private Wert kartenwert;
 
     public Aktionskarte(Farbe farbe, Wert wert) {
@@ -30,6 +31,7 @@ public class Aktionskarte extends Karte{
         }
         return punkte;
     }
+
 
     //Methoden:
     //abheben();

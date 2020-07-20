@@ -28,18 +28,9 @@ public abstract class Karte {
         this.wert = wert;
     }
 
-    //EqualsMethode wird für Vergleich der Karten benötigt
 
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Karte)) return false;
-        Karte karte = (Karte) o;
-        return getFarbe() == karte.getFarbe() ||
-                getWert() == karte.getWert();
-    }
+    //***************ATTENTION***************
+    //Bitte keine equals Methoden implementieren, meine Methoden funktionieren sonst nicht :D lg Divali
 
     @Override
     public int hashCode() {

@@ -2,8 +2,13 @@ package at.campus02.nowa.uno.spiel;
 
 
 
+
+import at.campus02.nowa.uno.karte.Kartenmanager;
+import at.campus02.nowa.uno.kartenstapel.TeststapelWunschkarte;
+
 import at.campus02.nowa.uno.FalscheEingabeException;
 import at.campus02.nowa.uno.spieler.Spieler;
+
 
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -90,7 +95,18 @@ public class App {
 
     private void updateState() {
         // TODO: 09.07.2020
+
+//        spielerManager.endeSpielzug();
+
+//         if(spielerManager.kartenstapel.size() < 4){
+//             System.out.println(spielerManager.kartenstapel.size());
+//             spielerManager.kartenstapel.stapelZusammenMischen();
+//         }
+//         spielerManager.spielerWechsel();
+
+
         spielerManager.spielerWechsel();
+
         //Variable obersteKarteAblagestapel neuen Wert zuweisen
         //Punktestand neu berechnen
         //Spielerhand ArrayList aktualisieren (nach Spielzug, nach Strafkarten)
