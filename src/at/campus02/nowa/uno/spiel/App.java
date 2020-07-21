@@ -16,16 +16,18 @@ import java.util.Scanner;
 public class App {
     private final Scanner input;
     private final PrintStream output;
+    private final SpielerManager spielerManager;
 
     //TeststapelWunschkarte verteilstapel;  //--> zum Testen mit speziellen Karten
 
     public App(Scanner input, PrintStream output){
         this.input = input;
         this.output = output;
+        spielerManager = new SpielerManager(input, output);
     }
 
 
-    SpielerManager spielerManager = new SpielerManager();
+
     //TeststapelWunschkarte verteilstapel = new TeststapelWunschkarte();  //--> zum Testen mit speziellen Karten
     //Kartenstapel ablagestapel = new Kartenstapel();
 
@@ -117,10 +119,10 @@ public class App {
 
     private void printState() {
         //Ausgeben welcher Spieler ist als nächstes dran
-        if (!roundEnded()){
+//        if (!roundEnded()){
             spielerManager.WerIstDranUndWelcheKarte();
-        }
-        return;
+//        }
+
         //Ausgeben welche Karte auf Ablagestapel oben liegt (variable obersteKarteAblagestapel)
         //Aufvorderung des nächsten Spielers
         //Spielerhand auf Konsole ausgeben (könnte auch mit SpielerInput abgefragt werden, dann muss Bot die Hand nicht ausgeben -->toString beim echten Spieler)
@@ -136,7 +138,7 @@ public class App {
             try {
                 String c = input.nextLine();
                 if (c.equalsIgnoreCase("y")) {
-                    return true;
+                    spielerManager.startSpielerFestlegen();
                 }
                 if (c.equalsIgnoreCase("n")) {
                     return true;
@@ -161,7 +163,7 @@ public class App {
     }
 
     private boolean gameEnded(){
-        if (spielerManager.aktuellerSpieler.punkte > 500){
+        if (spielerManager.aktuellerSpieler.rundenPunkte >= 500){
             return true;
         }
         else {

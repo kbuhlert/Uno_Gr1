@@ -9,6 +9,7 @@ import at.campus02.nowa.uno.spieler.BotSpieler;
 import at.campus02.nowa.uno.spieler.EchteSpieler;
 import at.campus02.nowa.uno.spieler.Spieler;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -17,40 +18,41 @@ import static at.campus02.nowa.uno.karte.Farbe.SCHWARZ;
 import java.util.Scanner;
 
 public class SpielerManager {
-        Scanner input = new Scanner(System.in);
-        //  Spieler in  Liste
-        protected ArrayList<Spieler> alleSpieler;
+    private final Scanner input;
+    private final PrintStream output;
+    //  Spieler in  Liste
+    protected ArrayList<Spieler> alleSpieler;
 
-        Kartenmanager kartenstapel;
-        Karte vergleich = null;
+    Kartenmanager kartenstapel;
+    Karte vergleich = null;
 //        TeststapelWunschkarte kartenstapel;  //--> zum Testen mit speziellen Karten
 
 
-        Spieler aktuellerSpieler = null;
-        boolean spielrichtung = true;
-        boolean aussetzten = false;
+    Spieler aktuellerSpieler = null;
+    boolean spielrichtung = true;
+    boolean aussetzten = false;
 
 
-        //private PrintStream output;
-        //private final Scanner input;
+    //private PrintStream output;
+    //private final Scanner input;
 
 
-        public SpielerManager() {   //todo: Ablagestapel, Verteilstapel, Scanner, alleSpieler-Array werden dem SpielerManager als Parameter übergeben.
-            // todo: So können diese von App erstellt werden un Spielermanager nutzt dann die gleichen Objekte
+    public SpielerManager(Scanner input, PrintStream output) {
+        //todo: Ablagestapel, Verteilstapel, Scanner, alleSpieler-Array werden dem SpielerManager als Parameter übergeben.
+        // todo: So können diese von App erstellt werden un Spielermanager nutzt dann die gleichen Objekte
 
-            this.kartenstapel = new TeststapelWunschkarte();
-            this.alleSpieler = new ArrayList<>();
-
-            //this.input = input;
-            //this.output = output;
-        }
+        this.kartenstapel = new TeststapelWunschkarte();
+        this.alleSpieler = new ArrayList<>();
+        this.input = input;
+        this.output = output;
+    }
 
     public void spielerZuweisen() {
         Spieler spieler;
 
         int anzBot = 1;
 //        input = new Scanner(System.in);
-        while(alleSpieler.size() < 4) {
+        while (alleSpieler.size() < 4) {
             System.out.println("Bitte geben Sie Ihren Namen ein: ");
             String name = input.nextLine();
             if (name.toLowerCase().equals("bot")) {
@@ -132,7 +134,7 @@ public class SpielerManager {
                 Scanner scanner = new Scanner(System.in);
                 String c = scanner.nextLine();
                 if (c.equalsIgnoreCase("y")) {
-
+                    aktuellerSpieler.printSpielerHand();
                     return;
                 }
                 if (c.equalsIgnoreCase("n")) {
@@ -143,15 +145,14 @@ public class SpielerManager {
                     throw new FalscheEingabeException("Falsche Eingabe");
                 }
             } catch (FalscheEingabeException e) {
-                abfrageKartenhandZeigen();
-                //e.printStackTrace();
+                e.printStackTrace();
             }
         }
     }
 
-    public void printSpielerHand (){
+    public void printSpielerHand() {
         int index = 0;
-        for (Karte k : aktuellerSpieler.spielerHand){
+        for (Karte k : aktuellerSpieler.spielerHand) {
             System.out.println("  " + (index++) + k);
         }
     }
@@ -167,36 +168,83 @@ public class SpielerManager {
     }
 
 
+    public void falscheKarte() {
+        String c;
+        System.out.println("Falsche Karte gelegt. Bitte legen Sie eine passende Karte ab");
+        System.out.println("Es liegt die " + kartenstapel.obersteKarte() + " oben auf!");
+        System.out.println("Möchten Sie eine neue Karte abheben? Bitte Y (YES) oder N (NO) eingeben");
+        do {
+            c = input.nextLine();
+            if (c.toLowerCase().equals("y")) {
+                Karte neu = kartenstapel.abheben();
+                System.out.println(neu.toString());
+                do {
+                    System.out.println("Möchten Sie die neue Karte spielen? Bitte Y (YES) oder N (NO) eingeben");
+                    c = input.nextLine();
+
+                    if (c.toLowerCase().equals("y")) {
+                        if (passendeKarte(neu, kartenstapel.obersteKarte())) {
+                            System.out.println("Spielzug korrekt. Diese Karte wurde abgelegt:");
+                            kartenstapel.karteAblegen(neu);
+                            break;
+                        }
+                    } else if (c.toLowerCase().equals("n")) {
+                        System.out.println("Sie müssen die gespielte Karte behalten!");
+                        aktuellerSpieler.spielerHand.add(neu);
+                        break;
+                    } else {
+                        System.out.println("Falsche Eingabe!");
+                    }
+                } while (true);
+                break;
+            } else if (c.equalsIgnoreCase("n")) {
+                System.out.println("Bitte legen Sie eine passende Karte ab");
+                karteAblegen();
+                break;
+            } else {
+                System.out.println("Falsche Eingabe!");
+            }
+        } while (true);
+
+    }
+
 
     public void karteAblegen() {
+
         //per Eingabe Karte spielen
         //check if chosen card matches one available in the Kartenhand-array
 
 
         if (aktuellerSpieler instanceof EchteSpieler) {
 
-                int position = input.nextInt();
+            int position = input.nextInt();
             Karte handKarte = aktuellerSpieler.spielerHand.get(position);
 
             if (!passendeKarte(handKarte, kartenstapel.obersteKarte())) {
-                System.out.println("Falsche Karte gelegt. Bitte legen Sie eine passende Karte ab");
-                System.out.println("Es liegt die " + kartenstapel.obersteKarte() + " oben auf!");
-                System.out.println("Möchten Sie eine neue Karte abheben? Bitte Y (YES) oder N (NO) eingeben");
-                if(input.nextLine().toLowerCase().equals("y")){
-                    Karte karte = kartenstapel.abheben();
-                    System.out.println(karte);
-                    System.out.println("Möchten Sie die neue Karte spielen? Bitte Y (YES) oder N (NO) eingeben");
-                    if(input.nextLine().toLowerCase().equals("y")){
-                        karteAblegen();
+                falscheKarte();
+//
+//
+//                Karte neu = kartenstapel.abheben();
+//                aktuellerSpieler.printSpielerHand();
+//                System.out.println("Möchten Sie die neue Karte spielen? Bitte Y (YES) oder N (NO) eingeben");
+//                if(input.nextLine().toLowerCase().equals("y")){
+//                    if(passendeKarte(neu, kartenstapel.obersteKarte())){
+//                        System.out.println("Spielzug korrekt. Diese Karte wurde abgelegt:");
+//                        kartenstapel.karteAblegen(neu);
+//                    } else {
+//                        System.out.println("Sie müssen die gespielte Karte behalten!");
+//                    }
+//
+//                } else if(input.nextLine().toLowerCase().equals("n")){
+//                    aktuellerSpieler.spielerHand.add(neu);
+//                }
+//            } catch (FalscheEingabeException e) {
+//                e.printStackTrace();
+//            } else if (input.nextLine().toLowerCase().equals("n")){
+//                System.out.println("Bitte legen Sie eine passende Karte ab");
+//                karteAblegen();
+//            }
 
-                    } else if(input.nextLine().toLowerCase().equals("n")){
-                        aktuellerSpieler.spielerHand.add(karte);
-                    }
-                } else if (input.nextLine().toLowerCase().equals("n")){
-                    System.out.println("Bitte legen Sie eine passende Karte ab");
-                    karteAblegen();
-                }
-                // TODO: 19.07.2020 abheben oä implementieren! falls keine passende karte
             } else {
                 System.out.println("Spielzug korrekt. Diese Karte wurde abgelegt:");
                 System.out.println(aktuellerSpieler.spielerHand.get(position));
@@ -228,7 +276,6 @@ public class SpielerManager {
                     i++;
 
 
-
                 }
             }
             if (!karteGespielt) {
@@ -252,7 +299,6 @@ public class SpielerManager {
     }
 
 
-
     private boolean passendeKarte(Karte handKarte, Karte ablageStapel) {
         boolean ausgabe;
         if (ablageStapel.getFarbe().equals(SCHWARZ)) {
@@ -267,50 +313,52 @@ public class SpielerManager {
     }
 
     public Spieler spielerWechsel() {
-            int i = 0;
+        int i = 0;
 
         // Spielerwechsel nach Beendigung des Spielzuges
         //Richtungswechsel wenn auf Stapel "Richtungswechsel" liegt
         //todo: Aussetzenkarte ist Spieler überspringen
-       if(!aktuellerSpieler.getSpielerHand().isEmpty()) {
+        if (!aktuellerSpieler.getSpielerHand().isEmpty()) {
 
-        if (kartenstapel.obersteKarte().getWert().equals(Wert.AUSSETZEN)){
-                 i = 1;}
+            if (kartenstapel.obersteKarte().getWert().equals(Wert.AUSSETZEN)) {
+                System.out.println("Aussetzen!");
+                i = 1;
+            }
 
-        if (kartenstapel.obersteKarte().getWert().equals(Wert.RICHTUNGSWECHSEL)) {
-            spielrichtung = !spielrichtung;
-        }
-        if (spielrichtung) {
-            switch (alleSpieler.indexOf(aktuellerSpieler)) {
-                case 0:
-                    aktuellerSpieler = alleSpieler.get(1+i);
-                    break;
-                case 1:
-                    aktuellerSpieler = alleSpieler.get(2+i);
-                    break;
-                case 2:
-                    aktuellerSpieler = alleSpieler.get(3-(3*i));
-                    break;
-                case 3:
-                    aktuellerSpieler = alleSpieler.get(0+i);
-                    break;
+            if (kartenstapel.obersteKarte().getWert().equals(Wert.RICHTUNGSWECHSEL)) {
+                spielrichtung = !spielrichtung;
             }
-        }
-        if (!spielrichtung) {
-            switch (alleSpieler.indexOf(aktuellerSpieler)) {
-                case 0:
-                    aktuellerSpieler = alleSpieler.get(3-i);
-                    break;
-                case 1:
-                    aktuellerSpieler = alleSpieler.get(0+(3*i));
-                    break;
-                case 2:
-                    aktuellerSpieler = alleSpieler.get(1-i);
-                    break;
-                case 3:
-                    aktuellerSpieler = alleSpieler.get(2-i);
-                    break;
+            if (spielrichtung) {
+                switch (alleSpieler.indexOf(aktuellerSpieler)) {
+                    case 0:
+                        aktuellerSpieler = alleSpieler.get(1 + i);
+                        break;
+                    case 1:
+                        aktuellerSpieler = alleSpieler.get(2 + i);
+                        break;
+                    case 2:
+                        aktuellerSpieler = alleSpieler.get(3 - (3 * i));
+                        break;
+                    case 3:
+                        aktuellerSpieler = alleSpieler.get(0 + i);
+                        break;
+                }
             }
+            if (!spielrichtung) {
+                switch (alleSpieler.indexOf(aktuellerSpieler)) {
+                    case 0:
+                        aktuellerSpieler = alleSpieler.get(3 - i);
+                        break;
+                    case 1:
+                        aktuellerSpieler = alleSpieler.get(0 + (3 * i));
+                        break;
+                    case 2:
+                        aktuellerSpieler = alleSpieler.get(1 - i);
+                        break;
+                    case 3:
+                        aktuellerSpieler = alleSpieler.get(2 - i);
+                        break;
+                }
 
             }
         }
@@ -347,9 +395,9 @@ public class SpielerManager {
 //}
 //    }
 
-    public int getPunkteVonAllenSpielern (){
+    public int getPunkteVonAllenSpielern() {
         int punkteAlleSpieler = 0;
-            for (Spieler s : alleSpieler){
+        for (Spieler s : alleSpieler) {
             punkteAlleSpieler += s.getPunkteVonSpielerHand();
         }
         return punkteAlleSpieler;

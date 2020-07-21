@@ -12,9 +12,8 @@ public abstract class Spieler {
 
   public String name;
   public ArrayList<Karte> spielerHand;
-
   private boolean uno;
-  public int punkte;
+  public int rundenPunkte;
 
 
 
@@ -22,7 +21,7 @@ public abstract class Spieler {
         this.name = name;
         this.spielerHand = new ArrayList<>();
         this.uno = false;
-        this.punkte = 0;
+        this.rundenPunkte = 0;
 
     }
 
@@ -45,20 +44,21 @@ public abstract class Spieler {
 
     public void setUno(boolean uno) {
         this.uno = uno;
-
-    public int getPunkte() {
-        return punkte;
     }
 
-    public void setPunkte(int punkte) {
-        this.punkte = punkte;
+
+    public int getRundenPunkte() {
+        return rundenPunkte;
     }
 
-    public int getPunkteVonSpielerHand (){
+    public void setRundenPunkte(int punkte) {
+        this.rundenPunkte = rundenPunkte;
+    }
+
+    public int getPunkteVonSpielerHand(){
         int summeSpielerHand = 0;
-        for (int i = 0; i < spielerHand.size() ; i++) {
-            summeSpielerHand += spielerHand.get(i).getPunkte();
-            i++;
+        for (Karte k : spielerHand) {
+            summeSpielerHand += k.getPunkte();
         }
         return summeSpielerHand;
 
