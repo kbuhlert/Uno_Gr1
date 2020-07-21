@@ -1,8 +1,6 @@
 package at.campus02.nowa.uno.spiel;
 
 
-
-
 import at.campus02.nowa.uno.karte.Kartenmanager;
 import at.campus02.nowa.uno.kartenstapel.TeststapelWunschkarte;
 
@@ -20,12 +18,11 @@ public class App {
 
     //TeststapelWunschkarte verteilstapel;  //--> zum Testen mit speziellen Karten
 
-    public App(Scanner input, PrintStream output){
+    public App(Scanner input, PrintStream output) {
         this.input = input;
         this.output = output;
         spielerManager = new SpielerManager(input, output);
     }
-
 
 
     //TeststapelWunschkarte verteilstapel = new TeststapelWunschkarte();  //--> zum Testen mit speziellen Karten
@@ -48,7 +45,7 @@ public class App {
             } while (!gameEnded());
 
             printFinalScore();
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
             //todo Exceptions passend erweitern (Bsp. Auswahlzahl von Karte auf Hand ist Größer als Array)
         }
@@ -78,6 +75,12 @@ public class App {
 
         //Scanner aufrufen für Eingabe des aktuellen Spielers
         spielerManager.karteAblegen();
+        spielerManager.spielzugBeendet();
+
+        // boolean der true ausgibt wenn aktueller spieler keine karten mehr hat
+        if(spielerManager.letzte){
+            roundEnded();
+        }
         //todo: Info an Alle. Habe die Ausgabe der obersten Karte Ablagestapel, die Aufforderung des nächsten Spielers, Abfrage ob Hand angezeigt
         // werden soll und Eingabeaufforderung in PrintState() gegeben
 
@@ -119,18 +122,24 @@ public class App {
 
     private void printState() {
         //Ausgeben welcher Spieler ist als nächstes dran
-        if (!roundEnded()){
             spielerManager.WerIstDranUndWelcheKarte();
-        }
 
-        //Ausgeben welche Karte auf Ablagestapel oben liegt (variable obersteKarteAblagestapel)
-        //Aufvorderung des nächsten Spielers
-        //Spielerhand auf Konsole ausgeben (könnte auch mit SpielerInput abgefragt werden, dann muss Bot die Hand nicht ausgeben -->toString beim echten Spieler)
+
     }
 
+
+    //Ausgeben welche Karte auf Ablagestapel oben liegt (variable obersteKarteAblagestapel)
+    //Aufforderung des nächsten Spielers
+    //Spielerhand auf Konsole ausgeben (könnte auch mit SpielerInput abgefragt werden, dann muss Bot die Hand nicht ausgeben -->toString beim echten Spieler)
+
+
     private boolean roundEnded() {
+        boolean ende = false;
         //check whether anyone's spielerhand is empty
         if (spielerManager.aktuellerSpieler.spielerHand.isEmpty()) {
+            output.println();
+            output.println();
+            output.println("------");
             output.println("Die Runde ist zu Ende. " + spielerManager.aktuellerSpieler.getName() + " hat gewonnen");
             output.println(spielerManager.getPunkteVonAllenSpielern() + " Punkte gewonnen.");
             output.println();
@@ -139,15 +148,16 @@ public class App {
             while (input.hasNext()) {
                 c = input.nextLine();
                 if (c.equalsIgnoreCase("y")) {
-                    return true;
+                    ende = true;
+                    break;
                 } else if (c.equalsIgnoreCase("n")) {
-                    return false;
+                   gameEnded();
                 } else {
                     System.out.println("Falsche Eingabe!");
                 }
             }
         }
-        return false;
+        return ende;
     }
 //
 //            output.println("Noch eine Runde?");
@@ -168,7 +178,7 @@ public class App {
 //            }
 //            return true;
 //        }
-            //summeSpielerHand add to database
+    //summeSpielerHand add to database
 //        else {
 //        }
 //            return false;
@@ -179,20 +189,30 @@ public class App {
 //        Überprüft ob Endspielstand (500 Punkte) von einem Spieler erreicht wurde nach Rundenende, wenn ja, dann Methode gameEnded() aufrufen
 //    }
 
-    private boolean gameEnded(){
-        if (spielerManager.aktuellerSpieler.rundenPunkte >= 500){
+    private boolean gameEnded() {
+        if (spielerManager.aktuellerSpieler.rundenPunkte >= 500) {
             return true;
         }
-        else {
-            return false;
+
+        while (input.hasNext()) {
+            String s = input.nextLine();
+            output.println("Möchten Sie wirklich vorzeitig beenden? Bitte Y (YES) oder N (NO) eingeben");
+            if (s.equalsIgnoreCase("y")) {
+                return true;
+            } else if (s.equalsIgnoreCase("n")) {
+                return false;
+            } else output.println("Falsche Eingabe ");
+            output.println("Bitte Y (YES) oder N (NO) eingeben");
+            s = input.nextLine();
+            //Ausgabe Rangliste + Gratulation
+            //Ausgabe finaler Punktestand
+            // Ausgabe GameOver
+            //Abfrage "Neues Spiel starten"
         }
-        //Ausgabe Rangliste + Gratulation
-        //Ausgabe finaler Punktestand
-        // Ausgabe GameOver
-        //Abfrage "Neues Spiel starten"
+        return false;
     }
 
-    private void printFinalScore(){
+    private void printFinalScore() {
 
     }
 }
