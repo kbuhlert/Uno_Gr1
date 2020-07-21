@@ -12,7 +12,6 @@ public class BotSpieler extends Spieler {
         super(name);
     }
 
-
     @Override
     public String getName() {
         return super.getName();
@@ -29,21 +28,16 @@ public class BotSpieler extends Spieler {
     }
 
     @Override
-    public void spielen() {
-
-    }
-
-    @Override
 
     public void printSpielerHand() {
         super.printSpielerHand();
     }
 
-
     public int getPunkteVonSpielerHand() {
         return super.getPunkteVonSpielerHand();
 
     }
+
 
     //Methoden:
     //im Kontruktor wir botNr mit erstellt;

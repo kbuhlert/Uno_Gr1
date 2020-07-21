@@ -119,48 +119,65 @@ public class App {
 
     private void printState() {
         //Ausgeben welcher Spieler ist als nächstes dran
-//        if (!roundEnded()){
+        if (!roundEnded()){
             spielerManager.WerIstDranUndWelcheKarte();
-//        }
+        }
 
         //Ausgeben welche Karte auf Ablagestapel oben liegt (variable obersteKarteAblagestapel)
         //Aufvorderung des nächsten Spielers
         //Spielerhand auf Konsole ausgeben (könnte auch mit SpielerInput abgefragt werden, dann muss Bot die Hand nicht ausgeben -->toString beim echten Spieler)
     }
 
-    private boolean roundEnded(){
+    private boolean roundEnded() {
         //check whether anyone's spielerhand is empty
-        if(spielerManager.aktuellerSpieler.spielerHand.isEmpty()){
+        if (spielerManager.aktuellerSpieler.spielerHand.isEmpty()) {
             output.println("Die Runde ist zu Ende. " + spielerManager.aktuellerSpieler.getName() + " hat gewonnen");
             output.println(spielerManager.getPunkteVonAllenSpielern() + " Punkte gewonnen.");
-
+            output.println();
             output.println("Noch eine Runde?");
-            try {
-                String c = input.nextLine();
+            String c;
+            while (input.hasNext()) {
+                c = input.nextLine();
                 if (c.equalsIgnoreCase("y")) {
-                    spielerManager.startSpielerFestlegen();
-                }
-                if (c.equalsIgnoreCase("n")) {
                     return true;
-                }
-                while (!c.equalsIgnoreCase("y") || !c.equalsIgnoreCase("n")) {
+                } else if (c.equalsIgnoreCase("n")) {
+                    return false;
+                } else {
                     System.out.println("Falsche Eingabe!");
-                    throw new FalscheEingabeException("Falsche Eingabe");
                 }
-            } catch (FalscheEingabeException e) {
-                e.printStackTrace();
             }
-            return true;
         }
-            //summeSpielerHand add to database
-        else {
-            return false;
-        }
-
-        //true = Wenn Spieler keine Karte im Array hat
-        //Berechnen der Punkte (Übertrag in Datenbank)
-        //Überprüft ob Endspielstand (500 Punkte) von einem Spieler erreicht wurde nach Rundenende, wenn ja, dann Methode gameEnded() aufrufen
+        return false;
     }
+//
+//            output.println("Noch eine Runde?");
+//            try {
+//                String c = input.nextLine();
+//                if (c.equalsIgnoreCase("y")) {
+//                    spielerManager.startSpielerFestlegen();
+//                }
+//                if (c.equalsIgnoreCase("n")) {
+//                    return true;
+//                }
+//                while (!c.equalsIgnoreCase("y") || !c.equalsIgnoreCase("n")) {
+//                    System.out.println("Falsche Eingabe!");
+//                    throw new FalscheEingabeException("Falsche Eingabe");
+//                }
+//            } catch (FalscheEingabeException e) {
+//                e.printStackTrace();
+//            }
+//            return true;
+//        }
+            //summeSpielerHand add to database
+//        else {
+//        }
+//            return false;
+//        }
+//
+//        true = Wenn Spieler keine Karte im Array hat
+//        Berechnen der Punkte (Übertrag in Datenbank)
+//        Überprüft ob Endspielstand (500 Punkte) von einem Spieler erreicht wurde nach Rundenende, wenn ja, dann Methode gameEnded() aufrufen
+//    }
 
     private boolean gameEnded(){
         if (spielerManager.aktuellerSpieler.rundenPunkte >= 500){

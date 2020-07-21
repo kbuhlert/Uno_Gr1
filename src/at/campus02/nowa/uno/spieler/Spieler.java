@@ -46,7 +46,6 @@ public abstract class Spieler {
         this.uno = uno;
     }
 
-
     public int getRundenPunkte() {
         return rundenPunkte;
     }
@@ -61,11 +60,7 @@ public abstract class Spieler {
             summeSpielerHand += k.getPunkte();
         }
         return summeSpielerHand;
-
     }
-
-    public abstract void spielen();
-
 
     public void printSpielerHand (){
         int index = 0;
