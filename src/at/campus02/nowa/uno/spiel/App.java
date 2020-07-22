@@ -74,6 +74,8 @@ public class App {
     private void readUserInput() {
 
         //Scanner aufrufen für Eingabe des aktuellen Spielers
+        spielerManager.abfrageKartenhandZeigen();
+        spielerManager.neueKarteHeben();
         spielerManager.karteAblegen();
         spielerManager.spielzugBeendet();
 
@@ -101,7 +103,6 @@ public class App {
     private void updateState() {
         // TODO: 09.07.2020
 
-//        spielerManager.endeSpielzug();
 
 //         if(spielerManager.kartenstapel.size() < 4){
 //             System.out.println(spielerManager.kartenstapel.size());

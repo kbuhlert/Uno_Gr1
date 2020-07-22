@@ -103,7 +103,7 @@ public class Kartenmanager {
     //todo: Methode LÖSCHEN und NEU Ablagestapel isst eigentlich leere ArrayList, Methode muss nur erste Karte auflegen können, das geht im Spielermanager
 
 
-    public void AusgabeObersteKarteAblagestapel() {
+    public void ausgabeObersteKarteAblagestapel() {
         Karte k = obersteKarte();
         if(k.getFarbe().equals(SCHWARZ)){
             System.out.println("Bitte spielen Sie die soeben gewünschte Farbe");
