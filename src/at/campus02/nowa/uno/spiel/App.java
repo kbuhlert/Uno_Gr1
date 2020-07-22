@@ -1,6 +1,7 @@
 package at.campus02.nowa.uno.spiel;
 
 
+import at.campus02.nowa.uno.Datenbank.SqliteClient;
 import at.campus02.nowa.uno.karte.Kartenmanager;
 import at.campus02.nowa.uno.kartenstapel.TeststapelWunschkarte;
 
@@ -9,12 +10,21 @@ import at.campus02.nowa.uno.spieler.Spieler;
 
 
 import java.io.PrintStream;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class App {
     private final Scanner input;
     private final PrintStream output;
     private final SpielerManager spielerManager;
+
+    private static final String CREATETABLE = "CREATE TABLE Sessions (Player varchar(100) NOT NULL, Session int NOT NULL, Round int NOT NULL, Score int NOT NULL, CONSTRAINT PK_Sessions PRIMARY KEY (Player, Session, Round));";
+    private static final String INSERT_TEMPLATE= "INSERT INTO Sessions (Player, Session, Round, Score) VALUES ('%1s', %2d, %3d, %4d);";
+    private static final String SELECT_BYPLAYERANDSESSION = "SELECT Player, SUM(Score) AS Score FROM Sessions WHERE Player = '%1s' AND Session = %2d;";
+    private ArrayList<HashMap<String, String>> results = new ArrayList<>();
+
 
     //TeststapelWunschkarte verteilstapel;  //--> zum Testen mit speziellen Karten
 
@@ -124,8 +134,7 @@ public class App {
     private void printState() {
         //Ausgeben welcher Spieler ist als nächstes dran
             spielerManager.WerIstDranUndWelcheKarte();
-
-
+            punkteInDatenbank();
     }
 
 
@@ -213,7 +222,34 @@ public class App {
         return false;
     }
 
+    private void punkteInDatenbank() {
+        if(roundEnded()){
+        try{
+            SqliteClient client = new SqliteClient("UNO3.sqlite");
+            if (client.tableExists("Sessions")){
+                client.executeStatement("DROP TABLE Sessions;");
+            }
+            client.executeStatement(CREATETABLE);
+
+            for( int i=0; i<4;i++){
+                Spieler sp = spielerManager.alleSpieler.get(i);
+                int score = sp.getPunkteVonSpielerHand();
+                client.executeStatement(String.format(INSERT_TEMPLATE, sp.getName(), 1, 1, score));
+                results = client.executeQuery(String.format(SELECT_BYPLAYERANDSESSION, sp.getName(), 1));
+                for (HashMap<String, String> map : results) {
+                    System.out.println(map.get("Player") + " hat derzeit:  " + map.get("Score") + " Punkte");
+                }
+            }
+        }catch (SQLException ex) {
+            System.out.println("Ups! Something went wrong:" + ex.getMessage());
+        }
+        }
+        else return;
+    }
+
     private void printFinalScore() {
 
     }
+
+
 }
