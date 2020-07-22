@@ -226,7 +226,7 @@ public class SpielerManager {
                     kartenstapel.ausgabeObersteKarteAblagestapel();
                     karteAblegen();
                     return;
-                } else{
+                } else {
                     output.println("Bitte Y (YES) oder N (NO) eingeben");
                 }
             }
@@ -236,7 +236,6 @@ public class SpielerManager {
 
     public void falscheKarte() {
         output.println("Falsche Karte gelegt. Bitte legen Sie eine passende Karte ab");
-        kartenstapel.ausgabeObersteKarteAblagestapel();
         neueKarteHeben();
         karteAblegen();
 
@@ -315,6 +314,7 @@ public class SpielerManager {
                             aktuellerSpieler.spielerHand.remove(position);
                             karteGelegt = true;
                             validInput = true;
+                            return;
                         }
                     }
                 } catch(InputMismatchException e) {
@@ -453,10 +453,8 @@ public class SpielerManager {
     }
 
     public void farbEingabe(Scanner input) {
-        int counter = 0;
-        boolean correctInput = false;
         output.println("Bitte geben Sie \"Uno \" oder eine Farbwahl ein!");
-        while (input.hasNext() && !correctInput) {
+        while (input.hasNext()) {
             String s = input.nextLine();
             if (s.equalsIgnoreCase("UNO")) {
                 output.println(aktuellerSpieler.getName() + " hat \"Uno \" gerufen!");
@@ -474,12 +472,10 @@ public class SpielerManager {
                 output.println("Sie haben sich die Farbe Gelb gewünscht!");
                 break;
             } else {
-                if(counter > 0){
-                    correctInput = true;
                     falscheEingabe();
                     break;
-                } counter ++;
-            }
+                }
+
         }
 
     }
@@ -489,7 +485,7 @@ public class SpielerManager {
         String s = input.nextLine();
         if(s.equalsIgnoreCase("y")){
             spielzugBeendet();
-        } else farbEingabe(input);
+        } return;
     }
 
     public void spielzugBeendet() {
