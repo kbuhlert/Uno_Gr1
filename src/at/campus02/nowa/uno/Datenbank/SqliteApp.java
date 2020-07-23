@@ -21,12 +21,12 @@ public class SqliteApp {
         //Test ob auslesen der Spieler aus Spielerarray funktioniert
         ArrayList<Spieler> alleSpieler = new ArrayList<>();
         ArrayList<HashMap<String, String>> results = new ArrayList<>();
-        alleSpieler.add(new EchteSpieler("A"));
-        alleSpieler.add(new EchteSpieler("B"));
+        alleSpieler.add(new EchteSpieler("X"));
+        alleSpieler.add(new EchteSpieler("Y"));
         alleSpieler.add(new EchteSpieler("C"));
         alleSpieler.add(new EchteSpieler("D"));
         try{
-            SqliteClient client = new SqliteClient("UNO2.sqlite");
+            SqliteClient client = new SqliteClient("UNOTEST2.sqlite");
             if (client.tableExists("Sessions")){
                 client.executeStatement("DROP TABLE Sessions;");
             }

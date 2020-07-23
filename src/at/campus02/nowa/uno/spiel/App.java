@@ -19,11 +19,14 @@ public class App {
     private final Scanner input;
     private final PrintStream output;
     private final SpielerManager spielerManager;
+    private int roundcount = 0;
+    private int sessions = 0;
 
     private static final String CREATETABLE = "CREATE TABLE Sessions (Player varchar(100) NOT NULL, Session int NOT NULL, Round int NOT NULL, Score int NOT NULL, CONSTRAINT PK_Sessions PRIMARY KEY (Player, Session, Round));";
-    private static final String INSERT_TEMPLATE= "INSERT INTO Sessions (Player, Session, Round, Score) VALUES ('%1s', %2d, %3d, %4d);";
+    private static final String INSERT_TEMPLATE = "INSERT INTO Sessions (Player, Session, Round, Score) VALUES ('%1s', %2d, %3d, %4d);";
     private static final String SELECT_BYPLAYERANDSESSION = "SELECT Player, SUM(Score) AS Score FROM Sessions WHERE Player = '%1s' AND Session = %2d;";
     private ArrayList<HashMap<String, String>> results = new ArrayList<>();
+    SqliteClient client;
 
 
     //TeststapelWunschkarte verteilstapel;  //--> zum Testen mit speziellen Karten
@@ -39,8 +42,8 @@ public class App {
     //Kartenstapel ablagestapel = new Kartenstapel();
 
     public void Run() {
-        initializeGame();
         try {
+            initializeGame();
             do {
                 initializeRound();
                 printState();
@@ -61,16 +64,20 @@ public class App {
         }
     }
 
-    private void initializeGame() {
+    private void initializeGame() throws SQLException {
+        client = new SqliteClient("UNO3.sqlite");
+        if (!client.tableExists("Sessions")) {
+            client.executeStatement(CREATETABLE);
+        }
         spielerManager.spielerZuweisen();
         spielerManager.startSpielerFestlegen();
         //Reihenfolge der Spieler zufällig festlegen und Startspieler festlegen
+        sessions++;
 
     }
 
     private void initializeRound() {
-
-
+        roundcount++;
         //Verteilstack erstellen
         //Verteilstack mischen
         //Karten austeilen -->7 Karten pro Spieler
@@ -90,7 +97,7 @@ public class App {
         spielerManager.spielzugBeendet();
 
         // boolean der true ausgibt wenn aktueller spieler keine karten mehr hat
-        if(spielerManager.letzte){
+        if (spielerManager.letzte) {
             roundEnded();
         }
         //todo: Info an Alle. Habe die Ausgabe der obersten Karte Ablagestapel, die Aufforderung des nächsten Spielers, Abfrage ob Hand angezeigt
@@ -131,10 +138,10 @@ public class App {
         //Prüfen ob Abhebestapel noch genug Karten für nächsten Zug hat (mind. 4) ansonsten Aufruf Methode AblegestapelZuAbhebestapel();
     }
 
-    private void printState() {
+    private void printState() throws SQLException {
         //Ausgeben welcher Spieler ist als nächstes dran
-            spielerManager.WerIstDranUndWelcheKarte();
-            punkteInDatenbank();
+        spielerManager.WerIstDranUndWelcheKarte();
+        punkteInDatenbank();
     }
 
 
@@ -147,6 +154,7 @@ public class App {
         boolean ende = false;
         //check whether anyone's spielerhand is empty
         if (spielerManager.aktuellerSpieler.spielerHand.isEmpty()) {
+            ende = true;
             output.println();
             output.println();
             output.println("------");
@@ -158,10 +166,10 @@ public class App {
             while (input.hasNext()) {
                 c = input.nextLine();
                 if (c.equalsIgnoreCase("y")) {
-                    ende = true;
+
                     break;
                 } else if (c.equalsIgnoreCase("n")) {
-                   gameEnded();
+                    gameEnded();
                 } else {
                     System.out.println("Falsche Eingabe!");
                 }
@@ -222,29 +230,19 @@ public class App {
         return false;
     }
 
-    private void punkteInDatenbank() {
-        if(roundEnded()){
-        try{
-            SqliteClient client = new SqliteClient("UNO3.sqlite");
-            if (client.tableExists("Sessions")){
-                client.executeStatement("DROP TABLE Sessions;");
-            }
-            client.executeStatement(CREATETABLE);
-
-            for( int i=0; i<4;i++){
-                Spieler sp = spielerManager.alleSpieler.get(i);
-                int score = sp.getPunkteVonSpielerHand();
-                client.executeStatement(String.format(INSERT_TEMPLATE, sp.getName(), 1, 1, score));
-                results = client.executeQuery(String.format(SELECT_BYPLAYERANDSESSION, sp.getName(), 1));
-                for (HashMap<String, String> map : results) {
-                    System.out.println(map.get("Player") + " hat derzeit:  " + map.get("Score") + " Punkte");
+    private void punkteInDatenbank() throws SQLException {
+        if (roundEnded()) {
+            output.println("Die Punkte werden in die Datenbank eingelesen");
+                for (int i = 0; i < 4; i++) {
+                    Spieler sp = spielerManager.alleSpieler.get(i);
+                    int score = sp.getPunkteVonSpielerHand();
+                    client.executeStatement(String.format(INSERT_TEMPLATE, sp.getName(), sessions, roundcount, score));
+                    results = client.executeQuery(String.format(SELECT_BYPLAYERANDSESSION, sp.getName(), 1));
+                    for (HashMap<String, String> map : results) {
+                        System.out.println(map.get("Player") + " hat derzeit:  " + map.get("Score") + " Punkte");
+                    }
                 }
-            }
-        }catch (SQLException ex) {
-            System.out.println("Ups! Something went wrong:" + ex.getMessage());
-        }
-        }
-        else return;
+        } else return;
     }
 
     private void printFinalScore() {
