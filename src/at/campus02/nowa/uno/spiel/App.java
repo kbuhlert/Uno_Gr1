@@ -1,10 +1,6 @@
 package at.campus02.nowa.uno.spiel;
 
 
-import at.campus02.nowa.uno.karte.Kartenmanager;
-import at.campus02.nowa.uno.kartenstapel.TeststapelWunschkarte;
-
-import at.campus02.nowa.uno.FalscheEingabeException;
 import at.campus02.nowa.uno.spieler.Spieler;
 
 
@@ -15,6 +11,7 @@ public class App {
     private final Scanner input;
     private final PrintStream output;
     private final SpielerManager spielerManager;
+    private int roundcount = 0;
 
     //TeststapelWunschkarte verteilstapel;  //--> zum Testen mit speziellen Karten
 
@@ -61,7 +58,7 @@ public class App {
 
     private void initializeRound() {
 
-
+        roundcount++;
         //Verteilstack erstellen
         //Verteilstack mischen
         //Karten austeilen -->7 Karten pro Spieler
@@ -124,7 +121,8 @@ public class App {
 
     private void printState() {
         //Ausgeben welcher Spieler ist als nächstes dran
-        spielerManager.WerIstDranUndWelcheKarte();
+        spielerManager.ausgabeAktuellerSpieler();
+
     }
 
 
@@ -135,20 +133,24 @@ public class App {
 
     private boolean roundEnded() {
         //check whether anyone's spielerhand is empty
-        if (spielerManager.aktuellerSpieler.spielerHand.isEmpty()) {
-            output.println();
-            output.println();
-            output.println("------");
-            output.println("Die Runde ist zu Ende. " + spielerManager.aktuellerSpieler.getName() + " hat " + spielerManager.getPunkteVonAllenSpielern() + " Punkte gewonnen.");
-            spielerManager.aktuellerSpieler.setRundenPunkte(spielerManager.getPunkteVonAllenSpielern());
-            output.println(spielerManager.aktuellerSpieler.getName() + " hat insgesamt schon " + spielerManager.aktuellerSpieler.getRundenPunkte() + " Punkte.");
-            output.println();
-            return true;
+        Spieler rundenGewinner = null;
+        for (Spieler s : spielerManager.alleSpieler) {
+            if (s.spielerHand.isEmpty()) {
+                rundenGewinner = s;
+                output.println();
+                output.println();
+                output.println("------");
+                output.println("Die Runde ist zu Ende. " + rundenGewinner.getName() + " hat " + spielerManager.getPunkteVonAllenSpielern() + " Punkte gewonnen.");
+                rundenGewinner.setRundenPunkte(spielerManager.getPunkteVonAllenSpielern());
+                output.println(rundenGewinner.getName() + " hat in " + roundcount + " Runden schon " + rundenGewinner.getRundenPunkte() + " Punkte gewonnen.");
+                output.println();
+                return true;
+            }
         }
         return false;
     }
 
-    private boolean weiterSpielerAbfrage() {
+    private boolean weiterSpielenAbfrage() {
         output.println("Noch eine Runde?");
         String c;
         do {
@@ -165,12 +167,11 @@ public class App {
 
     private boolean gameEnded() {
         for (Spieler s : spielerManager.alleSpieler) {
-            while (s.getRundenPunkte() < 500) {
-                return !weiterSpielerAbfrage();
+            if (s.getRundenPunkte() >= 500) {
+                return true;
             }
-            return true;
         }
-        return false;
+        return !weiterSpielenAbfrage();
     }
 
     private void printFinalScore() {
