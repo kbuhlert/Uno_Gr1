@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"at.campus02.nowa.uno"},{"l":"at.campus02.nowa.uno.Datenbank"},{"l":"at.campus02.nowa.uno.karte"},{"l":"at.campus02.nowa.uno.kartenstapel"},{"l":"at.campus02.nowa.uno.spiel"},{"l":"at.campus02.nowa.uno.spieler"}]
