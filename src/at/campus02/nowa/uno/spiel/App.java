@@ -162,43 +162,13 @@ public class App {
             }
         } while (true);
     }
-//
-//            output.println("Noch eine Runde?");
-//            try {
-//                String c = input.nextLine();
-//                if (c.equalsIgnoreCase("y")) {
-//                    spielerManager.startSpielerFestlegen();
-//                }
-//                if (c.equalsIgnoreCase("n")) {
-//                    return true;
-//                }
-//                while (!c.equalsIgnoreCase("y") || !c.equalsIgnoreCase("n")) {
-//                    System.out.println("Falsche Eingabe!");
-//                    throw new FalscheEingabeException("Falsche Eingabe");
-//                }
-//            } catch (FalscheEingabeException e) {
-//                e.printStackTrace();
-//            }
-//            return true;
-//        }
-    //summeSpielerHand add to database
-//        else {
-//        }
-//            return false;
-//        }
-//
-//        true = Wenn Spieler keine Karte im Array hat
-//        Berechnen der Punkte (Übertrag in Datenbank)
-//        Überprüft ob Endspielstand (500 Punkte) von einem Spieler erreicht wurde nach Rundenende, wenn ja, dann Methode gameEnded() aufrufen
-//    }
 
     private boolean gameEnded() {
         for (Spieler s : spielerManager.alleSpieler) {
-            if (s.getRundenPunkte() >= 500) {
-                return true;
-            } else {
+            while (s.getRundenPunkte() < 500) {
                 return !weiterSpielerAbfrage();
             }
+            return true;
         }
         return false;
     }
@@ -208,11 +178,19 @@ public class App {
         for (Spieler s : spielerManager.alleSpieler) {
             if (s.getRundenPunkte() >= 500) {
                 gewinner = s;
+                output.println("GRATULATION!");
+                output.println(gewinner.getName() + " hat das Spiel mit " + gewinner.getRundenPunkte() + " Punkten gewonnen!");
+                output.println();
+                output.println();
+                return;
+            }
+            else {
+                gewinner = null;
+                output.println("Das Spiel wird vorzeitig abgebrochen!");
+                output.println();
+                output.println();
+                return;
             }
         }
-        output.println("GRATULATION!");
-        output.println(gewinner.getName() + " hat das Spiel mit " + gewinner.getRundenPunkte() + " Punkten gewonnen!");
-        output.println();
-        output.println();
     }
 }
