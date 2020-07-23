@@ -7,12 +7,10 @@ import java.util.ArrayList;
 
 public class BotSpieler extends Spieler {
 
-    private static int botNr = 0;       //wird beim erstellen des Bots um 1 hochgezählt, bot erhaäkt dann Name: "bot" + Integer.toString("botNr")
 
     public BotSpieler(String name) {
         super(name);
     }
-
 
     @Override
     public String getName() {
@@ -30,19 +28,16 @@ public class BotSpieler extends Spieler {
     }
 
     @Override
-    public void spielen() {
-
-    }
-
-    @Override
 
     public void printSpielerHand() {
         super.printSpielerHand();
+    }
 
     public int getPunkteVonSpielerHand() {
         return super.getPunkteVonSpielerHand();
 
     }
+
 
     //Methoden:
     //im Kontruktor wir botNr mit erstellt;
