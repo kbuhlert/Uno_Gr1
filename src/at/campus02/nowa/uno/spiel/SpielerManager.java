@@ -165,7 +165,7 @@ public class SpielerManager {
         if (aktuellerSpieler instanceof EchteSpieler) {
             String c;
             output.println("Möchten Sie eine neue Karte abheben? Bitte Y (YES) oder N (NO) eingeben");
-            if (!keineWeitereAblage || !quit) {
+            while (!keineWeitereAblage || !quit) {
                 c = input.nextLine();
                 if (c.toLowerCase().equals("y")) {
                     Karte neu = kartenstapel.abheben();
@@ -184,10 +184,11 @@ public class SpielerManager {
                                 // sollte aussetzen/richtungswechsel beeinflussen
                                 naechsterSpieler = false;
                                 keineWeitereAblage = true;
+                                quit = true;
                                 output.println(neu.toString());
                                 kartenstapel.karteAblegen(neu);
                                 output.println("Möchten Sie den Spielzug beenden?  Bitte Y (YES) oder N (NO) eingeben");
-                                break;
+                                return;
                             }
                         } else if (c.toLowerCase().equals("n")) {
                             System.out.println("Sie möchten die gehobene Karte behalten!");
@@ -195,18 +196,17 @@ public class SpielerManager {
                             keineWeitereAblage = true;
                             quit = true;
                             output.println("Möchten Sie den Spielzug beenden?  Bitte Y (YES) oder N (NO) eingeben");
-                            break;
+                            return;
                         } else {
                             output.println("Bitte Y (YES) oder N (NO) eingeben");
                         } return;
                     }
                 } else if (c.equalsIgnoreCase("n")) {
-                    // 2x ausgabe möchten sie neue karte
-//                    quit = true;
                     kartenstapel.ausgabeObersteKarteAblagestapel();
                     karteAblegen();
+                    break;
                 } else {
-//                    neueKarteHeben();
+                    output.println("Bitte Y (YES) oder N (NO) eingeben");
                 }
             }
         }
