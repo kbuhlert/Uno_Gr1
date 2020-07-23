@@ -313,7 +313,7 @@ public class SpielerManager {
                     while (input.hasNext() && !out) {
                         kreativeLoesungUmInputZuLöschen();
                         int position = input.nextInt();
-                        if (position > aktuellerSpieler.spielerHand.size()) {
+                        if (position > aktuellerSpieler.spielerHand.size() -1) {
                             int anzahlKarten = aktuellerSpieler.spielerHand.size() - 1;
                             output.println("Bitte eine Zahl bis höchstens " + anzahlKarten + " eingeben!");
                             input.next();
@@ -342,8 +342,7 @@ public class SpielerManager {
                 } catch (InputMismatchException e) {
                     int anzahlKarten = aktuellerSpieler.spielerHand.size() - 1;
                     kreativeLoesungUmInputZuLöschen();
-                    output.println("Bitte eine Zahl bis höchstens " + anzahlKarten + " eingeben!" +
-                            "--> ELSE IF IM ablegen");
+                    output.println("Bitte eine Zahl bis höchstens " + anzahlKarten + " eingeben!");
                     input.next();
                 }
 
