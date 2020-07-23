@@ -23,6 +23,7 @@ public class App {
     private static final String CREATETABLE = "CREATE TABLE Sessions (Player varchar(100) NOT NULL, Session int NOT NULL, Round int NOT NULL, Score int NOT NULL, CONSTRAINT PK_Sessions PRIMARY KEY (Player, Session, Round));";
     private static final String INSERT_TEMPLATE = "INSERT INTO Sessions (Player, Session, Round, Score) VALUES ('%1s', %2d, %3d, %4d);";
     private static final String SELECT_BYPLAYERANDSESSION = "SELECT Player, SUM(Score) AS Score FROM Sessions WHERE Player = '%1s' AND Session = %2d;";
+    private static final String SELECTMAX = "select max(Session) as sessions from sessions;";
     private ArrayList<HashMap<String, String>> results = new ArrayList<>();
     SqliteClient client;
 
@@ -71,8 +72,9 @@ public class App {
         spielerManager.spielerZuweisen();
         spielerManager.startSpielerFestlegen();
         //Reihenfolge der Spieler zufällig festlegen und Startspieler festlegen
+        ArrayList<HashMap<String, String>> result = client.executeQuery(SELECTMAX);
+        sessions = Integer.valueOf(result.get(0).get("sessions"));
         sessions++;
-
     }
 
     private void initializeRound() {
@@ -96,9 +98,9 @@ public class App {
         spielerManager.spielzugBeendet();
 
         // boolean der true ausgibt wenn aktueller spieler keine karten mehr hat
-        if (spielerManager.letzte) {
-            roundEnded();
-        }
+        //if (spielerManager.letzte) {
+          //  roundEnded();
+        //}
         //todo: Info an Alle. Habe die Ausgabe der obersten Karte Ablagestapel, die Aufforderung des nächsten Spielers, Abfrage ob Hand angezeigt
         // werden soll und Eingabeaufforderung in PrintState() gegeben
 
