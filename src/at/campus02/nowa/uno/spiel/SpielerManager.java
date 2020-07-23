@@ -2,7 +2,6 @@ package at.campus02.nowa.uno.spiel;
 
 import at.campus02.nowa.uno.karte.*;
 
-import at.campus02.nowa.uno.kartenstapel.TeststapelWunschkarte;
 import at.campus02.nowa.uno.spieler.BotSpieler;
 import at.campus02.nowa.uno.spieler.EchteSpieler;
 import at.campus02.nowa.uno.spieler.Spieler;
@@ -87,9 +86,7 @@ public class SpielerManager {
         }
     }
 
-    /**
-     * Verteilstack erstellen & austeilen der 7 Karten auf die Spielerhand
-     */
+
     public void kartenAusteilen() {
         kartenstapel.stapelErstellen();
         //kartenstapel.neuerTeststapel(new Zahlenkarte(SCHWARZ,Wert.FARBWAHL), new Zahlenkarte(Farbe.BLAU,Wert.EINS));  //--> Wenn mit Teststapel gespielt wird
@@ -176,7 +173,7 @@ public class SpielerManager {
     /**
      * Selbst ist die Frau, weil Java zu faul ist, um auch einen Scanner zu flushen
      */
-    public void kreativeLoesungUmInputZuLöschen() {
+    public void kreativeLoesungUmInputZuLoeschen() {
         if (input.hasNext())
             return;
         else return;
@@ -190,7 +187,7 @@ public class SpielerManager {
             String c;
             output.println("Möchten Sie eine neue Karte abheben? Bitte Y (YES) oder N (NO) eingeben");
             if (aushelfen) {
-                kreativeLoesungUmInputZuLöschen();
+                kreativeLoesungUmInputZuLoeschen();
             }
             while (!keineWeitereAblage || !quit) {
                 c = input.nextLine();
@@ -255,7 +252,7 @@ public class SpielerManager {
         } else {
             output.println("Falsche Karte gelegt. Bitte legen Sie eine passende Karte ab");
             kartenstapel.ausgabeObersteKarteAblagestapel();
-            kreativeLoesungUmInputZuLöschen();
+            kreativeLoesungUmInputZuLoeschen();
             aushelfen = true;
             neueKarteHeben();
             return;
@@ -270,9 +267,9 @@ public class SpielerManager {
             // Falls neue karte gehoben wird und in diese Methode gesprungen --> kartegehoben = false damit sie nicht aufgerufen wird
             if (!keineWeitereAblage) {
                 try {
-                    kreativeLoesungUmInputZuLöschen();
+                    kreativeLoesungUmInputZuLoeschen();
                     while (input.hasNext() && !out) {
-                        kreativeLoesungUmInputZuLöschen();
+                        kreativeLoesungUmInputZuLoeschen();
                         int position = input.nextInt();
                         if (position > aktuellerSpieler.spielerHand.size() - 1) {
                             int anzahlKarten = aktuellerSpieler.spielerHand.size() - 1;
@@ -302,7 +299,7 @@ public class SpielerManager {
                     }
                 } catch (InputMismatchException e) {
                     int anzahlKarten = aktuellerSpieler.spielerHand.size() - 1;
-                    kreativeLoesungUmInputZuLöschen();
+                    kreativeLoesungUmInputZuLoeschen();
                     output.println("Bitte eine Zahl bis höchstens " + anzahlKarten + " eingeben!");
                     input.next();
                 }
