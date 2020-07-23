@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class TeststapelWunschkarte extends Kartenmanager {
-
+    /**
+     * Teststapel kann mit nur zwei Wunschkarten gefüllt werden, so dass im Spiel bestimmte Karten getestet werden können
+     */
     public void neuerTeststapel(Karte k, Karte k2) {
         kartenstapel.clear();
         //zu testende Karten als Parameter in den Stapel geben

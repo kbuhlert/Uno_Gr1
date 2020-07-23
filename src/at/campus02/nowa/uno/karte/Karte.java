@@ -15,7 +15,6 @@ public abstract class Karte {
         return farbe;
     }
 
-
     public void setFarbe(Farbe farbe) {
         this.farbe = farbe;
     }
@@ -24,19 +23,10 @@ public abstract class Karte {
         return wert;
     }
 
-    public void setWert(Wert wert) {
-        this.wert = wert;
-    }
-
-
-    //***************ATTENTION***************
-    //Bitte keine equals Methoden implementieren, meine Methoden funktionieren sonst nicht :D lg Divali
-
     @Override
     public int hashCode() {
         return Objects.hash(getFarbe(), getWert());
     }
-
 
     @Override
     public String toString() {

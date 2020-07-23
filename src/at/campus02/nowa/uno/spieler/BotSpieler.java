@@ -7,6 +7,11 @@ import java.util.ArrayList;
 
 public class BotSpieler extends Spieler {
 
+    /**
+     * Klasse Botspieler managed die Bots, die selbständig die Spielzüge ausführen
+     *
+     * @param name
+     */
 
     public BotSpieler(String name) {
         super(name);
@@ -37,14 +42,5 @@ public class BotSpieler extends Spieler {
         return super.getPunkteVonSpielerHand();
 
     }
-
-
-    //Methoden:
-    //im Kontruktor wir botNr mit erstellt;
-
-    //Botname muss automatisch erstellt werden (botNr + String) und es brauch einen getter für den Botnamen
-
-    //erstelleBots(){} --> holt mit getAnzahlEchteSpieler() die Anzahl der Spieler und generiert dann die nötige Anzahl Bots um 4 Spieler zu haben (hier würde sich Sitch anbieten)
-
 }
 
