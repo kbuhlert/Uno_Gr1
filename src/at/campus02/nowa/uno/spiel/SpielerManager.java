@@ -29,8 +29,10 @@ public class SpielerManager {
     boolean spielrichtung = true;
     Karte gleicheKarte = null;
     boolean letzte = false;
-    boolean karteGehoben = false;
-    boolean karteGelegt = false;
+    boolean keineWeitereAblage = false;            //--> soll verhindern dass nach neu gehobener Karte nocheinmal abgelegt werden muss
+    boolean quit = false;
+    boolean out = false;
+    boolean naechsterSpieler = false;
 
 
     public SpielerManager(Scanner input, PrintStream output) {
@@ -133,9 +135,9 @@ public class SpielerManager {
                 c = input.nextLine();
                 if (c.toLowerCase().equals("y")) {
                     aktuellerSpieler.printSpielerHand();
-                    return;
+                    break;
                 } else if (c.equalsIgnoreCase("n")) {
-                    return;
+                    break;
                 } else {
                     System.out.println("Falsche Eingabe!");
                 }
@@ -143,89 +145,66 @@ public class SpielerManager {
         }
     }
 
-    // funktioniert nicht:
-//            System.out.println("Möchten Sie Ihre Hand angezeigt bekommen?");
-//            System.out.println("Bitte Y (YES) oder N (No) eingeben");
-//            try {
-//                Scanner scanner = new Scanner(System.in);
-//                String c = scanner.nextLine();
-//                if (c.equalsIgnoreCase("y")) {
-//                    aktuellerSpieler.printSpielerHand();
-//                    return;
-//                }
-//                if (c.equalsIgnoreCase("n")) {
-//                    return;
-//                }
-//                while (!c.equalsIgnoreCase("y") || !c.equalsIgnoreCase("n")) {
-//                    System.out.println("Falsche Eingabe!");
-//                    throw new FalscheEingabeException("Falsche Eingabe");
-//                }
-//            } catch (FalscheEingabeException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
 
 
-    public void WerIstDranUndWelcheKarte() {    //todo: wird zu wer ist dran
-        System.out.println();
-        System.out.println("-----");
-        System.out.println(aktuellerSpieler.getName() + "  ist an der Reihe!");
+    public void ausgabeAktuellerSpieler() {    //todo: wird zu wer ist dran
+        output.println();
+        output.println("-----");
+        output.println(aktuellerSpieler.getName() + "  ist an der Reihe!");
         kartenstapel.ausgabeObersteKarteAblagestapel();
         //todo: die Methoden direkt in der App aufrufen
 
     }
 
-//    private boolean isValid(String s) {
-//        if (s.equalsIgnoreCase("y") || s.equalsIgnoreCase("n")) {
-//            System.out.println("Falsche Eingabe!)");
-//            return false;
-//        } else return true;
-//    }
+
+
+
+
 
     public void neueKarteHeben() {
         if (aktuellerSpieler instanceof EchteSpieler) {
-            boolean quit = false;
             String c;
-            output.println("Möchten Sie eine neue Karte abheben?");
-            while (!karteGelegt) {
+            output.println("Möchten Sie eine neue Karte abheben? Bitte Y (YES) oder N (NO) eingeben");
+            while (!keineWeitereAblage || !quit) {
                 c = input.nextLine();
                 if (c.toLowerCase().equals("y")) {
                     Karte neu = kartenstapel.abheben();
                     System.out.println(neu.toString());
                     System.out.println("Möchten Sie die neue Karte spielen? Bitte Y (YES) oder N (NO) eingeben");
-                    while (input.hasNext() && !quit) {
+                    while (!quit) {
                         c = input.nextLine();
                         if (c.toLowerCase().equals("y")) {
                             if (!passendeKarte(neu, kartenstapel.obersteKarte())) {
+                                keineWeitereAblage = true;
+                                aktuellerSpieler.spielerHand.add(neu);
                                 falscheKarte();
                                 break;
                             } else {
                                 output.println("Spielzug korrekt. Diese Karte wurde abgelegt:");
+                                // sollte aussetzen/richtungswechsel beeinflussen
+                                naechsterSpieler = false;
+                                keineWeitereAblage = true;
+                                quit = true;
                                 output.println(neu.toString());
                                 kartenstapel.karteAblegen(neu);
-                                karteGelegt = true;
-                                // check ob das funktioniert******************************************
+                                output.println("Möchten Sie den Spielzug beenden?  Bitte Y (YES) oder N (NO) eingeben");
                                 return;
                             }
-
                         } else if (c.toLowerCase().equals("n")) {
                             System.out.println("Sie möchten die gehobene Karte behalten!");
                             aktuellerSpieler.spielerHand.add(neu);
-                            karteGehoben = true;
+                            keineWeitereAblage = true;
                             quit = true;
-                            // stopt nach der abfrage***************************************
-                            karteAblegen();
+                            output.println("Möchten Sie den Spielzug beenden?  Bitte Y (YES) oder N (NO) eingeben");
                             return;
                         } else {
                             output.println("Bitte Y (YES) oder N (NO) eingeben");
-                        } break;
+                        } return;
                     }
                 } else if (c.equalsIgnoreCase("n")) {
-                    quit = true;
                     kartenstapel.ausgabeObersteKarteAblagestapel();
                     karteAblegen();
-                    return;
+                    break;
                 } else {
                     output.println("Bitte Y (YES) oder N (NO) eingeben");
                 }
@@ -235,10 +214,17 @@ public class SpielerManager {
 
 
     public void falscheKarte() {
-        output.println("Falsche Karte gelegt. Bitte legen Sie eine passende Karte ab");
-        neueKarteHeben();
-        karteAblegen();
-
+        if (keineWeitereAblage) {
+            quit = true;
+            output.println("Diese Karte passt nicht auf die Aufliegende, Sie müssen die Karte behalten.");
+            output.println("Möchten Sie den Spielzug beenden?  Bitte Y (YES) oder N (NO) eingeben");
+            return;
+        } else {
+            output.println("Falsche Karte gelegt. Bitte legen Sie eine passende Karte ab");
+            kartenstapel.ausgabeObersteKarteAblagestapel();
+            karteAblegen();
+            return;
+        }
     }
 
 
@@ -263,7 +249,8 @@ public class SpielerManager {
 //                    } else {
 //                        System.out.println("Falsche Eingabe!");
 //                    }
-//                } while (true);
+//                 } while  --> pölzl
+//                } while ((c.toLowerCase().equals("y") && (c.toLowerCase().equals("n"));
 //                break;
 //            } else if (c.equalsIgnoreCase("n")) {
 //                System.out.println("Bitte legen Sie eine passende Karte ab");
@@ -276,52 +263,50 @@ public class SpielerManager {
 //        } while (true);
 //
 //    }
-//   if (in.hasNextInt()) {
-//        int a = in.nextInt() ;
-//        System.out.println(a);
-//    } else {
-//        System.out.println("Sorry, couldn't understand you!");
-//    }
+
 
 
     public void karteAblegen() {
-        boolean validInput = false;
         //per Eingabe Karte spielen
         //check if chosen card matches one available in the Kartenhand-array
 
         // wenn neue Karte gehoben wurde, soll diese Methode abgebrochen werden
-        if (karteGehoben || karteGelegt) {
-            return;
-        }
-        if (aktuellerSpieler instanceof EchteSpieler) {
 
-            while(!validInput) {
+        if (aktuellerSpieler instanceof EchteSpieler) {
+            // Falls neue karte gehoben wird und in diese Methode gesprungen --> kartegehoben = false damit sie nicht aufgerufen wird
+            if (!keineWeitereAblage) {
                 try {
-                    int position = input.nextInt();
-                    if (position > aktuellerSpieler.spielerHand.size()) {
-                        int anzahlKarten = aktuellerSpieler.spielerHand.size()-1;
-                        output.println("Bitte eine Zahl zwischen 0 & " + anzahlKarten + " eingeben!");
-                        input.next();
-                    validInput = true;
-                } else {
-                        Karte handKarte = aktuellerSpieler.spielerHand.get(position);
-                        if (!passendeKarte(handKarte, kartenstapel.obersteKarte())) {
-                            falscheKarte();
+                    while (input.hasNext() && !out) {
+                        int position = input.nextInt();
+                        if (position > aktuellerSpieler.spielerHand.size()) {
+                            int anzahlKarten = aktuellerSpieler.spielerHand.size() - 1;
+                            output.println("Bitte eine Zahl bis höchstens " + anzahlKarten + " eingeben!");
+                            input.next();
                         } else {
-                            System.out.println("Spielzug korrekt. Diese Karte wurde abgelegt:");
-                            System.out.println(aktuellerSpieler.spielerHand.get(position));
-                            kartenstapel.karteAblegen(aktuellerSpieler.spielerHand.get(position));
-                            aktuellerSpieler.spielerHand.remove(position);
-                            karteGelegt = true;
-                            validInput = true;
-                            return;
+                            Karte handKarte = aktuellerSpieler.spielerHand.get(position);
+                            if (!passendeKarte(handKarte, kartenstapel.obersteKarte())) {
+                                falscheKarte();
+                            } else {
+                                System.out.println("Spielzug korrekt. Diese Karte wurde abgelegt:");
+                                // sollte aussetzen/richtungswechsel kontrollieren
+                                naechsterSpieler = false;
+                                System.out.println(aktuellerSpieler.spielerHand.get(position));
+                                kartenstapel.karteAblegen(aktuellerSpieler.spielerHand.get(position));
+                                aktuellerSpieler.spielerHand.remove(position);
+                                // raus aus der schleife
+                                out = true;
+                                output.println("Möchten Sie den Spielzug beenden? Bitte Y (YES) oder N (NO) eingeben");
+                                return;
+                            }
                         }
                     }
-                } catch(InputMismatchException e) {
-                    int anzahlKarten = aktuellerSpieler.spielerHand.size()-1;
-                    output.println("Bitte eine Zahl zwischen 0 & " + anzahlKarten + " eingeben!" +
-                            "--> ELSE IF IM TRY");
-                    input.next();
+                } catch (InputMismatchException e) {
+                    int anzahlKarten = aktuellerSpieler.spielerHand.size() - 1;
+                    output.println("Bitte eine Zahl bis höchstens " + anzahlKarten + " eingeben!" +
+                            "--> ELSE IF IM ablegen");
+                } return;
+
+
             }
 //            while (input.hasNextInt()) {
 //                    int position = input.nextInt();
@@ -378,7 +363,7 @@ public class SpielerManager {
 //                    int position = input.nextInt();
 //                    break;
 //                }
-            }
+
         } else {
             boolean karteGespielt = false;
             int i = 0;
@@ -403,8 +388,7 @@ public class SpielerManager {
 //                                    "(Beispiel: 4Blau)");
 //                            if(input.nextLine().equals("4Blau")
                 } else {
-//                    System.out.println("Karte nicht gefunden");
-//                    System.out.println(kartenstapel.obersteKarte() + " " + aktuellerSpieler.spielerHand.get(i));
+
                     i++;
 
 
@@ -443,7 +427,7 @@ public class SpielerManager {
     }
 
     public void botUno() {
-            output.println("**********UNO!**********");
+        output.println("**********UNO!**********");
     }
 
     public boolean unoGerufen() {
@@ -453,11 +437,11 @@ public class SpielerManager {
     }
 
     public void farbEingabe(Scanner input) {
-        output.println("Bitte geben Sie \"Uno \" oder eine Farbwahl ein!");
+        output.println("Bitte geben Sie \"Uno\" oder eine Farbwahl ein!");
         while (input.hasNext()) {
             String s = input.nextLine();
             if (s.equalsIgnoreCase("UNO")) {
-                output.println(aktuellerSpieler.getName() + " hat \"Uno \" gerufen!");
+                output.println(aktuellerSpieler.getName() + " hat \"Uno\" gerufen!");
                 break;
             } else if (s.equalsIgnoreCase("BLAU")) {
                 output.println("Sie haben sich die Farbe Blau gewünscht!");
@@ -472,27 +456,30 @@ public class SpielerManager {
                 output.println("Sie haben sich die Farbe Gelb gewünscht!");
                 break;
             } else {
-                    falscheEingabe();
-                    break;
-                }
+                falscheEingabe();
+                break;
+            }
 
         }
 
     }
 
-    public void falscheEingabe(){
+    public void falscheEingabe() {
         output.println("Haben Sie falsch eingegeben und möchten den Spielzug beenden? Bitte Y (YES) eingeben: ");
         String s = input.nextLine();
-        if(s.equalsIgnoreCase("y")){
+        if (s.equalsIgnoreCase("y")) {
+            output.println("Möchten Sie den Spielzug beenden?  Bitte Y (YES) oder N (NO) eingeben");
             spielzugBeendet();
-        } return;
+        }
+        return;
     }
 
     public void spielzugBeendet() {
         if (aktuellerSpieler instanceof EchteSpieler) {
-            karteGehoben = false;
-            karteGelegt = false;
-            output.println("Möchten Sie den Spielzug beenden?  Bitte Y (YES) oder N (NO) eingeben");
+            keineWeitereAblage = false;
+            quit = false;
+            out = false;
+//            output.println("Möchten Sie den Spielzug beenden?  Bitte Y (YES) oder N (NO) eingeben");
             while (input.hasNext()) {
                 String s = input.nextLine();
                 if (s.equalsIgnoreCase("y")) {
@@ -531,17 +518,19 @@ public class SpielerManager {
         //Richtungswechsel wenn auf Stapel "Richtungswechsel" liegt
         //todo: Aussetzenkarte ist Spieler überspringen
 
-        if (kartenstapel.obersteKarte().getWert().equals(Wert.AUSSETZEN)) {
-            System.out.println("Spieler nach " + aktuellerSpieler.getName() + " muss aussetzen!");
-            i = 1;
-
+        // aussetzen oder richtungswechsel liegt oben auf - wenn true, wird das übersprungen
+        if(!naechsterSpieler){
+            if (kartenstapel.obersteKarte().getWert().equals(Wert.AUSSETZEN)) {
+                System.out.println("Spieler nach " + aktuellerSpieler.getName() + " muss aussetzen!");
+                i = 1;
+                naechsterSpieler = true;
+            }
+            if (kartenstapel.obersteKarte().getWert().equals(Wert.RICHTUNGSWECHSEL)) {
+                spielrichtung = !spielrichtung;
+                naechsterSpieler = true;
+            }
         }
 
-
-        if (kartenstapel.obersteKarte().getWert().equals(Wert.RICHTUNGSWECHSEL)) {
-            spielrichtung = !spielrichtung;
-
-        }
         if (spielrichtung) {
             switch (alleSpieler.indexOf(aktuellerSpieler)) {
                 case 0:
@@ -580,35 +569,6 @@ public class SpielerManager {
         return aktuellerSpieler;
     }
 
-//    public void endeSpielzug(){
-//            if((kartenstapel.obersteKarte().getFarbe() == (SCHWARZ)
-//        System.out.println("Ist Ihr Spielzug beendet?");
-//        try {
-//            String s = input.nextLine();
-//           if(s.equalsIgnoreCase("y")) {
-//                return;
-//            }
-//            if (s.equalsIgnoreCase("n")) {
-//                System.out.println("Bitte \"Uno\" oder \"Farbe + (blau,gelb,grün,rot)\" eingeben:");
-//                String next = input.nextLine();
-//                try {
-//                    if(next.equalsIgnoreCase("UNO")) {
-//                        aktuellerSpieler.setUno(true);
-//                    } else if(next.startsWith("Farbe")){
-//                        kartenstapel.se
-//                    }
-//            while (!input.equalsIgnoreCase("y") || !input.equalsIgnoreCase("n")) {
-//                System.out.println("Falsche Eingabe!");
-//                throw new FalscheEingabeException("Falsche Eingabe");
-//            }
-//        } catch (FalscheEingabeException e) {
-//            abfrageKartenhandZeigen();
-//            //e.printStackTrace();
-//        }
-//    }
-//}
-//    }
-
     public int getPunkteVonAllenSpielern() {
         int punkteAlleSpieler = 0;
         for (Spieler s : alleSpieler) {
@@ -616,6 +576,8 @@ public class SpielerManager {
         }
         return punkteAlleSpieler;
     }
+
+
 
     @Override
     public String toString() {

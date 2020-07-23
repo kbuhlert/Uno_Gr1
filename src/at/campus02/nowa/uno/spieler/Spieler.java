@@ -51,7 +51,7 @@ public abstract class Spieler {
     }
 
     public void setRundenPunkte(int punkte) {
-        this.rundenPunkte = rundenPunkte;
+        rundenPunkte = rundenPunkte + punkte;
     }
 
     public int getPunkteVonSpielerHand(){
