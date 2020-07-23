@@ -2,11 +2,11 @@ package at.campus02.nowa.uno.spiel;
 
 
 import at.campus02.nowa.uno.Datenbank.SqliteClient;
-import at.campus02.nowa.uno.karte.Kartenmanager;
-import at.campus02.nowa.uno.kartenstapel.TeststapelWunschkarte;
-import at.campus02.nowa.uno.FalscheEingabeException;
 import at.campus02.nowa.uno.spieler.Spieler;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,7 +19,6 @@ public class App {
     private final SpielerManager spielerManager;
     private int roundcount = 0;
     private int sessions = 0;
-
     private static final String CREATETABLE = "CREATE TABLE Sessions (Player varchar(100) NOT NULL, Session int NOT NULL, Round int NOT NULL, Score int NOT NULL, CONSTRAINT PK_Sessions PRIMARY KEY (Player, Session, Round));";
     private static final String INSERT_TEMPLATE = "INSERT INTO Sessions (Player, Session, Round, Score) VALUES ('%1s', %2d, %3d, %4d);";
     private static final String SELECT_BYPLAYERANDSESSION = "SELECT Player, SUM(Score) AS Score FROM Sessions WHERE Player = '%1s' AND Session = %2d;";
@@ -56,10 +55,17 @@ public class App {
     }
 
     private void initializeGame() throws SQLException {
-        client = new SqliteClient("UNO.sqlite");
+        client = new SqliteClient("UNO3.sqlite");
         if (!client.tableExists("Sessions")) {
             client.executeStatement(CREATETABLE);
         }
+        output.println();
+        callHelp();
+        output.println();
+        output.println();
+        output.println("-------------");
+        output.println("MAY THE GAMES BEGIN AND THE BEST PLAYER WIN!");
+        output.println();
         spielerManager.spielerZuweisen();
         spielerManager.startSpielerFestlegen();
         //Reihenfolge der Spieler zufällig festlegen und Startspieler festlegen
@@ -132,6 +138,29 @@ public class App {
             }
         }
         return !weiterSpielenAbfrage();
+    }
+
+    /** Methode ermöglicht eine Textdatei mit Spielregeln aufzurufen
+     *
+      */
+    private void callHelp() {
+        BufferedReader helpReader = null;
+        try {
+            helpReader = new BufferedReader(new FileReader("UNOSpielregeln.txt"));
+            String line;
+            while ((line = helpReader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (helpReader != null)
+                    helpReader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void punkteInDatenbank() throws SQLException {

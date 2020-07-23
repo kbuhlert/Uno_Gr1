@@ -9,6 +9,10 @@ import java.util.ArrayList;
 
 public class EchteSpieler extends Spieler {
 
+    /**Die Klasse EchteSpieler managed die Methoden der Spieler die am Spiel teilnehmen und die Ihre Spielzüge selbständig bestimmen
+     *
+     * @param name
+     */
 
     public EchteSpieler(String name) {
         super(name);
