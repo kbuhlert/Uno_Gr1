@@ -29,8 +29,9 @@ public class App {
     //Kartenstapel ablagestapel = new Kartenstapel();
 
     public void Run() {
-        initializeGame();
+
         try {
+            initializeGame();
             do {
                 initializeRound();
                 printState();
@@ -80,7 +81,7 @@ public class App {
         spielerManager.spielzugBeendet();
 
         // boolean der true ausgibt wenn aktueller spieler keine karten mehr hat
-        if(spielerManager.letzte){
+        if (spielerManager.letzte) {
             roundEnded();
         }
         //todo: Info an Alle. Habe die Ausgabe der obersten Karte Ablagestapel, die Aufforderung des nächsten Spielers, Abfrage ob Hand angezeigt
@@ -123,9 +124,7 @@ public class App {
 
     private void printState() {
         //Ausgeben welcher Spieler ist als nächstes dran
-            spielerManager.WerIstDranUndWelcheKarte();
-
-
+        spielerManager.WerIstDranUndWelcheKarte();
     }
 
 
@@ -135,30 +134,33 @@ public class App {
 
 
     private boolean roundEnded() {
-        boolean ende = false;
         //check whether anyone's spielerhand is empty
         if (spielerManager.aktuellerSpieler.spielerHand.isEmpty()) {
             output.println();
             output.println();
             output.println("------");
-            output.println("Die Runde ist zu Ende. " + spielerManager.aktuellerSpieler.getName() + " hat gewonnen");
-            output.println(spielerManager.getPunkteVonAllenSpielern() + " Punkte gewonnen.");
+            output.println("Die Runde ist zu Ende. " + spielerManager.aktuellerSpieler.getName() + " hat " + spielerManager.getPunkteVonAllenSpielern() + " Punkte gewonnen.");
+            spielerManager.aktuellerSpieler.setRundenPunkte(spielerManager.getPunkteVonAllenSpielern());
+            output.println(spielerManager.aktuellerSpieler.getName() + " hat insgesamt schon " + spielerManager.aktuellerSpieler.getRundenPunkte() + " Punkte.");
             output.println();
-            output.println("Noch eine Runde?");
-            String c;
-            while (input.hasNext()) {
-                c = input.nextLine();
-                if (c.equalsIgnoreCase("y")) {
-                    ende = true;
-                    break;
-                } else if (c.equalsIgnoreCase("n")) {
-                   gameEnded();
-                } else {
-                    System.out.println("Falsche Eingabe!");
-                }
-            }
+            return true;
         }
-        return ende;
+        return false;
+    }
+
+    private boolean weiterSpielerAbfrage() {
+        output.println("Noch eine Runde?");
+        String c;
+        do {
+            c = input.nextLine();
+            if (c.equalsIgnoreCase("y")) {
+                return true;
+            } else if (c.equalsIgnoreCase("n")) {
+                return false;
+            } else {
+                System.out.println("Falsche Eingabe!");
+            }
+        } while (true);
     }
 //
 //            output.println("Noch eine Runde?");
@@ -191,29 +193,26 @@ public class App {
 //    }
 
     private boolean gameEnded() {
-        if (spielerManager.aktuellerSpieler.rundenPunkte >= 500) {
-            return true;
-        }
-
-        while (input.hasNext()) {
-            String s = input.nextLine();
-            output.println("Möchten Sie wirklich vorzeitig beenden? Bitte Y (YES) oder N (NO) eingeben");
-            if (s.equalsIgnoreCase("y")) {
+        for (Spieler s : spielerManager.alleSpieler) {
+            if (s.getRundenPunkte() >= 500) {
                 return true;
-            } else if (s.equalsIgnoreCase("n")) {
-                return false;
-            } else output.println("Falsche Eingabe ");
-            output.println("Bitte Y (YES) oder N (NO) eingeben");
-            s = input.nextLine();
-            //Ausgabe Rangliste + Gratulation
-            //Ausgabe finaler Punktestand
-            // Ausgabe GameOver
-            //Abfrage "Neues Spiel starten"
+            } else {
+                return !weiterSpielerAbfrage();
+            }
         }
         return false;
     }
 
     private void printFinalScore() {
-
+        Spieler gewinner = null;
+        for (Spieler s : spielerManager.alleSpieler) {
+            if (s.getRundenPunkte() >= 500) {
+                gewinner = s;
+            }
+        }
+        output.println("GRATULATION!");
+        output.println(gewinner.getName() + " hat das Spiel mit " + gewinner.getRundenPunkte() + " Punkten gewonnen!");
+        output.println();
+        output.println();
     }
 }
