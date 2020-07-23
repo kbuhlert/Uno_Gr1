@@ -156,12 +156,14 @@ public class App {
         for (Spieler s : spielerManager.alleSpieler) {
             if (s.spielerHand.isEmpty()) {
                 rundenGewinner = s;
+                rundenGewinner.setRundenPunkte(spielerManager.getPunkteVonAllenSpielern());
                 output.println();
                 output.println();
                 output.println("------");
-                output.println("Die Runde ist zu Ende. " + rundenGewinner.getName() + " hat " + spielerManager.getPunkteVonAllenSpielern() + " Punkte gewonnen.");
-                rundenGewinner.setRundenPunkte(spielerManager.getPunkteVonAllenSpielern());
-                output.println(rundenGewinner.getName() + " hat in " + roundcount + " Runden schon " + rundenGewinner.getRundenPunkte() + " Punkte gewonnen.");
+                output.println("Die Runde ist zu Ende. ");
+                output.println("GRATULIERE, Gewinner ist: " + rundenGewinner.getName());
+                output.println(rundenGewinner.getName() + " hat in dieser Runde " + spielerManager.getPunkteVonAllenSpielern() + " Punkte gewonnen. GESAMTPUNKTZAHL " + rundenGewinner.getName() + ": " + rundenGewinner.getRundenPunkte() +".");
+                output.println("Es wurden "  + roundcount + " Runden gespielt.");
                 output.println();
                 return true;
 
