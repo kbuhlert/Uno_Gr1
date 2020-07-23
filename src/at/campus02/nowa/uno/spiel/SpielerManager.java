@@ -11,10 +11,10 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import static at.campus02.nowa.uno.karte.Farbe.SCHWARZ;
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
+
+import static at.campus02.nowa.uno.karte.Farbe.*;
 
 public class SpielerManager {
     private final Scanner input;
@@ -27,7 +27,7 @@ public class SpielerManager {
 
     Spieler aktuellerSpieler = null;
     boolean spielrichtung = true;
-    Karte gleicheKarte = null;
+    Karte farbWahl = new Zahlenkarte(BLAU, Wert.PLUSVIER);
     boolean letzte = false;
     boolean keineWeitereAblage = false;            //--> soll verhindern dass nach neu gehobener Karte nocheinmal abgelegt werden muss
     boolean quit = false;
@@ -164,19 +164,18 @@ public class SpielerManager {
 
     }
 
-
-    public void WerIstDranUndWelcheKarte() {    //todo: wird zu wer ist dran
-        System.out.println();
-        System.out.println("-----");
-        System.out.println(aktuellerSpieler.getName() + "  ist an der Reihe!");
+    public void ausgabeAktuellerSpieler() {    //todo: wird zu wer ist dran
+        output.println();
+        output.println("-----");
+        output.println(aktuellerSpieler.getName() + "  ist an der Reihe!");
         if(!abgehoben && !ersteRunde){
             plusZweiVier();
         }
+        kartenstapel.genugKartenAmStapel();
         kartenstapel.ausgabeObersteKarteAblagestapel();
         //todo: die Methoden direkt in der App aufrufen
 
     }
-
 
     public void kreativeLoesungUmInputZuLöschen(){
         if(input.hasNext())
@@ -184,15 +183,11 @@ public class SpielerManager {
         else return;
     }
 
-
-
-
     public void neueKarteHeben() {
         if (aktuellerSpieler instanceof EchteSpieler) {
             String c;
             output.println("Möchten Sie eine neue Karte abheben? Bitte Y (YES) oder N (NO) eingeben");
             if(aushelfen){
-                kreativeLoesungUmInputZuLöschen();
                 kreativeLoesungUmInputZuLöschen();
             }
             while (!keineWeitereAblage || !quit) {
@@ -216,6 +211,8 @@ public class SpielerManager {
                                 keineWeitereAblage = true;
                                 quit = true;
                                 abgehoben = false;
+                                // Farbwahl Karte vom Stapel entfernen
+                                kartenstapel.farbwahlKarteWeg();
                                 output.println(neu.toString());
                                 kartenstapel.karteAblegen(neu);
                                 output.println("Möchten Sie den Spielzug beenden?  Bitte Y (YES) oder N (NO) eingeben");
@@ -330,6 +327,8 @@ public class SpielerManager {
                                 // sollte aussetzen/richtungswechsel kontrollieren
                                 abgehoben = false;
                                 naechsterSpieler = false;
+                                // Farbwahl Karte vom Stapel entfernen
+                                kartenstapel.farbwahlKarteWeg();
                                 System.out.println(aktuellerSpieler.spielerHand.get(position));
                                 kartenstapel.karteAblegen(aktuellerSpieler.spielerHand.get(position));
                                 aktuellerSpieler.spielerHand.remove(position);
@@ -475,21 +474,34 @@ public class SpielerManager {
             if (s.equalsIgnoreCase("UNO")) {
                 output.println(aktuellerSpieler.getName() + " hat \"Uno\" gerufen!");
                 break;
-            } else if (s.equalsIgnoreCase("BLAU")) {
-                output.println("Sie haben sich die Farbe Blau gewünscht!");
-                break;
-            } else if (s.equalsIgnoreCase("ROT")) {
-                output.println("Sie haben sich die Farbe Rot gewünscht!");
-                break;
-            } else if (s.equalsIgnoreCase("GRUEN")) {
-                output.println("Sie haben sich die Farbe Grün gewünscht!");
-                break;
-            } else if (s.equalsIgnoreCase("GELB")) {
-                output.println("Sie haben sich die Farbe Gelb gewünscht!");
-                break;
-            } else {
-                falscheEingabe();
-                break;
+            } else if (kartenstapel.obersteKarte().getFarbe().equals(SCHWARZ)){
+                if (s.equalsIgnoreCase("BLAU")) {
+                    farbWahl.setFarbe(BLAU);
+                    kartenstapel.karteAblegen(farbWahl);
+                    output.println("Sie haben sich die Farbe Blau gewünscht!");
+                    break;
+                } else if (s.equalsIgnoreCase("ROT")) {
+
+                    farbWahl.setFarbe(ROT);
+                    kartenstapel.karteAblegen(farbWahl);
+                    output.println("Sie haben sich die Farbe Rot gewünscht!");
+                    break;
+                } else if (s.equalsIgnoreCase("GRUEN")) {
+
+                    farbWahl.setFarbe(GRUEN);
+                    kartenstapel.karteAblegen(farbWahl);
+                    output.println("Sie haben sich die Farbe Grün gewünscht!");
+                    break;
+                } else if (s.equalsIgnoreCase("GELB")) {
+
+                    farbWahl.setFarbe(GELB);
+                    kartenstapel.karteAblegen(farbWahl);
+                    output.println("Sie haben sich die Farbe Gelb gewünscht!");
+                    break;
+                } else {
+                    falscheEingabe();
+                    break;
+                }
             }
 
         }

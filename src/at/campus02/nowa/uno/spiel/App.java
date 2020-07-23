@@ -123,7 +123,7 @@ public class App {
 
     private void printState() {
         //Ausgeben welcher Spieler ist als nächstes dran
-            spielerManager.WerIstDranUndWelcheKarte();
+            spielerManager.ausgabeAktuellerSpieler();
 
 
     }
