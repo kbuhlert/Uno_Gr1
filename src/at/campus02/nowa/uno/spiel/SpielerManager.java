@@ -32,6 +32,7 @@ public class SpielerManager {
     boolean keineWeitereAblage = false;            //--> soll verhindern dass nach neu gehobener Karte nocheinmal abgelegt werden muss
     boolean quit = false;
     boolean out = false;
+    boolean naechsterSpieler = false;
 
 
     public SpielerManager(Scanner input, PrintStream output) {
@@ -180,6 +181,8 @@ public class SpielerManager {
                                 break;
                             } else {
                                 output.println("Spielzug korrekt. Diese Karte wurde abgelegt:");
+                                // sollte aussetzen/richtungswechsel beeinflussen
+                                naechsterSpieler = false;
                                 keineWeitereAblage = true;
                                 output.println(neu.toString());
                                 kartenstapel.karteAblegen(neu);
@@ -285,6 +288,8 @@ public class SpielerManager {
                                 falscheKarte();
                             } else {
                                 System.out.println("Spielzug korrekt. Diese Karte wurde abgelegt:");
+                                // sollte aussetzen/richtungswechsel kontrollieren
+                                naechsterSpieler = false;
                                 System.out.println(aktuellerSpieler.spielerHand.get(position));
                                 kartenstapel.karteAblegen(aktuellerSpieler.spielerHand.get(position));
                                 aktuellerSpieler.spielerHand.remove(position);
@@ -513,17 +518,19 @@ public class SpielerManager {
         //Richtungswechsel wenn auf Stapel "Richtungswechsel" liegt
         //todo: Aussetzenkarte ist Spieler überspringen
 
-        if (kartenstapel.obersteKarte().getWert().equals(Wert.AUSSETZEN)) {
-            System.out.println("Spieler nach " + aktuellerSpieler.getName() + " muss aussetzen!");
-            i = 1;
-
+        // aussetzen oder richtungswechsel liegt oben auf - wenn true, wird das übersprungen
+        if(!naechsterSpieler){
+            if (kartenstapel.obersteKarte().getWert().equals(Wert.AUSSETZEN)) {
+                System.out.println("Spieler nach " + aktuellerSpieler.getName() + " muss aussetzen!");
+                i = 1;
+                naechsterSpieler = true;
+            }
+            if (kartenstapel.obersteKarte().getWert().equals(Wert.RICHTUNGSWECHSEL)) {
+                spielrichtung = !spielrichtung;
+                naechsterSpieler = true;
+            }
         }
 
-
-        if (kartenstapel.obersteKarte().getWert().equals(Wert.RICHTUNGSWECHSEL)) {
-            spielrichtung = !spielrichtung;
-
-        }
         if (spielrichtung) {
             switch (alleSpieler.indexOf(aktuellerSpieler)) {
                 case 0:
@@ -562,34 +569,7 @@ public class SpielerManager {
         return aktuellerSpieler;
     }
 
-//    public void endeSpielzug(){
-//            if((kartenstapel.obersteKarte().getFarbe() == (SCHWARZ)
-//        System.out.println("Ist Ihr Spielzug beendet?");
-//        try {
-//            String s = input.nextLine();
-//           if(s.equalsIgnoreCase("y")) {
-//                return;
-//            }
-//            if (s.equalsIgnoreCase("n")) {
-//                System.out.println("Bitte \"Uno\" oder \"Farbe + (blau,gelb,grün,rot)\" eingeben:");
-//                String next = input.nextLine();
-//                try {
-//                    if(next.equalsIgnoreCase("UNO")) {
-//                        aktuellerSpieler.setUno(true);
-//                    } else if(next.startsWith("Farbe")){
-//                        kartenstapel.se
-//                    }
-//            while (!input.equalsIgnoreCase("y") || !input.equalsIgnoreCase("n")) {
-//                System.out.println("Falsche Eingabe!");
-//                throw new FalscheEingabeException("Falsche Eingabe");
-//            }
-//        } catch (FalscheEingabeException e) {
-//            abfrageKartenhandZeigen();
-//            //e.printStackTrace();
-//        }
-//    }
-//}
-//    }
+
 
     public int getPunkteVonAllenSpielern() {
         int punkteAlleSpieler = 0;
