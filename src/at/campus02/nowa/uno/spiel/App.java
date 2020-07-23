@@ -23,6 +23,7 @@ public class App {
     private static final String CREATETABLE = "CREATE TABLE Sessions (Player varchar(100) NOT NULL, Session int NOT NULL, Round int NOT NULL, Score int NOT NULL, CONSTRAINT PK_Sessions PRIMARY KEY (Player, Session, Round));";
     private static final String INSERT_TEMPLATE = "INSERT INTO Sessions (Player, Session, Round, Score) VALUES ('%1s', %2d, %3d, %4d);";
     private static final String SELECT_BYPLAYERANDSESSION = "SELECT Player, SUM(Score) AS Score FROM Sessions WHERE Player = '%1s' AND Session = %2d;";
+    private static final String SELECTMAX = "select max(Session) as sessions from sessions;";
     private ArrayList<HashMap<String, String>> results = new ArrayList<>();
     SqliteClient client;
 
@@ -71,8 +72,9 @@ public class App {
         spielerManager.spielerZuweisen();
         spielerManager.startSpielerFestlegen();
         //Reihenfolge der Spieler zufällig festlegen und Startspieler festlegen
+        ArrayList<HashMap<String, String>> result = client.executeQuery(SELECTMAX);
+        sessions = Integer.valueOf(result.get(0).get("sessions"));
         sessions++;
-
     }
 
     private void initializeRound() {
@@ -96,9 +98,9 @@ public class App {
         spielerManager.spielzugBeendet();
 
         // boolean der true ausgibt wenn aktueller spieler keine karten mehr hat
-        if (spielerManager.letzte) {
-            roundEnded();
-        }
+        //if (spielerManager.letzte) {
+          //  roundEnded();
+        //}
         //todo: Info an Alle. Habe die Ausgabe der obersten Karte Ablagestapel, die Aufforderung des nächsten Spielers, Abfrage ob Hand angezeigt
         // werden soll und Eingabeaufforderung in PrintState() gegeben
 
@@ -156,12 +158,14 @@ public class App {
         for (Spieler s : spielerManager.alleSpieler) {
             if (s.spielerHand.isEmpty()) {
                 rundenGewinner = s;
+                rundenGewinner.setRundenPunkte(spielerManager.getPunkteVonAllenSpielern());
                 output.println();
                 output.println();
                 output.println("------");
-                output.println("Die Runde ist zu Ende. " + rundenGewinner.getName() + " hat " + spielerManager.getPunkteVonAllenSpielern() + " Punkte gewonnen.");
-                rundenGewinner.setRundenPunkte(spielerManager.getPunkteVonAllenSpielern());
-                output.println(rundenGewinner.getName() + " hat in " + roundcount + " Runden schon " + rundenGewinner.getRundenPunkte() + " Punkte gewonnen.");
+                output.println("Die Runde ist zu Ende. ");
+                output.println("GRATULIERE, Gewinner ist: " + rundenGewinner.getName());
+                output.println(rundenGewinner.getName() + " hat in dieser Runde " + spielerManager.getPunkteVonAllenSpielern() + " Punkte gewonnen. GESAMTPUNKTZAHL " + rundenGewinner.getName() + ": " + rundenGewinner.getRundenPunkte() +".");
+                output.println("Es wurden "  + roundcount + " Runden gespielt.");
                 output.println();
                 return true;
 
@@ -214,15 +218,15 @@ public class App {
         for (Spieler s : spielerManager.alleSpieler) {
             if (s.getRundenPunkte() >= 500) {
                 gewinner = s;
+                output.println();
+                output.println();
+                output.println("*******************************************************");
+                output.println();
                 output.println("GRATULATION!");
                 output.println(gewinner.getName() + " hat das Spiel mit " + gewinner.getRundenPunkte() + " Punkten gewonnen!");
                 output.println();
+                output.println("*******************************************************");
                 output.println();
-                return;
-            }
-            else {
-                gewinner = null;
-                output.println("Das Spiel wird vorzeitig abgebrochen!");
                 output.println();
                 output.println();
                 return;
