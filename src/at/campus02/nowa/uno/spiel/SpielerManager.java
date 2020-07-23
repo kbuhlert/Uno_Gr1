@@ -165,13 +165,11 @@ public class SpielerManager {
     }
 
 
-    public void WerIstDranUndWelcheKarte() {    //todo: wird zu wer ist dran
-        System.out.println();
-        System.out.println("-----");
-        System.out.println(aktuellerSpieler.getName() + "  ist an der Reihe!");
-        if(!abgehoben && !ersteRunde){
-            plusZweiVier();
-        }
+
+    public void ausgabeAktuellerSpieler() {    //todo: wird zu wer ist dran
+        output.println();
+        output.println("-----");
+        output.println(aktuellerSpieler.getName() + "  ist an der Reihe!");
         kartenstapel.ausgabeObersteKarteAblagestapel();
         //todo: die Methoden direkt in der App aufrufen
 
@@ -603,8 +601,6 @@ public class SpielerManager {
         return aktuellerSpieler;
     }
 
-
-
     public int getPunkteVonAllenSpielern() {
         int punkteAlleSpieler = 0;
         for (Spieler s : alleSpieler) {
@@ -612,6 +608,8 @@ public class SpielerManager {
         }
         return punkteAlleSpieler;
     }
+
+
 
     @Override
     public String toString() {
