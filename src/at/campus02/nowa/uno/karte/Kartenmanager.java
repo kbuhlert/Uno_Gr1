@@ -91,6 +91,9 @@ public class Kartenmanager {
         return obersteKarte;
     }
 
+    public void farbwahlKarteWeg(){
+        ablagestapel.remove(ablagestapel.size()-1);
+    }
 
 
     //Methode Karte drauflegen (put) + Aufruf Prüfung Kartenablage gültig
@@ -114,8 +117,17 @@ public class Kartenmanager {
     public void stapelZusammenMischen(){
         for(Karte k : ablagestapel){
             kartenstapel.add(k);
+            mischen();
         } System.out.println("Verteilstapel wurde soeben neu gemischt!");
     }
+
+    public void genugKartenAmStapel(){
+        if(kartenstapel.size() <= 4){
+            System.out.println("Ablagestapel ist fast leer");
+            stapelZusammenMischen();
+        }
+    }
+
 
     public int size(){
         return kartenstapel.size();
