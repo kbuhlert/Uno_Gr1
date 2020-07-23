@@ -218,15 +218,15 @@ public class App {
         for (Spieler s : spielerManager.alleSpieler) {
             if (s.getRundenPunkte() >= 500) {
                 gewinner = s;
+                output.println();
+                output.println();
+                output.println("*******************************************************");
+                output.println();
                 output.println("GRATULATION!");
                 output.println(gewinner.getName() + " hat das Spiel mit " + gewinner.getRundenPunkte() + " Punkten gewonnen!");
                 output.println();
+                output.println("*******************************************************");
                 output.println();
-                return;
-            }
-            else {
-                gewinner = null;
-                output.println("Das Spiel wird vorzeitig abgebrochen!");
                 output.println();
                 output.println();
                 return;

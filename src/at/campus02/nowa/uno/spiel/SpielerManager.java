@@ -22,8 +22,8 @@ public class SpielerManager {
     //  Spieler in  Liste
     protected ArrayList<Spieler> alleSpieler;
 
-    //Kartenmanager kartenstapel;
-    TeststapelWunschkarte kartenstapel;  //--> zum Testen mit speziellen Karten
+    Kartenmanager kartenstapel;
+    //TeststapelWunschkarte kartenstapel;  //--> zum Testen mit speziellen Karten
 
     Spieler aktuellerSpieler = null;
     boolean spielrichtung = true;
@@ -94,8 +94,8 @@ public class SpielerManager {
     //Verteilstack erstellen & austeilen der Karten auf die Spielerhand
     public void kartenAusteilen() {
 
-        //kartenstapel.stapelErstellen();
-        kartenstapel.neuerTeststapel(new Zahlenkarte(Farbe.BLAU,Wert.ACHT), new Zahlenkarte(Farbe.BLAU,Wert.EINS));  //--> Wenn mit Teststapel gespielt wird
+        kartenstapel.stapelErstellen();
+        //kartenstapel.neuerTeststapel(new Zahlenkarte(Farbe.BLAU,Wert.ACHT), new Zahlenkarte(Farbe.BLAU,Wert.EINS));  //--> Wenn mit Teststapel gespielt wird
         //kartenstapel.neuerTeststapel(new Zahlenkarte(SCHWARZ,Wert.PLUSVIER), new Zahlenkarte(Farbe.BLAU,Wert.RICHTUNGSWECHSEL));  //--> Wenn mit Teststapel gespielt wird
         System.out.println("Karten werden ausgeteilt");     //Karten austeilen -->7 Karten pro Spieler
         for (Spieler spieler : alleSpieler) {
