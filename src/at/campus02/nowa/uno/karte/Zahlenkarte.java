@@ -8,8 +8,9 @@ public class Zahlenkarte extends Karte{
         this.punkte = getPunkte();
     }
 
-
-
+    /**Setzt die Punkte der Karten fest, wird für Berechnung der Punkte genutzt
+     *
+     */
     public int getPunkte() {
         if (getWert().equals(Wert.PLUSZWEI)){
             punkte = 20;
@@ -59,6 +60,3 @@ public class Zahlenkarte extends Karte{
         return punkte;
     }
 }
-
-//Zahlenkarten sind alle Zahlen mit Wert 0-9 und Farbe rot, gelb, blau, grün
-
