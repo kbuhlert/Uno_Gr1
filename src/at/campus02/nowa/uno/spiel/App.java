@@ -1,20 +1,33 @@
 package at.campus02.nowa.uno.spiel;
 
 
+
+import at.campus02.nowa.uno.Datenbank.SqliteClient;
 import at.campus02.nowa.uno.karte.Kartenmanager;
 import at.campus02.nowa.uno.kartenstapel.TeststapelWunschkarte;
-
 import at.campus02.nowa.uno.FalscheEingabeException;
 import at.campus02.nowa.uno.spieler.Spieler;
-
-
 import java.io.PrintStream;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class App {
     private final Scanner input;
     private final PrintStream output;
     private final SpielerManager spielerManager;
+    private int roundcount = 0;
+    private int sessions = 0;
+
+    private static final String CREATETABLE = "CREATE TABLE Sessions (Player varchar(100) NOT NULL, Session int NOT NULL, Round int NOT NULL, Score int NOT NULL, CONSTRAINT PK_Sessions PRIMARY KEY (Player, Session, Round));";
+    private static final String INSERT_TEMPLATE = "INSERT INTO Sessions (Player, Session, Round, Score) VALUES ('%1s', %2d, %3d, %4d);";
+    private static final String SELECT_BYPLAYERANDSESSION = "SELECT Player, SUM(Score) AS Score FROM Sessions WHERE Player = '%1s' AND Session = %2d;";
+    private static final String SELECTMAX = "select max(Session) as sessions from sessions;";
+    private ArrayList<HashMap<String, String>> results = new ArrayList<>();
+    SqliteClient client;
+
+
 
     //TeststapelWunschkarte verteilstapel;  //--> zum Testen mit speziellen Karten
 
@@ -29,8 +42,8 @@ public class App {
     //Kartenstapel ablagestapel = new Kartenstapel();
 
     public void Run() {
-        initializeGame();
         try {
+            initializeGame();
             do {
                 initializeRound();
                 printState();
@@ -51,16 +64,21 @@ public class App {
         }
     }
 
-    private void initializeGame() {
+    private void initializeGame() throws SQLException {
+        client = new SqliteClient("UNO3.sqlite");
+        if (!client.tableExists("Sessions")) {
+            client.executeStatement(CREATETABLE);
+        }
         spielerManager.spielerZuweisen();
         spielerManager.startSpielerFestlegen();
         //Reihenfolge der Spieler zufällig festlegen und Startspieler festlegen
-
+        ArrayList<HashMap<String, String>> result = client.executeQuery(SELECTMAX);
+        sessions = Integer.valueOf(result.get(0).get("sessions"));
+        sessions++;
     }
 
     private void initializeRound() {
-
-
+        roundcount++;
         //Verteilstack erstellen
         //Verteilstack mischen
         //Karten austeilen -->7 Karten pro Spieler
@@ -80,9 +98,9 @@ public class App {
         spielerManager.spielzugBeendet();
 
         // boolean der true ausgibt wenn aktueller spieler keine karten mehr hat
-        if(spielerManager.letzte){
-            roundEnded();
-        }
+        //if (spielerManager.letzte) {
+          //  roundEnded();
+        //}
         //todo: Info an Alle. Habe die Ausgabe der obersten Karte Ablagestapel, die Aufforderung des nächsten Spielers, Abfrage ob Hand angezeigt
         // werden soll und Eingabeaufforderung in PrintState() gegeben
 
@@ -121,11 +139,10 @@ public class App {
         //Prüfen ob Abhebestapel noch genug Karten für nächsten Zug hat (mind. 4) ansonsten Aufruf Methode AblegestapelZuAbhebestapel();
     }
 
-    private void printState() {
+    private void printState() throws SQLException {
         //Ausgeben welcher Spieler ist als nächstes dran
-            spielerManager.ausgabeAktuellerSpieler();
-
-
+        spielerManager.ausgabeAktuellerSpieler();
+        punkteInDatenbank();
     }
 
 
@@ -135,85 +152,87 @@ public class App {
 
 
     private boolean roundEnded() {
-        boolean ende = false;
         //check whether anyone's spielerhand is empty
-        if (spielerManager.aktuellerSpieler.spielerHand.isEmpty()) {
-            output.println();
-            output.println();
-            output.println("------");
-            output.println("Die Runde ist zu Ende. " + spielerManager.aktuellerSpieler.getName() + " hat gewonnen");
-            output.println(spielerManager.getPunkteVonAllenSpielern() + " Punkte gewonnen.");
-            output.println();
-            output.println("Noch eine Runde?");
-            String c;
-            while (input.hasNext()) {
-                c = input.nextLine();
-                if (c.equalsIgnoreCase("y")) {
-                    ende = true;
-                    break;
-                } else if (c.equalsIgnoreCase("n")) {
-                   gameEnded();
-                } else {
-                    System.out.println("Falsche Eingabe!");
-                }
-            }
-        }
-        return ende;
-    }
-//
-//            output.println("Noch eine Runde?");
-//            try {
-//                String c = input.nextLine();
-//                if (c.equalsIgnoreCase("y")) {
-//                    spielerManager.startSpielerFestlegen();
-//                }
-//                if (c.equalsIgnoreCase("n")) {
-//                    return true;
-//                }
-//                while (!c.equalsIgnoreCase("y") || !c.equalsIgnoreCase("n")) {
-//                    System.out.println("Falsche Eingabe!");
-//                    throw new FalscheEingabeException("Falsche Eingabe");
-//                }
-//            } catch (FalscheEingabeException e) {
-//                e.printStackTrace();
-//            }
-//            return true;
-//        }
-    //summeSpielerHand add to database
-//        else {
-//        }
-//            return false;
-//        }
-//
-//        true = Wenn Spieler keine Karte im Array hat
-//        Berechnen der Punkte (Übertrag in Datenbank)
-//        Überprüft ob Endspielstand (500 Punkte) von einem Spieler erreicht wurde nach Rundenende, wenn ja, dann Methode gameEnded() aufrufen
-//    }
 
-    private boolean gameEnded() {
-        if (spielerManager.aktuellerSpieler.rundenPunkte >= 500) {
-            return true;
-        }
-
-        while (input.hasNext()) {
-            String s = input.nextLine();
-            output.println("Möchten Sie wirklich vorzeitig beenden? Bitte Y (YES) oder N (NO) eingeben");
-            if (s.equalsIgnoreCase("y")) {
+        Spieler rundenGewinner = null;
+        for (Spieler s : spielerManager.alleSpieler) {
+            if (s.spielerHand.isEmpty()) {
+                rundenGewinner = s;
+                rundenGewinner.setRundenPunkte(spielerManager.getPunkteVonAllenSpielern());
+                output.println();
+                output.println();
+                output.println("------");
+                output.println("Die Runde ist zu Ende. ");
+                output.println("GRATULIERE, Gewinner ist: " + rundenGewinner.getName());
+                output.println(rundenGewinner.getName() + " hat in dieser Runde " + spielerManager.getPunkteVonAllenSpielern() + " Punkte gewonnen. GESAMTPUNKTZAHL " + rundenGewinner.getName() + ": " + rundenGewinner.getRundenPunkte() +".");
+                output.println("Es wurden "  + roundcount + " Runden gespielt.");
+                output.println();
                 return true;
-            } else if (s.equalsIgnoreCase("n")) {
-                return false;
-            } else output.println("Falsche Eingabe ");
-            output.println("Bitte Y (YES) oder N (NO) eingeben");
-            s = input.nextLine();
-            //Ausgabe Rangliste + Gratulation
-            //Ausgabe finaler Punktestand
-            // Ausgabe GameOver
-            //Abfrage "Neues Spiel starten"
+
+            }
         }
         return false;
     }
 
-    private void printFinalScore() {
-
+    private boolean weiterSpielenAbfrage() {
+        output.println("Noch eine Runde?");
+        String c;
+        do {
+            c = input.nextLine();
+            if (c.equalsIgnoreCase("y")) {
+                return true;
+            } else if (c.equalsIgnoreCase("n")) {
+                return false;
+            } else {
+                System.out.println("Falsche Eingabe!");
+            }
+        } while (true);
     }
+
+    private boolean gameEnded() {
+        for (Spieler s : spielerManager.alleSpieler) {
+            if (s.getRundenPunkte() >= 500) {
+                return true;
+            }
+        }
+        return !weiterSpielenAbfrage();
+    }
+
+    private void punkteInDatenbank() throws SQLException {
+        if (roundEnded()) {
+            output.println("Die Punkte werden in die Datenbank eingelesen");
+                for (int i = 0; i < 4; i++) {
+                    Spieler sp = spielerManager.alleSpieler.get(i);
+                    int score = sp.getPunkteVonSpielerHand();
+                    client.executeStatement(String.format(INSERT_TEMPLATE, sp.getName(), sessions, roundcount, score));
+                    results = client.executeQuery(String.format(SELECT_BYPLAYERANDSESSION, sp.getName(), 1));
+                    for (HashMap<String, String> map : results) {
+                        System.out.println(map.get("Player") + " hat derzeit:  " + map.get("Score") + " Punkte");
+                    }
+                }
+        } else return;
+    }
+
+    private void printFinalScore() {
+        Spieler gewinner = null;
+        for (Spieler s : spielerManager.alleSpieler) {
+            if (s.getRundenPunkte() >= 500) {
+                gewinner = s;
+                output.println();
+                output.println();
+                output.println("*******************************************************");
+                output.println();
+                output.println("GRATULATION!");
+                output.println(gewinner.getName() + " hat das Spiel mit " + gewinner.getRundenPunkte() + " Punkten gewonnen!");
+                output.println();
+                output.println("*******************************************************");
+                output.println();
+                output.println();
+                output.println();
+                return;
+            }
+        }
+    }
+
+
 }

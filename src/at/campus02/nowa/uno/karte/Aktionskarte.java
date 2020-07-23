@@ -15,19 +15,19 @@ public class Aktionskarte extends Karte{
     public int getPunkte() {
         int punkte = 0;
         if (getWert().equals("PLUSZWEI")){
-            punkte += 20;
+            punkte = 20;
         }
         if (getWert().equals("RICHTUNGSWECHSEL")){
-            punkte += 20;
+            punkte = 20;
         }
         if (getWert().equals("AUSSETZEN")){
-            punkte += 20;
+            punkte = 20;
         }
         if (getWert().equals("FARBWAHL")){
-            punkte += 50;
+            punkte = 50;
         }
         if (getWert().equals("PLUSVIER")){
-            punkte += 50;
+            punkte = 50;
         }
         return punkte;
     }

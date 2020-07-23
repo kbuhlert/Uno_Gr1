@@ -23,7 +23,7 @@ public class SpielerManager {
     protected ArrayList<Spieler> alleSpieler;
 
     Kartenmanager kartenstapel;
-//        TeststapelWunschkarte kartenstapel;  //--> zum Testen mit speziellen Karten
+    //TeststapelWunschkarte kartenstapel;  //--> zum Testen mit speziellen Karten
 
     Spieler aktuellerSpieler = null;
     boolean spielrichtung = true;
@@ -95,8 +95,8 @@ public class SpielerManager {
     public void kartenAusteilen() {
 
         kartenstapel.stapelErstellen();
-//        kartenstapel.neuerTeststapel(new Zahlenkarte(Farbe.BLAU,Wert.ACHT), new Zahlenkarte(Farbe.BLAU,Wert.RICHTUNGSWECHSEL));  //--> Wenn mit Teststapel gespielt wird
-//        kartenstapel.neuerTeststapel(new Zahlenkarte(SCHWARZ,Wert.PLUSVIER), new Zahlenkarte(Farbe.BLAU,Wert.RICHTUNGSWECHSEL));  //--> Wenn mit Teststapel gespielt wird
+        //kartenstapel.neuerTeststapel(new Zahlenkarte(Farbe.BLAU,Wert.ACHT), new Zahlenkarte(Farbe.BLAU,Wert.EINS));  //--> Wenn mit Teststapel gespielt wird
+        //kartenstapel.neuerTeststapel(new Zahlenkarte(SCHWARZ,Wert.PLUSVIER), new Zahlenkarte(Farbe.BLAU,Wert.RICHTUNGSWECHSEL));  //--> Wenn mit Teststapel gespielt wird
         System.out.println("Karten werden ausgeteilt");     //Karten austeilen -->7 Karten pro Spieler
         for (Spieler spieler : alleSpieler) {
             while (spieler.spielerHand.size() < 2) { //todo 2 statt 7
@@ -168,20 +168,23 @@ public class SpielerManager {
         output.println();
         output.println("-----");
         output.println(aktuellerSpieler.getName() + "  ist an der Reihe!");
+
         if(!abgehoben && !ersteRunde){
+
             plusZweiVier();
         }
         kartenstapel.genugKartenAmStapel();
         kartenstapel.ausgabeObersteKarteAblagestapel();
         //todo: die Methoden direkt in der App aufrufen
-
     }
+
 
     public void kreativeLoesungUmInputZuLöschen(){
         if(input.hasNext())
             return;
         else return;
     }
+
 
     public void neueKarteHeben() {
         if (aktuellerSpieler instanceof EchteSpieler) {
@@ -313,7 +316,9 @@ public class SpielerManager {
                     while (input.hasNext() && !out) {
                         kreativeLoesungUmInputZuLöschen();
                         int position = input.nextInt();
-                        if (position > aktuellerSpieler.spielerHand.size() -1) {
+
+                        if (position > aktuellerSpieler.spielerHand.size()-1) {
+
                             int anzahlKarten = aktuellerSpieler.spielerHand.size() - 1;
                             output.println("Bitte eine Zahl bis höchstens " + anzahlKarten + " eingeben!");
                             input.next();
@@ -614,8 +619,6 @@ public class SpielerManager {
         return aktuellerSpieler;
     }
 
-
-
     public int getPunkteVonAllenSpielern() {
         int punkteAlleSpieler = 0;
         for (Spieler s : alleSpieler) {
@@ -623,6 +626,8 @@ public class SpielerManager {
         }
         return punkteAlleSpieler;
     }
+
+
 
     @Override
     public String toString() {
